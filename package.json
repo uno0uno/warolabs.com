@@ -18,5 +18,8 @@
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
     "typescript": "latest"
+  },
+  "dependencies": {
+    "marked": "^5.1.0"
   }
 }

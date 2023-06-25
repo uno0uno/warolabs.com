@@ -9,23 +9,18 @@
         </form>
       </div>
 
-      <div class="container mx-auto px-4 py-8">
-        <div class="prose">
-          <!-- Contenido Markdown aquí -->
-          <h1>Título del artículo</h1>
-    
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis auctor odio nec elit interdum congue. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Cras eu urna nec purus convallis euismod. Proin semper justo id turpis dignissim condimentum.</p>
-    
-          <h2>Subtítulo</h2>
-    
-          <p>Sed sit amet sapien vel ligula facilisis aliquam. Morbi sed congue massa. Fusce eget nunc vitae ligula suscipit tristique. Nulla venenatis, metus non pulvinar eleifend, mi mauris tincidunt tellus, id gravida justo magna et est.</p>
-    
-          <!-- ...continúa con el contenido Markdown... -->
-        </div>
-      </div>
 </template>
 
 <script setup>
+
+useSeoMeta({
+  title: 'My Amazing Site',
+  ogTitle: 'My Amazing Site',
+  description: 'This is my amazing site, let me tell you all about it.',
+  ogDescription: 'This is my amazing site, let me tell you all about it.',
+  ogImage: 'https://example.com/image.png',
+  twitterCard: 'summary_large_image',
+})
 
 </script>
 
