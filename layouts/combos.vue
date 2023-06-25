@@ -2,7 +2,7 @@
     <div>
         <header>
             <nav>
-                <NuxtLink to="/combos">Home Combos</NuxtLink>
+                <NuxtLink to="/combos">Home Combo</NuxtLink>
             </nav>
         </header>
 
