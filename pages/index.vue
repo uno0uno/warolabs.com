@@ -1,27 +1,41 @@
 <template>
-    <div>
-        <form class="p-8">
-          <div>
-            <label for="date" class="block text-gray-700 text-sm font-bold mb-2">Date:</label>
-            <input type="date" id="date" class="form-input">
-          </div>
-          <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-          <h1>Hello</h1>
-        </form>
-      </div>
-
+  <div>
+    <h1>holanda</h1>
+  </div>
 </template>
 
 <script setup>
 
-useSeoMeta({
+defineLocalBusiness({
+  name: 'test',
+  logo: '/logo.png',
+  address: {
+    addressCountry: 'Australia',
+    postalCode: '2000',
+    streetAddress: '123 st',
+  },
+  openingHoursSpecification: [
+    {
+      dayOfWeek: 'Saturday',
+      opens: '09:30',
+      closes: '13:30',
+    },
+    {
+      dayOfWeek: ['Monday', 'Tuesday'],
+      opens: '10:30',
+      closes: '15:30',
+    },
+  ]
+})
+
+useServerSeoMeta({
   title: 'My Amazing Site',
   ogTitle: 'My Amazing Site',
   description: 'This is my amazing site, let me tell you all about it.',
   ogDescription: 'This is my amazing site, let me tell you all about it.',
   ogImage: 'https://example.com/image.png',
   twitterCard: 'summary_large_image',
-})
+});
 
 </script>
 

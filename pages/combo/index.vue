@@ -21,22 +21,9 @@ import { marked } from 'marked';
 
 const markdownText = '# Título del post\n\nEste es el contenido del post en **Markdown**.\n\n## Subtítulo 1\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Integer placerat velit nec metus lobortis, vitae feugiat ligula lobortis. Mauris in tristique felis.\n\n> Esto es una cita. Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\n## Subtítulo 2\n\nA continuación se muestra una imagen:\n\n![Descripción de la imagen](ruta/a/la/imagen.jpg)\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et metus tellus. Phasellus tincidunt feugiat mauris, eget consectetur turpis auctor a.\n\nSubtítulo 3\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et metus tellus. Phasellus tincidunt feugiat mauris, eget consectetur turpis auctor a.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3';
 
-useSeoMeta({
-  title: 'My Amazing Site',
-  ogTitle: 'My Amazing Site',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
-  ogImage: 'https://example.com/image.png',
-  twitterCard: 'summary_large_image',
-})
-
 const convertToHTML = (content) => {
   return marked(content);
 };
-
-definePageMeta({
-  layout: 'combos'
-})
 
 </script>
 

@@ -7,10 +7,6 @@
 <script setup>
 const { idCombo } = useRoute().params
 
-definePageMeta({
-  layout: 'combos'
-})
-
 </script>
 
 <style scoped>
