@@ -1,32 +1,32 @@
 <template>
-  <div>
-    <h1>holanda</h1>
-  </div>
+     <!-- Contenido de tu artículo -->
+     <h1>Título del artículo</h1>
+     <p>Contenido del artículo...</p>
+ 
+     <!-- Esquema del artículo -->
+     <SchemaOrgArticle
+       :name="articleTitle"
+       :description="articleDescription"
+       :image="articleImage"
+       :datePublished="articleDatePublished"
+       :dateModified="articleDateModified"
+       :author="articleAuthor"
+     />
+  <SchemaOrgDebug />
+
 </template>
 
 <script setup>
 
-defineLocalBusiness({
-  name: 'test',
-  logo: '/logo.png',
-  address: {
-    addressCountry: 'Australia',
-    postalCode: '2000',
-    streetAddress: '123 st',
-  },
-  openingHoursSpecification: [
-    {
-      dayOfWeek: 'Saturday',
-      opens: '09:30',
-      closes: '13:30',
-    },
-    {
-      dayOfWeek: ['Monday', 'Tuesday'],
-      opens: '10:30',
-      closes: '15:30',
-    },
-  ]
-})
+const articleTitle = "Título del artículo";
+const articleDescription = "Descripción del artículo";
+const articleImage = "/path/to/article-image.jpg";
+const articleDatePublished = "2023-06-01";
+const articleDateModified = "2023-06-15";
+const articleAuthor = {
+  "@type": "Person",
+  name: "Nombre del autor"
+};
 
 useServerSeoMeta({
   title: 'My Amazing Site',

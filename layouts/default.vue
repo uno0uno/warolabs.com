@@ -17,12 +17,4 @@
 </template>
 
 <script setup>
-
-useSchemaOrg([
-  // @todo Select Identity: https://unhead-schema-org.harlanzw.com//guide/guides/identity
-  defineWebSite({
-    name: 'My Awesome Website',
-  }),
-  defineWebPage(),
-])
 </script>
