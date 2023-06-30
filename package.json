@@ -22,6 +22,8 @@
     "typescript": "latest"
   },
   "dependencies": {
+    "@heroicons/vue": "^2.0.18",
+    "@nuxtjs/google-fonts": "^3.0.1",
     "marked": "^5.1.0"
   }
 }

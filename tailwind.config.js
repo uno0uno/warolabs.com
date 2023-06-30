@@ -9,7 +9,11 @@ module.exports = {
     "./app.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        principal: ['Roboto Slab', 'sans-serif'],
+      },
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),

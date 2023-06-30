@@ -1,20 +1,18 @@
 <template>
     <div>
-        <header>
-            <nav>
-                <NuxtLink to="/">Home</NuxtLink>
-                <ul>
-                    <NuxtLink to="/combo">Combo</NuxtLink>
-                </ul>
-            </nav>
-        </header>
+      <header class="mx-auto py-4 px-4 md:px-16 lg:px-32 xl:px-32 2xl:px-[30rem]">
+        <TheHeader/>
+      </header>
+  
+      <div class="mx-auto py-4 px-4 md:px-16 lg:px-32 xl:px-32 2xl:px-[30rem]">\
+        <slot />
+      </div>
 
-        <!-- output the oage content -->
-        <div>
-            <slot />
-        </div>
+      <footer class="mx-auto px-4 md:px-16 lg:px-32 xl:px-32 2xl:px-[30rem]">
+        <TheFooter/>
+    </footer>
     </div>
-</template>
+  </template>
 
 <script setup>
 </script>
