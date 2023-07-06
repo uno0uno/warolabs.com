@@ -6,51 +6,11 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
         () => {
         try {
           return $fetch(`/api/businessInfo/magicV1?userBusiness=${userBusiness}`)
-          console.log(pending);
         } catch (error) {
           return error;
         }
       }
     )
-
-const nightclub = reactive( {
-      "@context": "https://schema.org",
-      "@type": "NightClub",
-      "name": "GreatFood",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Sunnyvale",
-        "addressRegion": "CA",
-        "postalCode": "94086",
-        "streetAddress": "1901 Lemur Ave"
-      },
-      "image": "http://www.warocol.com/ewew",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4",
-        "reviewCount": "250"
-      },
-      "openingHoursSpecification": {
-        "@type": "OpeningHoursSpecification",
-        "validFrom": "",
-        "opens": "11:00",
-        "closes": "14:30",
-        "dayOfWeek": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday"
-        ]
-      },
-      "priceRange": "$$",
-      "servesCuisine": [
-        "Middle Eastern",
-        "Mediterranean"
-      ],
-      "telephone": "(408) 714-1489",
-      "url": "http://www.warocol.com"
-    })
 
 </script>
 
@@ -75,13 +35,12 @@ const nightclub = reactive( {
         >
         </TheBusinessHeader>
       <div class="mx-auto max-h-full font-principal">
-        <div class="mt-6">
+
           <div class="border-0 border-b-[1px] border-solid border-b-border-primary flex-nowrap flex overflow-x-auto overflow-y-hidden jpg-scrollbar-thumb-none mx-0">
           <h2 class=" text-lg text-slate-900 first:ml-0 inline-flex text-m md:text-xl font-bold capitalize hover:text-text-default relative bg-transparent outline-none mx-4 mb-[-1px] border-0 border-b-[3px] border-solid pb-2 whitespace-nowrap border-b-text-link text-text-link mr-1">
             Promociones 
           </h2>
           </div>
-      </div>
         <TheBusinessCombos 
           v-bind:combos="business.combos">
         </TheBusinessCombos>
@@ -89,12 +48,11 @@ const nightclub = reactive( {
       <div class="">
           <div class="border-0 border-b-[1px] border-solid border-b-border-primary flex-nowrap flex overflow-x-auto overflow-y-hidden jpg-scrollbar-thumb-none mx-0">
           <h2 class=" text-lg text-slate-900 first:ml-0 inline-flex text-m md:text-xl font-bold capitalize hover:text-text-default relative bg-transparent outline-none mx-4 mb-[-1px] border-0 border-b-[3px] border-solid pb-2 whitespace-nowrap border-b-text-link text-text-link mr-1">
-            Preguntas frecuentes de {{ business.info.name }} 
+            FAQs de {{ business.info.name }} 
           </h2>
           </div>
       </div>
       <TheFaqs>
-
       </TheFaqs>
     </div>
 

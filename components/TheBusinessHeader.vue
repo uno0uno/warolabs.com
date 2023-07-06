@@ -34,7 +34,7 @@ function displayTextStreet(value){
 </script>
 
 <template>
-<div class="flex flex-col justify-start gap-4 font-principal" itemscope itemtype="https://schema.org/NightClub">
+<div class="flex flex-col justify-start gap-6 font-principal" itemscope itemtype="https://schema.org/NightClub">
     <div class="relative sm:top-20 top-8">
       <div class=" h-auto w-full rounded-lg bg-slate-50">
         <div class="mx-auto px-2 sm:px-8 flex-col">
@@ -86,25 +86,29 @@ function displayTextStreet(value){
     </div>
       </div>
     </div>
-      <div class=" sm:-mx-8 pt-4 sm:pt-16 sm:px-8 flex flex-col gap-4 space-y-4 sm:flex-col  sm:space-y-0">
-          <button class="inline-flex sm:w-full justify-center rounded-lg text-m font-semibold py-3 px-4 bg-slate-900 text-white hover:bg-slate-800 cursor-pointer">
-              <span>Dejar un comentario<!-- --> 
-              </span>
-          </button>
-          <div class="flex justify-between gap-3">
-            <button class="sm:w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2 ">
-              <span>Pago manual<!-- --> 
-              </span>
-            </button>
-            <button class="sm:w-full rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2">
-              <span>1k 🔥<!-- --> 
-              </span>
-            </button>
-            <button class="sm:w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2">
-              <span>Compartir<!-- --> 
+      <div class=" sm:-mx-8 pt-4 sm:pt-16 sm:px-8 sm:gap-2 gap-0 flex flex-col space-y-2 sm:flex-col  sm:space-y-0">
+
+          <div class="flex gap-2 w-full">
+            <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-900 text-white hover:bg-slate-200 cursor-pointer border-2 ">
+              <span>Opinar<!-- --> 
               </span>
             </button>
 
+            <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2">
+              <span>Pago manual<!-- --> 
+              </span>
+            </button>
+          </div>
+          <div class="flex gap-2">
+            <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2 ">
+              <span>🔥 200<!-- --> 
+              </span>
+            </button>
+
+            <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2">
+              <span>Compartir<!-- --> 
+              </span>
+            </button>
           </div>
 
       </div>
