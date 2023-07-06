@@ -1,9 +1,4 @@
 export default defineNuxtConfig({
-  runtimeConfig: {
-    private: {
-      apiBase: process.env.NUXT_BASE_URL_API_MAGIC_V2
-    }
-  },
   buildModules: [
     '@nuxtjs/google-fonts'
   ],
