@@ -1,7 +1,7 @@
 <template>
     <div
-  class="divide-y divide-slate-200 rounded-xl border-2 border-slate-200 bg-slate-50">
-  <details class="group p-6 [&_summary::-webkit-details-marker]:hidden" open>
+  class="divide-y divide-slate-200 rounded-xl border-2 border-slate-200 bg-slate-100 font-principal">
+  <details class="group p-4 [&_summary::-webkit-details-marker]:hidden" open>
     <summary
       class="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
     >
@@ -50,7 +50,7 @@
     </p>
   </details>
 
-  <details class="group p-6 [&_summary::-webkit-details-marker]:hidden bg-slate-50">
+  <details class="group p-4 [&_summary::-webkit-details-marker]:hidden bg-slate-100">
     <summary
       class="flex cursor-pointer items-center justify-between gap-1.5 text-slate-900"
     >
