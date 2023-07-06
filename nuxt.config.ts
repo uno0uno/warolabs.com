@@ -1,11 +1,13 @@
 export default defineNuxtConfig({
-  ssr: true,  
+  runtimeConfig: {
+    private: {
+      apiBase: process.env.NUXT_BASE_URL_API_MAGIC_V2,
+    }
+  },
   buildModules: [
     '@nuxtjs/google-fonts'
   ],
-  modules: [
-    'nuxt-schema-org',
-  ],
+  modules: [],
   head: {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -16,18 +18,8 @@ export default defineNuxtConfig({
       'Roboto+Slab': [100,200,300,400,500,600,700,800,900],
     },
   },
-    // recommended
-    runtimeConfig: {
-      public: {
-        siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://example.com',
-      }
-    },
-    // ...
-    schemaOrg: {
-      host: 'https://example.com',
-    },
   devtools: { enabled: true },
-  css: ['~/assets/css/main.css'],
+  css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
       tailwindcss: {},
