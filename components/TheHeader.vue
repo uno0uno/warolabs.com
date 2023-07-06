@@ -15,7 +15,7 @@
                 Business 101
             </NuxtLink>
         </li>
-        <li class="cursor-pointer">
+        <!-- <li class="cursor-pointer">
             <NuxtLink :to="{ name: 'combo'}">
                 Explorar
             </NuxtLink>
@@ -30,8 +30,8 @@
           Cripto
         </li>
         <li class="cursor-pointer">
-          Anunciar
-        </li>
+          Anunciar -->
+        <!-- </li> -->
     </nav>
       
 
