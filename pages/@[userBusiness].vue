@@ -12,16 +12,16 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
     }
   }
 )
-
-useSeoMeta({
-  title: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`,
-  ogTitle: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}` ,
-  description: "hola",
-  ogDescription: "hola",
-  ogImage: 'https://dummyimage.com/1200x800/a83ba4/ffffff',
-  twitterCard: 'summary_large_image',
-})
-
+if(!pending && !error){
+  useSeoMeta({
+    title: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`,
+    ogTitle: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}` ,
+    description: "hola",
+    ogDescription: "hola",
+    ogImage: 'https://dummyimage.com/1200x800/a83ba4/ffffff',
+    twitterCard: 'summary_large_image',
+  })
+}
 </script>
 
 <template>

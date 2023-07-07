@@ -1,5 +1,5 @@
 <script setup>
-const route = useRoute();
+
 const { idCombo } = useRoute().params;
 
 const counterAmountProduct =  ref(1);
@@ -12,20 +12,20 @@ const body = reactive ({
     {
       amount: "",
       quantity: counterAmountProduct.value,
-      combo_id : route.params.cId,
+      combo_id : idCombo,
     }
   ]
 });
 
 const { data: comboData, pending, refresh, execute, error } = await useAsyncData(
-        'businessCombo', 
-        () => {
-        try {
-            return $fetch(`/api/businessCombo/magicV1?idCombo=${idCombo}`);
-        } catch (error) {
-            return error;
-        }
+  'combo-data', 
+  () => {
+    try {
+      return $fetch(`/api/businessCombo/magicV1?idCombo=${idCombo}`);
+    } catch (error) {
+      return error;
     }
+  }
 )
 
 function increaseCounter() {
@@ -44,22 +44,28 @@ const totalPrice = computed(() => {
   return total
 });
 
-
-useSeoMeta({
-  title: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
-  ogTitle: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
-  description: () => `${toRaw(comboData.value.reazon_sell_product)}`,
-  ogDescription: () => `${toRaw(comboData.value.reazon_sell_product)}`,
-  ogImage: 'https://dummyimage.com/1200x800/e600e6/ffffff',
-  twitterCard: 'summary_large_image',
-})
-
+if(!pending && !error){
+  useSeoMeta({
+    title: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
+    ogTitle: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
+    description: () => `${toRaw(comboData.value.reazon_sell_product)}`,
+    ogDescription: () => `${toRaw(comboData.value.reazon_sell_product)}`,
+    ogImage: 'https://dummyimage.com/1200x800/e600e6/ffffff',
+    twitterCard: 'summary_large_image',
+  })
+}
 </script>
 
 
 <template>
 
-    <div  class="flex flex-col gap-2 mx-auto max-h-full font-principal">
+  <div v-if="pending">
+      LOADING...
+  </div>
+
+  <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
+
+    <div v-else  class="flex flex-col gap-2 mx-auto max-h-full font-principal">
         <div class="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4 md:gap-10">
             <div class="md:col-span-6 lg:col-span-7 flex flex-col gap-4 md:gap-4">
                     <TheProductDetail
