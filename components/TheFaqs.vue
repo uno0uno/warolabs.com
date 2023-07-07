@@ -1,12 +1,12 @@
 <template>
     <div
   class="divide-y divide-slate-200 rounded-xl border-2 border-slate-200 bg-slate-100 font-principal">
-  <details class="group p-4 [&_summary::-webkit-details-marker]:hidden" open>
+  <details class="group p-4 [&_summary::-webkit-details-marker]:hidden">
     <summary
       class="flex cursor-pointer items-center justify-between gap-1.5 text-gray-900"
     >
       <h2 class="text-lg font-medium">
-        Lorem ipsum dolor sit amet consectetur adipisicing?
+        ¿Cómo es la rumba aquí?
       </h2>
 
       <span class="relative h-5 w-5 shrink-0">
@@ -41,13 +41,10 @@
         </svg>
       </span>
     </summary>
-
-    <p class="mt-4 leading-relaxed text-gray-700">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis
-      molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt
-      voluptate dicta quo officiis explicabo consequuntur distinctio corporis
-      earum similique!
+    <p itemprop="description" class="mt-4 leading-relaxed text-slate-900">
+      Disfruta de Dancehall y Rap en Bogotá, Parque El Virrey. ¡Parqueadero gratis disponible! ¡Reserva ahora y vive la música al máximo!
     </p>
+
   </details>
 
   <details class="group p-4 [&_summary::-webkit-details-marker]:hidden bg-slate-100">
@@ -55,7 +52,7 @@
       class="flex cursor-pointer items-center justify-between gap-1.5 text-slate-900"
     >
       <h2 class="text-lg font-medium">
-        Lorem ipsum dolor sit amet consectetur adipisicing?
+        ¿A que horas abren o cierran?
       </h2>
 
       <span class="relative h-5 w-5 shrink-0">
@@ -91,12 +88,9 @@
       </span>
     </summary>
 
-    <p class="mt-4 leading-relaxed text-slate-900">
-      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis
-      molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt
-      voluptate dicta quo officiis explicabo consequuntur distinctio corporis
-      earum similique!
-    </p>
+    <TheOpeningHoursSpecification class="mt-4 leading-relaxed">
+        
+    </TheOpeningHoursSpecification>
   </details>
 </div>
 </template>

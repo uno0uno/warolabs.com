@@ -23,7 +23,7 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
         LOADING...
     </div>
 
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-6" itemscope itemtype="https://schema.org/NightClub">
         <TheBusinessHeader
         v-bind:logo_bussines="business.info.logo_bussines"
         v-bind:name="business.info.name"

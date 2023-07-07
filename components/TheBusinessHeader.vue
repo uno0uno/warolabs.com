@@ -34,7 +34,7 @@ function displayTextStreet(value){
 </script>
 
 <template>
-<div class="flex flex-col justify-start gap-6 font-principal" itemscope itemtype="https://schema.org/NightClub">
+<div class="flex flex-col justify-start gap-6 font-principal">
     <div class="relative sm:top-20 top-8">
       <div class=" h-auto w-full rounded-lg bg-slate-50">
         <div class="mx-auto px-2 sm:px-8 flex-col">
@@ -58,8 +58,8 @@ function displayTextStreet(value){
               </div>
             </div>
         </div>
-        <div class="flex divide-x divide-dashed" itemprop="contactPoint" itemscope itemtype="http://schema.org/ContactPoint">
-          <meta itemprop="contactType" content="Sales">
+
+        <div class="flex divide-x divide-dashed" >
           <div class="flex items-center font-normal">
               <PhoneIcon class="h-6 w-6 md:h-6 md:w-6 text-slate-900"/>
               <p class=" px-2 text-slate-900 text-m md:text-lg" itemprop="telephone">(+57) 3142047013</p>
