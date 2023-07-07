@@ -11,7 +11,6 @@ const props = defineProps({
     });
 
 const { name_product, date_limit_product, citie_product, address_product } = toRefs(props);
-const { month, day, time, country } = useDate(props.date_limit_product)
 
 const currencyFormater = new Intl.NumberFormat(("en-US"), {
   currency: "COP",
@@ -24,8 +23,6 @@ const currencyFormater = new Intl.NumberFormat(("en-US"), {
     <div class="flex flex-col gap-1 sm::gap-2">
         <div class="flex">
             <div class="flex items-center gap-2">
-                <GlobeAmericasIcon class="h-4 w-4 md:h-6 md:w-6"/>
-                <p class="md:text-basetext-primary text-sm font-normal">{{day}} {{month}}, {{time}}</p>
                 <p class="md:my-0 rounded border bg-slate-100 border-slate-900 px-0.5 text-slate-900 text-sm text-center">Producto certificado</p>
             </div>
         </div>
