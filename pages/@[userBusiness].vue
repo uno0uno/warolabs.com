@@ -43,11 +43,7 @@ const meta = useSeoMeta({
     }
   },
   ogImage: 'https://dummyimage.com/1200x800/3ea63c/ffffff',
-  twitterCard: 'summary_large_image',
-  default: {
-    title: 'My App Title',
-    description: 'My App Description',
-  },
+  twitterCard: 'summary_large_image'
 })
 
 
