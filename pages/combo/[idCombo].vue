@@ -44,16 +44,6 @@ const totalPrice = computed(() => {
   return total
 });
 
-useSeoMeta({
-  title: 'Banana house',
-  ogTitle: 'My Amazing Site',
-  description: 'This is my amazing site, let me tell you all about it.',
-  ogDescription: 'This is my amazing site, let me tell you all about it.',
-  ogImage: 'https://dummyimage.com/1200x800/00e677/ffffff',
-  twitterCard: 'summary_large_image',
-})
-
-
 </script>
 
 
