@@ -12,7 +12,8 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
     }
   }
 )
-if(!pending && !error){
+
+if(!error){
   useSeoMeta({
     title: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`,
     ogTitle: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}` ,

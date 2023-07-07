@@ -44,9 +44,9 @@ const totalPrice = computed(() => {
   return total
 });
 
-if(!pending && !error){
+if(!error){
   useSeoMeta({
-    title: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
+    title: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)}`,
     ogTitle: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
     description: () => `${toRaw(comboData.value.reazon_sell_product)}`,
     ogDescription: () => `${toRaw(comboData.value.reazon_sell_product)}`,
