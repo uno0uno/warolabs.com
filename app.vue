@@ -9,7 +9,7 @@
 <script setup>
 
 useSeoMeta({
-  title: 'My Amazing Site',
+  title: 'My Amazing Site jejeje',
   ogTitle: 'My Amazing Site',
   description: 'This is my amazing site, let me tell you all about it.',
   ogDescription: 'This is my amazing site, let me tell you all about it.',
