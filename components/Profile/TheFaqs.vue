@@ -88,9 +88,9 @@
       </span>
     </summary>
 
-    <TheOpeningHoursSpecification class="mt-4 leading-relaxed">
+    <TheOpeningHours class="mt-4 leading-relaxed">
         
-    </TheOpeningHoursSpecification>
+    </TheOpeningHours>
   </details>
 </div>
 </template>

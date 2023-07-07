@@ -1,6 +1,5 @@
 <script setup>
 
-const router = useRouter();
 const props = defineProps({ 
     combos: {type: Object}
     });
@@ -22,7 +21,6 @@ function calculateAvailableReedems(reedemsNumber, redemptionsNumber) {
 
 async function openCombo(value){
     await navigateTo({ path: `/combo/${value}` });
-    //router.push({name:"idCombo",params:{idCombo:value}});
 }
 
 </script>
