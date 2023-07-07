@@ -13,16 +13,44 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
   }
 )
 
-if(!error){
-  useSeoMeta({
-    title: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`,
-    ogTitle: () => `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}` ,
-    description: "hola",
-    ogDescription: "hola",
-    ogImage: 'https://dummyimage.com/1200x800/a83ba4/ffffff',
-    twitterCard: 'summary_large_image',
-  })
-}
+const meta = useSeoMeta({
+  title: () => {
+    if (business.value != null) {
+      return `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`
+    } else {
+      return 'Pagina no encontrada'
+    }
+  },
+  ogTitle: () => {
+    if (business.value != null) {
+      return `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`
+    } else {
+      return 'Pagina no encontrada'
+    }
+  },
+  description: () => {
+    if (business.value != null) {
+      return `${toRaw(business.value.info.description)}`
+    } else {
+      return 'My App Description'
+    }
+  },
+  ogDescription: () => {
+    if (business.value != null) {
+      return `${toRaw(business.value.info.description)}`
+    } else {
+      return 'My App Description'
+    }
+  },
+  ogImage: 'https://dummyimage.com/1200x800/3ea63c/ffffff',
+  twitterCard: 'summary_large_image',
+  default: {
+    title: 'My App Title',
+    description: 'My App Description',
+  },
+})
+
+
 </script>
 
 <template>

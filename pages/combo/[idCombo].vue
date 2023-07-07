@@ -28,6 +28,43 @@ const { data: comboData, pending, refresh, execute, error } = await useAsyncData
   }
 )
 
+const meta = useSeoMeta({
+  title: () => {
+    if (comboData.value != null) {
+      return `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)}`
+    } else {
+      return 'Pagina no encontrada'
+    }
+  },
+  ogTitle: () => {
+    if (comboData.value != null) {
+      return `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `
+    } else {
+      return 'Pagina no encontrada'
+    }
+  },
+  description: () => {
+    if (comboData.value != null) {
+      return `${toRaw(comboData.value.reazon_sell_product)}`
+    } else {
+      return 'My App Description'
+    }
+  },
+  ogDescription: () => {
+    if (comboData.value != null) {
+      return `${toRaw(comboData.value.reazon_sell_product)}`
+    } else {
+      return 'My App Description'
+    }
+  },
+  ogImage: 'https://dummyimage.com/1200x800/803da6/ffffff',
+  twitterCard: 'summary_large_image',
+  default: {
+    title: 'My App Title',
+    description: 'My App Description',
+  },
+})
+
 function increaseCounter() {
   counterAmountProduct.value++;
 }
@@ -44,16 +81,8 @@ const totalPrice = computed(() => {
   return total
 });
 
-if(!error){
-  useSeoMeta({
-    title: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)}`,
-    ogTitle: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
-    description: () => `${toRaw(comboData.value.reazon_sell_product)}`,
-    ogDescription: () => `${toRaw(comboData.value.reazon_sell_product)}`,
-    ogImage: 'https://dummyimage.com/1200x800/e600e6/ffffff',
-    twitterCard: 'summary_large_image',
-  })
-}
+
+
 </script>
 
 
