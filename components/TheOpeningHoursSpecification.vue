@@ -17,40 +17,44 @@
       </thead>
   
       <tbody class="divide-y divide-gray-200">
-        <tr class="odd:bg-gray-50">
-          <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            Lunes
-          </td>
+        <tr itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification"
+        class="odd:bg-gray-50">
+            <td itemprop="dayOfWeek"
+            class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Lunes
+            </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="opens" datetime="20:00">20:00</time>
+                <time itemprop="opens">20:00</time>
             </td>
             <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="closes" datetime="02:00">02:00</time>
+                <time itemprop="closes">02:00</time>
             </td>
         </tr>
-  
-        <tr class="odd:bg-gray-50">
-          <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            Martes
-          </td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-            <time itemprop="opens" datetime="20:00">20:00</time>
-        </td>
-        <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
-            <time itemprop="closes" datetime="02:00">02:00</time>
-        </td>
+        <tr itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification"
+            class="odd:bg-gray-50">
+            <td itemprop="dayOfWeek"
+            class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Martes
+            </td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                <time itemprop="opens">20:00</time>
+            </td>
+            <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                <time itemprop="closes">02:00</time>
+            </td>
         </tr>
-  
-        <tr class="odd:bg-gray-50">
-          <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-            Miercoles
-          </td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-            <time itemprop="opens" datetime="20:00">20:00</time>
-        </td>
-        <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
-            <time itemprop="closes" datetime="02:00">02:00</time>
-        </td>
+        <tr itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification"
+            class="odd:bg-gray-50">
+            <td itemprop="dayOfWeek"
+            class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                Miercoles
+            </td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                <time itemprop="opens">20:00</time>
+            </td>
+            <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
+                <time itemprop="closes">02:00</time>
+            </td>
         </tr>
       </tbody>
     </table>

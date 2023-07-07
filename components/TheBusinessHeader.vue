@@ -3,6 +3,7 @@
 import { GlobeAltIcon } from '@heroicons/vue/24/solid'
 import { CheckBadgeIcon } from '@heroicons/vue/24/solid'
 import { PhoneIcon } from '@heroicons/vue/24/solid'
+import { CurrencyDollarIcon } from '@heroicons/vue/24/solid'
 
 const showFullText = ref(false);
 const tagsBusiness = ref (["Dancehall","Hip-Hop","Rock"])
@@ -64,6 +65,12 @@ function displayTextStreet(value){
               <PhoneIcon class="h-6 w-6 md:h-6 md:w-6 text-slate-900"/>
               <p class=" px-2 text-slate-900 text-m md:text-lg" itemprop="telephone">(+57) 3142047013</p>
           </div>
+      </div>
+      <div class="flex divide-x divide-dashed" >
+        <div class="flex items-center font-normal">
+            <CurrencyDollarIcon class="h-6 w-6 md:h-6 md:w-6 text-slate-900"/>
+            <p class=" px-2 text-slate-900 text-m md:text-lg" itemprop="telephone">$50.000 - $200.000 </p>
+        </div>
       </div>
         <div class="flex gap-2">
               <div v-for=" tagBusiness in tagsBusiness" :key="tagBusiness">
