@@ -44,6 +44,16 @@ const totalPrice = computed(() => {
   return total
 });
 
+
+useSeoMeta({
+  title: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
+  ogTitle: () => `${toRaw(comboData.value.name)} - ${toRaw(comboData.value.citie)} `,
+  description: () => `${toRaw(comboData.value.reazon_sell_product)}`,
+  ogDescription: () => `${toRaw(comboData.value.reazon_sell_product)}`,
+  ogImage: 'https://dummyimage.com/1200x800/e600e6/ffffff',
+  twitterCard: 'summary_large_image',
+})
+
 </script>
 
 
