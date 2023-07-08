@@ -11,7 +11,7 @@
           </NuxtLink>
         </li>
         <li class="cursor-pointer">
-            <NuxtLink :to="{ name: '@userBusiness', params: {userBusiness:101}}">
+            <NuxtLink :to="{ path: `/night-club/101` }">
                 Business 101
             </NuxtLink>
         </li>

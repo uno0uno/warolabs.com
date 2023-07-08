@@ -1,9 +1,13 @@
 export default defineNuxtConfig({
   app: {
     head: {
-      charset: 'utf-8',
-      viewport: 'width=device-width, initial-scale=1',
-    }
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'charset', content: 'utf-8' },
+        { name: 'lang', content: 'es-CO' },
+        { name: 'canonical', content: 'https://www.warocol.com/' },
+      ],
+    },
   },
   buildModules: [
     '@nuxtjs/google-fonts'
