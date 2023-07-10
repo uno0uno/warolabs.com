@@ -16,7 +16,7 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
 const meta = useSeoMeta({
   title: () => {
     if (business.value != null) {
-      return `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`
+      return `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)} | Warocol`
     } else {
       return 'Pagina no encontrada'
     }
