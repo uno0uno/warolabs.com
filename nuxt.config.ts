@@ -1,4 +1,9 @@
 export default defineNuxtConfig({
+  runtimeConfig: {
+		public: {
+			gtmContainerId: '',
+		},
+	},
   app: {
     head: {
       meta: [

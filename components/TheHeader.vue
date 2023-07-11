@@ -6,7 +6,7 @@
 
     <nav class="flex justify-start gap-6 text-lg text-slate-600 font-normal" style="list-style: none;">
         <li class="cursor-pointer">
-          <NuxtLink :to="{ name: 'index'}">
+          <NuxtLink :to="{ path: `/`}">
             <theImgLogo/>
           </NuxtLink>
         </li>
