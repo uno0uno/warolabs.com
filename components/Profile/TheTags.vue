@@ -1,12 +1,16 @@
 <script setup>
 
-const tagsBusiness = ref (["Dancehall","Hip-Hop","Rock"])
+const props = defineProps({ 
+    category_tags: {type: Object}
+    });
+
+const { category_tags } = toRefs(props);
 
 </script>
 
 <template>
     <div class="flex gap-2">
-        <div v-for=" tagBusiness in tagsBusiness" :key="tagBusiness">
+        <div v-for=" tagBusiness in category_tags" :key="tagBusiness">
             <div class="bg-slate-100 py-1 px-2 rounded-lg">
                 <p class="text-slate-900 md:text-lg text-m">{{tagBusiness}}</p>
             </div>

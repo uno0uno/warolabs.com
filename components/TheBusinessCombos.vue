@@ -30,9 +30,9 @@ async function openCombo(value){
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-4 md:px-0 mt-4">
     <div
     v-for=" item in combos"
-    :key="item._id.$oid"
+    :key="item.id_combo"
     class="p-4 w-full h-full rounded-lg cursor-pointer bg-slate-100 border-2">
-    <div @click="openCombo(item._id.$oid)" class="flex flex-col gap-2">
+    <div @click="openCombo(item.id_combo)" class="flex flex-col gap-2">
             <div class="flex gap-2 items-center">
                 <span class="relative flex h-3 w-3">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
@@ -45,7 +45,7 @@ async function openCombo(value){
             </div>
 
             <div class="flex gap-2">
-                <p class="text-m md:text-normal text-gray-900 text-text-subdued">{{displayText(item.reazon_sell_product)}}</p>
+                <p class="text-m md:text-normal text-gray-900 text-text-subdued">{{displayText(item.description)}}</p>
             </div>
         </div>
     </div>

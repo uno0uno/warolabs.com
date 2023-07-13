@@ -7,9 +7,13 @@ const props = defineProps({
     country: {type: String},
     city: {type: String},
     description: {type: String},
+    whatsapp: {type: Number},
+    min_price: {type: Number},
+    max_price: {type: Number},
+    category_tags: {type: Object}
     });
 
-const { logo_bussines,name,address,country, city, description } = toRefs(props);
+const { logo_bussines,name,address,country, city, description, whatsapp, min_price, max_price, category_tags } = toRefs(props);
 
 </script>
 
@@ -33,11 +37,21 @@ const { logo_bussines,name,address,country, city, description } = toRefs(props);
                 >
               </ProfileTheAddress>
 
-              <ProfileTheTelephone/>
+              <ProfileTheTelephone
+                v-bind:whatsapp="whatsapp"
+                >
+              </ProfileTheTelephone>
 
-              <ProfileThePriceRange/>
+              <ProfileThePriceRange
+                v-bind:min_price="min_price"
+                v-bind:max_price="max_price"
+              >
+              </ProfileThePriceRange>
 
-              <ProfileTheTags/>
+              <ProfileTheTags
+                v-bind:category_tags="category_tags"
+              >
+              </ProfileTheTags>
 
           </div>
         </div>

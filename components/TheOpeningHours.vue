@@ -1,3 +1,12 @@
+<script setup>
+
+const props = defineProps({ 
+  opening_hours: {type: Object}
+  });
+
+const { opening_hours } = toRefs(props);
+
+</script>
 
 <template>
 <div class="overflow-x-auto rounded-lg border border-gray-200">
@@ -15,55 +24,24 @@
           </th>
         </tr>
       </thead>
+
   
       <tbody class="divide-y divide-gray-200">
-        <tr itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification"
-        class="odd:bg-gray-50">
-            <td itemprop="dayOfWeek"
-            class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Lunes
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="opens">20:00</time>
-            </td>
-            <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="closes">02:00</time>
-            </td>
+        <tr v-for="item in opening_hours" :key="item.id" itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" :class="{ 'odd:bg-gray-50': $even, 'even:bg-white': $odd }">
+          <td itemprop="dayOfWeek" class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+            {{ item.day }}
+          </td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+            <time itemprop="opens">{{ item.open_hour }}</time>
+          </td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+            <time itemprop="closes">{{ item.close_hour }}</time>
+          </td>
         </tr>
-        <tr itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification"
-            class="odd:bg-gray-50">
-            <td itemprop="dayOfWeek"
-            class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Martes
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="opens">20:00</time>
-            </td>
-            <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="closes">02:00</time>
-            </td>
-        </tr>
-        <tr itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification"
-            class="odd:bg-gray-50">
-            <td itemprop="dayOfWeek"
-            class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                Miercoles
-            </td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="opens">20:00</time>
-            </td>
-            <td td class="whitespace-nowrap px-4 py-2 text-gray-700">
-                <time itemprop="closes">02:00</time>
-            </td>
-        </tr>
-      </tbody>
+      </tbody>      
     </table>
   </div>
 </template>
-
-<script setup>
-
-</script>
 
 <style lang="scss" scoped>
 

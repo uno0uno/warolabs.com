@@ -1,5 +1,11 @@
 <script setup>
 
+const props = defineProps({ 
+    whatsapp: {type: Number},
+    });
+
+const { whatsapp } = toRefs(props);
+
 
 const pNumber = ref(3142047013);
 
@@ -13,10 +19,10 @@ function openWhatsApp(phoneNumber) {
 </script>
 
 <template>
-    <div @click="openWhatsApp(pNumber)" class="flex divide-x divide-dashed cursor-pointer" >
+    <div @click="openWhatsApp(whatsapp)" class="flex divide-x divide-dashed cursor-pointer" >
         <div class="flex items-center font-normal">
             <TheWatsapp class="h-6 w-6 md:h-6 md:w-6 text-slate-900"/>
-            <p class=" px-2 text-slate-900 text-m md:text-lg" itemprop="telephone">3142047013</p>
+            <p class=" px-2 text-slate-900 text-m md:text-lg" itemprop="telephone">{{whatsapp}}</p>
         </div>
     </div>
 </template>

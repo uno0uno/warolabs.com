@@ -1,3 +1,15 @@
+<script setup>
+
+import { CurrencyDollarIcon } from '@heroicons/vue/24/solid'
+const props = defineProps({ 
+  how_party: {type: String},
+  opening_hours: {type:Object}
+  });
+
+const { how_party,opening_hours } = toRefs(props);
+
+</script>
+
 <template>
     <div
   class="divide-y divide-slate-200 rounded-xl border-2 border-slate-200 bg-slate-100 font-principal">
@@ -42,7 +54,7 @@
       </span>
     </summary>
     <p itemprop="description" class="mt-4 leading-relaxed text-slate-900">
-      Disfruta de Dancehall y Rap en Bogotá, Parque El Virrey. ¡Parqueadero gratis disponible! ¡Reserva ahora y vive la música al máximo!
+      {{ how_party }}
     </p>
 
   </details>
@@ -88,13 +100,10 @@
       </span>
     </summary>
 
-    <TheOpeningHours class="mt-4 leading-relaxed">
-        
+    <TheOpeningHours class="mt-4 leading-relaxed"
+      v-bind:opening_hours="opening_hours"
+    >
     </TheOpeningHours>
   </details>
 </div>
 </template>
-
-<script setup>
-
-</script>

@@ -6,45 +6,14 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
   'profile-info', 
   () => {
     try {
-      return $fetch(`/api/businessInfo/magicV1?userBusiness=${userBusiness}`)
+      return $fetch(`/api/business/allBusiness?user_name=${userBusiness}`)
     } catch (error) {
       return error;
     }
   }
 )
 
-const meta = useSeoMeta({
-  title: () => {
-    if (business.value != null) {
-      return `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)} | Warocol`
-    } else {
-      return 'Pagina no encontrada'
-    }
-  },
-  ogTitle: () => {
-    if (business.value != null) {
-      return `${toRaw(business.value.info.name)} - ${toRaw(business.value.info.city)}`
-    } else {
-      return 'Pagina no encontrada'
-    }
-  },
-  description: () => {
-    if (business.value != null) {
-      return `${toRaw(business.value.info.description)}`
-    } else {
-      return 'My App Description'
-    }
-  },
-  ogDescription: () => {
-    if (business.value != null) {
-      return `${toRaw(business.value.info.description)}`
-    } else {
-      return 'My App Description'
-    }
-  },
-  ogImage: 'https://dummyimage.com/1200x800/3ea63c/ffffff',
-  twitterCard: 'summary_large_image'
-})
+
 
 
 </script>
@@ -57,15 +26,19 @@ const meta = useSeoMeta({
 
     <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
 
-    <div v-else class="flex flex-col gap-6" itemscope itemtype="https://schema.org/NightClub">
+    <div v-else v-for="nightClub in business" :key="nightClub.name"
+    class="flex flex-col gap-6" itemscope itemtype="https://schema.org/NightClub">
         <TheBusinessHeader
-        v-bind:logo_bussines="business.info.logo_bussines"
-        v-bind:name="business.info.name"
-        v-bind:address="business.info.address"
-        v-bind:country="business.info.country"
-        v-bind:city="business.info.city"
-        v-bind:description="business.info.description"
-        
+        v-bind:logo_bussines="nightClub.logo_business"
+        v-bind:name="nightClub.name"
+        v-bind:address="nightClub.address"
+        v-bind:country="nightClub.country"
+        v-bind:city="nightClub.city"
+        v-bind:description="nightClub.description"
+        v-bind:whatsapp="nightClub.whatsapp"
+        v-bind:min_price="nightClub.min_price"
+        v-bind:max_price="nightClub.max_price"
+        v-bind:category_tags="nightClub.category_tags"
         >
         </TheBusinessHeader>
       <div class="mx-auto max-h-full font-principal">
@@ -75,9 +48,8 @@ const meta = useSeoMeta({
               Promociones 
             </h2>
           </div>
-
         <TheBusinessCombos 
-          v-bind:combos="business.combos">
+          v-bind:combos="nightClub.combo_business">
         </TheBusinessCombos>
       </div>
 
@@ -85,13 +57,17 @@ const meta = useSeoMeta({
 
           <div class="border-0 border-b-[1px] border-solid border-b-border-primary flex-nowrap flex overflow-x-auto overflow-y-hidden jpg-scrollbar-thumb-none mx-0">
             <h2 class=" text-lg text-slate-900 first:ml-0 inline-flex text-m md:text-xl font-bold capitalize hover:text-text-default relative bg-transparent outline-none mx-4 mb-[-1px] border-0 border-b-[3px] border-solid pb-2 whitespace-nowrap border-b-text-link text-text-link mr-1">
-              FAQs de {{ business.info.name }} 
+              FAQs de {{ nightClub.name }} 
             </h2>
           </div>
 
       </div>
 
-      <ProfileTheFaqs/>
+      <ProfileTheFaqs
+        v-bind:how_party="nightClub.how_party"
+        v-bind:opening_hours="nightClub.opening_hours"
+      >
+      </ProfileTheFaqs>
 
     </div>
 

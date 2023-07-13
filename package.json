@@ -22,6 +22,7 @@
   "dependencies": {
     "@heroicons/vue": "^2.0.18",
     "@nuxtjs/google-fonts": "^3.0.1",
+    "@supabase/supabase-js": "^2.26.0",
     "marked": "^5.1.0",
     "sass": "^1.63.6"
   }
