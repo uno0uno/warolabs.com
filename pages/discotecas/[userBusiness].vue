@@ -6,7 +6,7 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
   'profile-info', 
   () => {
     try {
-      return $fetch(`/api/business/allBusiness?user_name=${userBusiness}`)
+      return $fetch(`/api/business/profileInfo?user_name=${userBusiness}`)
     } catch (error) {
       return error;
     }
@@ -49,7 +49,7 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
             </h2>
           </div>
         <TheBusinessCombos 
-          v-bind:combos="nightClub.combo_business">
+          v-bind:promos="nightClub.promos_business">
         </TheBusinessCombos>
       </div>
 

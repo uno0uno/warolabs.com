@@ -1,10 +1,10 @@
 <script setup>
 
 const props = defineProps({ 
-    combos: {type: Object}
+    promos: {type: Object}
     });
 
-const { combos } = toRefs(props);
+const { promos } = toRefs(props);
 
 function displayText(value){
     return value.slice(0, 110) + '...';
@@ -19,20 +19,21 @@ function calculateAvailableReedems(reedemsNumber, redemptionsNumber) {
   return availableReedems >= 0 ? availableReedems : 0;
 }
 
-async function openCombo(value){
-    await navigateTo({ path: `/combo/${value}` });
+async function openCombo(id,slug){
+    await navigateTo({ path: `/promocion/${slug}-PROM${id}` });
 }
 
 </script>
 
 <template>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 gap-4 md:px-0 mt-4">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 md:px-0 mt-4">
     <div
-    v-for=" item in combos"
-    :key="item.id_combo"
+    v-for=" item in promos"
+    :key="item.id"
     class="p-4 w-full h-full rounded-lg cursor-pointer bg-slate-100 border-2">
-    <div @click="openCombo(item.id_combo)" class="flex flex-col gap-2">
+    <div @click="openCombo(item.id, item.slug)" class="flex flex-col gap-2">
+
             <div class="flex gap-2 items-center">
                 <span class="relative flex h-3 w-3">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
