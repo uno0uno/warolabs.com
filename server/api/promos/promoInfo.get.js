@@ -17,7 +17,7 @@ export default defineEventHandler( async (event) => {
   const supabase = createClient( process.env.NUXT_SUPABASE_URL,process.env.NUXT_SUPABASE_ANON_KEY)
   const { data, error } = await supabase
   .from('promos_business')
-  .select('*')
+  .select('*,night_clubs(city,address,currencies_accepted)')
   .eq('id',id)
   .eq('slug',slug)
 

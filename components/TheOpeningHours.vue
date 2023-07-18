@@ -26,8 +26,8 @@ const { opening_hours } = toRefs(props);
       </thead>
 
   
-      <tbody class="divide-y divide-gray-200">
-        <tr v-for="item in opening_hours" :key="item.id" itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" :class="{ 'odd:bg-gray-50': $even, 'even:bg-white': $odd }">
+      <tbody class="divide-y">
+        <tr v-for="item in opening_hours" :key="item.id" itemprop="openingHoursSpecification" itemscope itemtype="http://schema.org/OpeningHoursSpecification" >
           <td itemprop="dayOfWeek" class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
             {{ item.day }}
           </td>

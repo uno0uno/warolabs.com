@@ -4,18 +4,11 @@ import { MapPinIcon } from '@heroicons/vue/24/outline';
 import { GlobeAmericasIcon } from '@heroicons/vue/24/solid';
 
 const props = defineProps({ 
-    name_product: {type: String}, 
-    date_limit_product:{type: String}, 
-    citie_product: {type: String}, 
-    address_product: {type: String}
+    name_product: {type: String},  
+    night_club_info: {type: Object}
     });
 
-const { name_product, date_limit_product, citie_product, address_product } = toRefs(props);
-
-const currencyFormater = new Intl.NumberFormat(("en-US"), {
-  currency: "COP",
-  maximumFractionDigits: 0
-});
+const { name_product, night_club_info } = toRefs(props);
 
 </script>
 
@@ -30,7 +23,7 @@ const currencyFormater = new Intl.NumberFormat(("en-US"), {
         <div class="flex flex-col gap-2 ">
             <div class="flex items-center gap-1 ">
                 <MapPinIcon class="h-4 w-4 md:h-6 md:w-6 text-slate-800"/>
-                <p class="md:text-base text-slate-900 font-Rubik text-sm">{{props.citie_product}} - {{address_product}}</p>
+                <p class="md:text-base text-slate-900 font-Rubik text-sm">{{night_club_info.city}} - {{night_club_info.address}}</p>
             </div>
         </div>
     </div>

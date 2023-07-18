@@ -10,15 +10,6 @@ function displayText(value){
     return value.slice(0, 110) + '...';
 }
 
-function calculateAvailableReedems(reedemsNumber, redemptionsNumber) {
-  if (redemptionsNumber === null || redemptionsNumber === undefined) {
-    return reedemsNumber;
-  }
-  
-  const availableReedems = reedemsNumber - redemptionsNumber;
-  return availableReedems >= 0 ? availableReedems : 0;
-}
-
 async function openCombo(id,slug){
     await navigateTo({ path: `/promocion/${slug}-PROM${id}` });
 }
