@@ -3,7 +3,6 @@
   const { slug } = useRoute().params;
 
   const counterAmountProduct =  ref(1);
-  const priceProduct = ref(0);
 
   const { data: promoData, pending, refresh, execute, error } = await useAsyncData(
     'combo-data', 
@@ -27,7 +26,7 @@
   }
 
   function calculateTotalPrice(value) {
-    return value * this.counterAmountProduct;
+    return value * counterAmountProduct.value;
   }
 
   function formatPrice(price, currency) {
