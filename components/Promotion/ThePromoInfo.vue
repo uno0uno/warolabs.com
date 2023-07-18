@@ -24,7 +24,7 @@ const displayText = computed(() => {
     <button v-else class="text-sm md:text-lg text-left font-bold text-slate-900" @click="showFullText = false">- Ver menos</button>
   </div>
   <div class="flex flex-col mx-3">
-    <p class="text-slate-900 text-m" 
+    <p itemprop="description" class="text-slate-900 text-m" 
         v-for="(line, lineNumber) of displayText.split('\n')" 
         :key="lineNumber">
         {{ line }}<br/>
