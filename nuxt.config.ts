@@ -12,7 +12,7 @@ export default defineNuxtConfig({
         { name: 'lang', content: 'es-CO' },
       ],
       link: [
-        { rel: 'canonical', href: 'https://warocol.com/' },
+        { rel: 'canonical', href: 'https://warocol.com' },
       ]
     },
   },

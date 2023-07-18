@@ -17,7 +17,8 @@ const { name_product, night_club_info } = toRefs(props);
     <div class="flex flex-col gap-1 sm::gap-2">
         <div class="flex">
             <div class="flex items-center gap-2">
-                <p class="md:my-0 rounded border bg-slate-100 border-slate-900 px-0.5 text-slate-900 text-sm text-center">Producto certificado</p>
+                <p itemprop="availability"
+                class="md:my-0 rounded border bg-slate-100 border-slate-900 px-0.5 text-slate-900 text-sm text-center">Disponible</p>
             </div>
         </div>
         <h1 itemprop="name" class="text-2xl md:text-4xl font-extrabold text-slate-900">{{props.name_product}}</h1>

@@ -48,10 +48,11 @@
 
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
   
-  <div itemscope itemtype="http://schema.org/Offer"
+  <div itemscope itemtype="https://schema.org/Product"
     v-else v-for="promo in promoData" :key="promo.name"
     class="flex flex-col gap-2 mx-auto max-h-full font-principal">
-      <div class="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4 md:gap-10">
+      <div itemprop="offers" itemscope itemtype="https://schema.org/Offer"
+      class="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4 md:gap-10">
           <div class="md:col-span-6 lg:col-span-7 flex flex-col gap-4 md:gap-4">
                   <PromotionTheHeadPromo
                   v-bind:name_product="promo.name"
