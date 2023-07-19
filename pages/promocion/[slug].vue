@@ -32,12 +32,11 @@
   function formatPrice(price) {
   const roundedPrice = Math.floor(price);
   const formatter = new Intl.NumberFormat('es-CO', {
-    style: 'currency',
     currency: 'COP',
-    currencyDisplay: 'symbol',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
+
   return formatter.format(roundedPrice);
 }
 
@@ -67,6 +66,9 @@
                     <div class="flex  justify-between items-center">
                       <meta itemprop="priceCurrency" content="COP" />
                       <div class="flex justify-center">
+                            <p class="text-2xl md:text-3xl font-bold font-rubik text-slate-600">
+                              $
+                            </p>
                             <p itemprop="price"
                             class="text-2xl md:text-3xl font-bold font-rubik text-slate-600">
                               {{formatPrice(calculateTotalPrice(promo.price))}}
