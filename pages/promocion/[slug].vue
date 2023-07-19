@@ -108,8 +108,8 @@
 
       <Head>
         <Title>{{ promo.name }} | Waro Colombia 🤙🏼 </Title>
-        <Meta property="og:title" :content="promo.name" />
-        <Meta name="description" :content="promo.description" />
+        <Meta property="og:title" v-bind="{'content':`${promo.description} | Waro Colombia 🤙🏼`}" />
+        <Meta name="description" v-bind="{'content':`${promo.description}`}" />
         <Meta property="og:description" :content="promo.description" />
         <Meta property="og:image" v-bind="{'content':`https://warocolombia.infura-ipfs.io/ipfs/${promo.image}`}" />
         <Meta name="twitter:card" content="summary_large_image"/>

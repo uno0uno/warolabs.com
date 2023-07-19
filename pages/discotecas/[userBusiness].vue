@@ -13,9 +13,6 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
   }
 )
 
-
-
-
 </script>
 
 <template>
@@ -70,6 +67,15 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
         v-bind:opening_hours="nightClub.opening_hours"
       >
       </ProfileTheFaqs>
+
+      <Head>
+        <Title>{{ nightClub.name }} | Waro Colombia 🤙🏼 </Title>
+        <Meta property="og:title" v-bind="{'content':`${nightClub.name} | Waro Colombia 🤙🏼`}" />
+        <Meta name="description" v-bind="{'content':`${nightClub.how_party}`}" />
+        <Meta property="og:description" :content="nightClub.how_party" />
+        <Meta property="og:image" v-bind="{'content':`https://warocolombia.infura-ipfs.io/ipfs/${nightClub.logo_business}`}" />
+        <Meta name="twitter:card" content="summary_large_image"/>
+      </Head>
 
     </div>
 
