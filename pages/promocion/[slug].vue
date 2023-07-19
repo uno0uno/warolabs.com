@@ -29,14 +29,17 @@
     return value * counterAmountProduct.value;
   }
 
-  function formatPrice(price, currency) {
-    const formatter = new Intl.NumberFormat('es-CO', {
-      style: 'currency',
-      currency: 'COP',
-      currencyDisplay: 'symbol',
-    });
-    return formatter.format(price);
-  }
+  function formatPrice(price) {
+  const roundedPrice = Math.floor(price);
+  const formatter = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    currencyDisplay: 'symbol',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  return formatter.format(roundedPrice);
+}
 
 </script>
 
