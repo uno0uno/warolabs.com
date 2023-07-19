@@ -66,10 +66,11 @@
                     <div class="flex  justify-between items-center">
                       <meta itemprop="priceCurrency" content="COP" />
                       <div class="flex justify-center">
+                          <meta itemprop="price" :content="promo.price" />
                             <p class="text-2xl md:text-3xl font-bold font-rubik text-slate-600">
                               $
                             </p>
-                            <p itemprop="price"
+                            <p
                             class="text-2xl md:text-3xl font-bold font-rubik text-slate-600">
                               {{formatPrice(calculateTotalPrice(promo.price))}}
                             </p>
