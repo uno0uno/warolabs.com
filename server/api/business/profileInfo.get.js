@@ -10,7 +10,6 @@ export default defineEventHandler( async (event) => {
   .is('is_active', true)
   .is('promos_business.active', true)
 
-  
   if (error){
     return error
   }

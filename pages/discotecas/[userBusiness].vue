@@ -25,6 +25,8 @@ const { data: business, pending, refresh, execute, error } = await useAsyncData(
     </div>
 
     <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
+    <div v-else-if="business.length === 0">Not found</div>
+    <div v-else-if="business.code == '22P02'">Not found</div>
 
     <div v-else v-for="nightClub in business" :key="nightClub.name"
     class="flex flex-col gap-6" itemscope itemtype="https://schema.org/NightClub">

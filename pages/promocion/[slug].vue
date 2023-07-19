@@ -43,12 +43,12 @@
 </script>
 
 <template>
-
   <div v-if="pending">
     LOADING...
   </div>
-
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
+  <div v-else-if="promoData.length === 0">Not found</div>
+  <div v-else-if="promoData.code == '22P02'">Not found</div>
   
   <div itemscope itemtype="https://schema.org/Product"
     v-else v-for="promo in promoData" :key="promo.name"
@@ -105,6 +105,16 @@
                 >
                 </TheProductImage>
       </div>
+
+      <Head>
+        <Title>{{ promo.name }} | Waro Colombia 🤙🏼 </Title>
+        <Meta property="og:title" :content="promo.name" />
+        <Meta name="description" :content="promo.description" />
+        <Meta property="og:description" :content="promo.description" />
+        <Meta property="og:image" v-bind="{'content':`https://warocolombia.infura-ipfs.io/ipfs/${promo.image}`}" />
+        <Meta name="twitter:card" content="summary_large_image"/>
+      </Head>
+
   </div>
 
 </template>
