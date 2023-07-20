@@ -11,7 +11,9 @@
       </NuxtLink>
     </li>
     <li class="cursor-pointer">
-      <NuxtLink :to="{ path: `/discotecas/banana` }"> Business 101 </NuxtLink>
+      <NuxtLink :to="{ path: `/discotecas/banana-house` }">
+        Business 101
+      </NuxtLink>
     </li>
     <!-- <li class="cursor-pointer">
             <NuxtLink :to="{ name: 'combo'}">
