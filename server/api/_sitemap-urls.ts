@@ -2,7 +2,7 @@
 export default cachedEventHandler(
   async () => {
     const [discotecas] = await Promise.all([
-      $fetch('/api/business/discotecas'),
+      $fetch('/api/sitemaps/discotecas'),
     ]);
     return [...discotecas].map((p) => {
       return {
