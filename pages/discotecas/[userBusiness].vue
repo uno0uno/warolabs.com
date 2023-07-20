@@ -17,7 +17,6 @@ const {
 </script>
 
 <template>
-  <div>{{ business }}</div>
   <div v-if="pending">LOADING...</div>
 
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
