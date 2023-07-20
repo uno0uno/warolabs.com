@@ -1,9 +1,9 @@
 export default defineNuxtConfig({
   runtimeConfig: {
-		public: {
-			gtmContainerId: '',
-		},
-	},
+    public: {
+      gtmContainerId: '',
+    },
+  },
   app: {
     head: {
       meta: [
@@ -11,32 +11,29 @@ export default defineNuxtConfig({
         { name: 'charset', content: 'utf-8' },
         { name: 'lang', content: 'es-CO' },
       ],
-      link: [
-        { rel: 'canonical', href: 'https://warocol.com' },
-      ]
+      link: [{ rel: 'canonical', href: 'https://warocol.com' }],
     },
   },
-  buildModules: [
-    '@nuxtjs/google-fonts'
-  ],
+  buildModules: ['@nuxtjs/google-fonts'],
   modules: ['nuxt-simple-sitemap'],
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/', 'sitemap.xml']
+      routes: ['/', 'sitemap.xml'],
     },
   },
   site: {
     url: 'https://warocol.com',
   },
+  sitemap: {
+    xslTips: false,
+  },
   head: {
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-    ],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   googleFonts: {
     families: {
-      'Roboto+Slab': [100,200,300,400,500,600,700,800,900],
+      'Roboto+Slab': [100, 200, 300, 400, 500, 600, 700, 800, 900],
     },
   },
   devtools: { enabled: true },
@@ -47,4 +44,4 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-})
+});
