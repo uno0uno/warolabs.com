@@ -17,7 +17,8 @@ export default defineNuxtConfig({
     },
   },
   buildModules: [
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    'nuxt-simple-sitemap'
   ],
   modules: [],
   head: {
