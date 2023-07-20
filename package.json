@@ -15,7 +15,7 @@
     "@types/node": "^18",
     "autoprefixer": "^10.4.14",
     "nuxt": "^3.6.0",
-    "nuxt-simple-sitemap": "^3.0.12",
+    "nuxt-simple-sitemap": "^3.0.0",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.3.2",
     "typescript": "latest"

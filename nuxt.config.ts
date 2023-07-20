@@ -17,10 +17,18 @@ export default defineNuxtConfig({
     },
   },
   buildModules: [
-    '@nuxtjs/google-fonts',
-    'nuxt-simple-sitemap'
+    '@nuxtjs/google-fonts'
   ],
-  modules: [],
+  modules: ['nuxt-simple-sitemap'],
+  nitro: {
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', 'sitemap.xml']
+    },
+  },
+  site: {
+    url: 'https://warocol.com',
+  },
   head: {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
