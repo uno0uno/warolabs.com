@@ -5,7 +5,7 @@ export default defineEventHandler(async () => {
       $fetch('/api/business/discotecas')
     ])
     return [...discotecas].map((p) => {
-      return { loc: p.user_name }
+      return { loc: p.loc }
     })
   })
   
