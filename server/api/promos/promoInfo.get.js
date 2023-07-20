@@ -11,23 +11,25 @@ async function getSlug(value) {
 }
 
 export default defineEventHandler(async (event) => {
-
   const query = getQuery(event);
   const id = await getId(query.slug);
   const slug = await getSlug(query.slug);
-  const supabase = createClient(process.env.NUXT_SUPABASE_URL,process.env.NUXT_SUPABASE_ANON_KEY);
+  const supabase = createClient(
+    process.env.NUXT_SUPABASE_URL,
+    process.env.NUXT_SUPABASE_ANON_KEY
+  );
 
   try {
     const { data, error } = await supabase
       .from('promos_business')
       .select('*,night_clubs(city,address,currencies_accepted,country,name)')
-      .eq('id',id)
-      .eq('slug',slug);
+      .eq('id', id)
+      .eq('slug', slug);
 
     if (error) {
       return error;
     }
-    
+
     return data;
   } catch (error) {
     return error;

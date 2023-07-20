@@ -16,12 +16,6 @@ export default defineNuxtConfig({
   },
   buildModules: ['@nuxtjs/google-fonts'],
   modules: ['nuxt-simple-sitemap'],
-  nitro: {
-    prerender: {
-      crawlLinks: true,
-      routes: ['/', 'sitemap.xml'],
-    },
-  },
   site: {
     url: 'https://warocol.com',
   },

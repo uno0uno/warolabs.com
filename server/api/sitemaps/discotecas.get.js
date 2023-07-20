@@ -1,17 +1,22 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
 
-export default defineEventHandler( async (event) => {
-  const supabase = createClient( process.env.NUXT_SUPABASE_URL,process.env.NUXT_SUPABASE_ANON_KEY)
-  const { data, error } = await supabase
-  .from('night_clubs')
-  .select('user_name')
-  .is('is_active', true)
-
-  if (error){
-    return error
+export default defineEventHandler(async (event) => {
+  const supabase = createClient(
+    process.env.NUXT_SUPABASE_URL,
+    process.env.NUXT_SUPABASE_ANON_KEY
+  );
+  try {
+    const { data, error } = await supabase
+      .from('night_clubs')
+      .select('user_name')
+      .is('is_active', true);
+    if (error) {
+      return error;
+    }
+    if (data) {
+      return data;
+    }
+  } catch (error) {
+    return error;
   }
-  if(data){
-    return data
-  }
-
-})
+});
