@@ -24,8 +24,11 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: ['/api/**'],
-    allow: '*',
+    allow: ['/'],
     credits: false,
+    sitemap: [
+      '/sitemap.xml'
+    ],
   },
   head: {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
