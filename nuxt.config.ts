@@ -23,12 +23,8 @@ export default defineNuxtConfig({
     xslTips: false,
   },
   robots: {
-    disallow: ['/api/**'],
-    allow: ['/'],
+    disallow: ['/api/*'],
     credits: false,
-    sitemap: [
-      '/sitemap.xml'
-    ],
   },
   head: {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
