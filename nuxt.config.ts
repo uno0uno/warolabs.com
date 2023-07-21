@@ -15,12 +15,17 @@ export default defineNuxtConfig({
     },
   },
   buildModules: ['@nuxtjs/google-fonts'],
-  modules: ['nuxt-simple-sitemap'],
+  modules: ['nuxt-simple-sitemap', 'nuxt-simple-robots'],
   site: {
     url: 'https://warocol.com',
   },
   sitemap: {
     xslTips: false,
+  },
+  robots: {
+    disallow: ['/api/**'],
+    allow: '*',
+    credits: false,
   },
   head: {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
