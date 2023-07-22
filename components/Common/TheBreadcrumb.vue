@@ -15,6 +15,9 @@ async function openBusiness(path,slug) {
   await navigateTo({ path: `/${path}/${slug}`});
 }
 
+function displayText(value){
+    return value.slice(0, 9) + '...';
+}
 </script>
 
 <template>
@@ -72,7 +75,7 @@ async function openBusiness(path,slug) {
       </li>
 
       <li @click="openBusiness(path[1],path[2])" class="cursor-pointer">
-        {{path[2]}}
+        {{ displayText(path[2]) }}
       </li>
     </ol>
   </nav>
