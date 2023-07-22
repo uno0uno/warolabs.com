@@ -40,27 +40,19 @@
             "
           >
             <a
-              class="
-                inline-flex
-                justify-center
-                rounded-lg
-                text-sm
-                font-semibold
-                py-2
-                px-4
-                bg-slate-900
-                text-white
-                hover:bg-slate-700
-                cursor-pointer
-              "
+              class=" inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-slate-900 text-white hover:bg-slate-700 cursor-pointer"
             >
               <span>Registrarme </span>
             </a>
           </div>
           <div class="md:flex md:gap-1 hidden">
-            <LogosTheNewsletter class="block md:h-8 md:w-8" />
-            <LogosTheTikTok class="block md:h-8 md:w-8" />
-            <LogosTheTwitter class="block md:h-8 md:w-8" />
+            <LogosTheNewsletter class="block md:h-8 md:w-8 cursor-pointer" />
+            <a href="https://www.tiktok.com/@saifer101_" target="_blank">
+              <LogosTheTikTok class="block md:h-8 md:w-8 cursor-pointer" />
+            </a>
+            <a href="https://twitter.com/saifer101_" target="_blank">
+              <LogosTheTwitter class="block md:h-8 md:w-8 cursor-pointer" />
+            </a>
           </div>
 
           <button
@@ -111,7 +103,7 @@
               items-center
               gap-4
               sm:text-2xl
-              md:text-3xl
+              lg:text-3xl
               text-slate-900
               font-extrabold
             "
