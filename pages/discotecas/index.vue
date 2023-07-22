@@ -28,44 +28,47 @@ async function openLocalBusiness(slug) {
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
   <div v-else-if="discotecas.length === 0">Not found</div>
   <div v-else-if="discotecas.code == '22P02'">Not found</div>
-  <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 md:gap-4 gap-2 py-4">
-    <div v-for="discoteca in discotecas" :key="discoteca.name">
-      <div
-        @click="openLocalBusiness(discoteca.user_name)"
-        class="block rounded-lg shadow-sm shadow-indigo-100 cursor-pointer"
-      >
-        <img
-          itemprop="image"
-          class="md:rounded-xl rounded-xl object-cover w-full"
-          v-bind="{
-            src: `https://warocolombia.infura-ipfs.io/ipfs/${discoteca.logo_business}`,
-            alt: discoteca.logo_business,
-          }"
-        />
+  <div v-else class="flex flex-col gap-2">
+    <CommonTheBreadcrumb></CommonTheBreadcrumb>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 md:gap-4 gap-2 py-4">
+      <div v-for="discoteca in discotecas" :key="discoteca.name">
+        <div
+          @click="openLocalBusiness(discoteca.user_name)"
+          class="block rounded-lg shadow-sm shadow-indigo-100 cursor-pointer"
+        >
+          <img
+            itemprop="image"
+            class="md:rounded-xl rounded-xl object-cover w-full"
+            v-bind="{
+              src: `https://warocolombia.infura-ipfs.io/ipfs/${discoteca.logo_business}`,
+              alt: discoteca.logo_business,
+            }"
+          />
 
-        <div class="p-4">
-          <dl>
-            <div class="flex">
-              <dt class="sr-only">Price</dt>
-              <dd class="text-sm text-gray-500">
-                ${{ discoteca.min_price }} - ${{ discoteca.max_price }}
-              </dd>
-            </div>
+          <div class="p-4">
+            <dl>
+              <div class="flex">
+                <dt class="sr-only">Price</dt>
+                <dd class="text-sm text-gray-500">
+                  ${{ discoteca.min_price }} - ${{ discoteca.max_price }}
+                </dd>
+              </div>
 
-            <div>
-              <dt class="sr-only">Name</dt>
-              <dd class="font-medium text-m md:text-m">{{ discoteca.name }}</dd>
-            </div>
-            <div>
-              <dt class="sr-only">Address</dt>
-              <dd class="text-sm text-gray-500">
-                {{ displayTextStreet(discoteca.address) }} -
-                {{ discoteca.city }}
-              </dd>
-            </div>
-          </dl>
+              <div>
+                <dt class="sr-only">Name</dt>
+                <dd class="font-medium text-m md:text-m">{{ discoteca.name }}</dd>
+              </div>
+              <div>
+                <dt class="sr-only">Address</dt>
+                <dd class="text-sm text-gray-500">
+                  {{ displayTextStreet(discoteca.address) }} -
+                  {{ discoteca.city }}
+                </dd>
+              </div>
+            </dl>
 
-          <div class="mt-2 flex items-center gap-4 text-xs"></div>
+            <div class="mt-2 flex items-center gap-4 text-xs"></div>
+          </div>
         </div>
       </div>
     </div>
