@@ -57,10 +57,10 @@
               <span>Registrarme </span>
             </a>
           </div>
-          <div class="hidden sm:flex gap-1">
-            <LogosTheNewsletter class="md:h-8 md:w-8" />
-            <LogosTheTikTok class="md:h-8 md:w-8" />
-            <LogosTheTwitter class="md:h-8 md:w-8" />
+          <div class="md:flex md:gap-1 hidden">
+            <LogosTheNewsletter class="block md:h-8 md:w-8" />
+            <LogosTheTikTok class="block md:h-8 md:w-8" />
+            <LogosTheTwitter class="block md:h-8 md:w-8" />
           </div>
 
           <button
