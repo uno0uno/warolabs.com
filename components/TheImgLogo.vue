@@ -1,6 +1,6 @@
 <script setup></script>
 <template>
-  <div class="w-20 md:w-60">
+  <div class="w-28 md:w-52 lg:w-60">
     <img class="w-auto" src="/logos/warocol.logo.svg" alt="Logo-warocolombia" />
   </div>
 </template>
