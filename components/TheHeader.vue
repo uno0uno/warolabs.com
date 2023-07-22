@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <nav class="bg-white z-20 top-0">
+  <nav class="bg-white z-20 top-0 border-b pb-4">
     <div
       class="
         max-w-screen-xl
@@ -47,7 +47,7 @@
           </div>
           <div class="md:flex md:gap-1 hidden">
             <LogosTheNewsletter class="block md:h-8 md:w-8 cursor-pointer" />
-            <a href="https://www.tiktok.com/@saifer101_" target="_blank">
+            <a href="https://twitter.com/saifer101_?t=gmHIJIM6DvRPJmrHB49h4g&s=09" target="_blank">
               <LogosTheTikTok class="block md:h-8 md:w-8 cursor-pointer" />
             </a>
             <a href="https://twitter.com/saifer101_" target="_blank">

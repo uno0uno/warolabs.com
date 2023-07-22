@@ -17,6 +17,7 @@ const {
 </script>
 
 <template>
+
   <div v-if="pending">LOADING...</div>
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
   <div v-else-if="business.length === 0">Not found</div>
@@ -29,6 +30,7 @@ const {
     itemscope
     itemtype="https://schema.org/NightClub"
   >
+    <CommonTheBreadcrumb></CommonTheBreadcrumb>
     <TheBusinessHeader
       v-bind:logo_bussines="nightClub.logo_business"
       v-bind:name="nightClub.name"

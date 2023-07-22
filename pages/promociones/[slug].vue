@@ -57,6 +57,7 @@ function formatPrice(price) {
     :key="promo.name"
     class="flex flex-col gap-2 mx-auto max-h-full font-principal"
   >
+    <CommonTheBreadcrumb></CommonTheBreadcrumb>
     <div
       class="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4 md:gap-10"
     >
