@@ -2,7 +2,7 @@
 
 <template>
   <nav
-    class="flex justify-start gap-6 text-lg text-slate-600 font-normal"
+    class="flex justify-start items-center gap-2 text-lg text-slate-600 font-bold"
     style="list-style: none"
   >
     <li class="cursor-pointer">
@@ -10,11 +10,8 @@
         <theImgLogo />
       </NuxtLink>
     </li>
-    <li class="cursor-pointer">
-      <NuxtLink :to="{ path: `/discotecas/banana-house` }">
-        Business 101
-      </NuxtLink>
-    </li>
+
+    <CommonTheBreadcrumb> </CommonTheBreadcrumb>
     <!-- <li class="cursor-pointer">
             <NuxtLink :to="{ name: 'combo'}">
                 Explorar

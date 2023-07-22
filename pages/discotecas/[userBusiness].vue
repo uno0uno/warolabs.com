@@ -18,11 +18,9 @@ const {
 
 <template>
   <div v-if="pending">LOADING...</div>
-
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
   <div v-else-if="business.length === 0">Not found</div>
   <div v-else-if="business.code == '22P02'">Not found</div>
-
   <div
     v-else
     v-for="nightClub in business"
