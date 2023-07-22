@@ -9,8 +9,9 @@ export default defineEventHandler(async (event) => {
   try {
     const { data, error } = await supabase
       .from(query.category)
-      .select('name,address,city,country,user_name,logo_business')
+      .select('name,address,city,country,user_name,logo_business,min_price,max_price,category_tags')
       .is('is_active', true);
+
     if (error) {
       return error;
     }

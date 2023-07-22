@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   );
   try {
     const { data, error } = await supabase
-      .from('night_clubs')
+      .from('discotecas')
       .select('user_name')
       .is('is_active', true);
     if (error) {

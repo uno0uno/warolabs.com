@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
   try {
     const { data, error } = await supabase
       .from('promos_business')
-      .select('*,night_clubs(city,address,currencies_accepted,country,name)')
+      .select('*,discotecas(city,address,currencies_accepted,country,name)')
       .eq('id', id)
       .eq('slug', slug);
 

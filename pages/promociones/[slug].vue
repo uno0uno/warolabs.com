@@ -64,7 +64,7 @@ function formatPrice(price) {
       <div class="md:col-span-6 lg:col-span-7 flex flex-col gap-4 md:gap-4">
         <PromotionTheHeadPromo
           v-bind:name_product="promo.name"
-          v-bind:night_club_info="promo.night_clubs"
+          v-bind:discoteca_info="promo.discotecas"
         >
         </PromotionTheHeadPromo>
         <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">

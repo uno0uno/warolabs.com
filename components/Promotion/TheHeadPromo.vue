@@ -6,10 +6,10 @@ import { BuildingStorefrontIcon } from '@heroicons/vue/24/solid';
 
 const props = defineProps({ 
     name_product: {type: String},  
-    night_club_info: {type: Object}
+    discoteca_info: {type: Object}
     });
 
-const { name_product, night_club_info } = toRefs(props);
+const { name_product, discoteca_info } = toRefs(props);
 
 </script>
 
@@ -23,9 +23,9 @@ const { name_product, night_club_info } = toRefs(props);
         <h1 itemprop="name" class="text-2xl md:text-4xl font-extrabold text-slate-900">{{props.name_product}}</h1>
 
         <ProfileTheAddress
-        v-bind:address="night_club_info.address"
-        v-bind:city="night_club_info.city"
-        v-bind:country="night_club_info.country"
+        v-bind:address="discoteca_info.address"
+        v-bind:city="discoteca_info.city"
+        v-bind:country="discoteca_info.country"
         >
       </ProfileTheAddress>
 
@@ -35,7 +35,7 @@ const { name_product, night_club_info } = toRefs(props);
               <p class=" px-1 text-slate-900 text-m md:text-lg">Vendedor:</p>
               <span itemprop="seller" itemscope itemtype="http://schema.org/Organization">
                 <p itemprop="name"
-                class=" px-1 text-slate-900 text-m md:text-lg">{{night_club_info.name}}</p>
+                class=" px-1 text-slate-900 text-m md:text-lg">{{discoteca_info.name}}</p>
                 </span>
           </div>
       </div>

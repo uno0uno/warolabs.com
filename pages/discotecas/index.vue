@@ -1,46 +1,73 @@
 <script setup>
 
-const { data: business, pending, refresh, execute, error } = await useAsyncData(
-  'profile-info', 
-  () => {
-    try {
-      return $fetch(`/api/business/allBusiness?user_name=101`)
-    } catch (error) {
-      return error;
-    }
+const {
+  data: discotecas,
+  pending,
+  refresh,
+  execute,
+  error,
+} = await useAsyncData('profile-info', () => {
+  try {
+    return $fetch(`/api/business/allBusiness?category=discotecas`);
+  } catch (error) {
+    return error;
   }
-)
+});
+
+function displayTextStreet(value) {
+  return value.slice(0, 9) + '...';
+}
+
+async function openLocalBusiness(slug) {
+  await navigateTo({ path: `/discotecas/${slug}` });
+}
 </script>
 
-
 <template>
-    <div v-if="pending">
-        LOADING...
-    </div>
+  <div v-if="pending">LOADING...</div>
+  <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
+  <div v-else-if="discotecas.length === 0">Not found</div>
+  <div v-else-if="discotecas.code == '22P02'">Not found</div>
+  <div v-else class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 md:gap-4 gap-2 py-4">
+    <div v-for="discoteca in discotecas" :key="discoteca.name">
+      <div
+        @click="openLocalBusiness(discoteca.user_name)"
+        class="block rounded-lg shadow-sm shadow-indigo-100 cursor-pointer"
+      >
+        <img
+          itemprop="image"
+          class="md:rounded-xl rounded-xl object-cover w-full"
+          v-bind="{
+            src: `https://warocolombia.infura-ipfs.io/ipfs/${discoteca.logo_business}`,
+            alt: discoteca.logo_business,
+          }"
+        />
 
-    <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
+        <div class="p-4">
+          <dl>
+            <div class="flex">
+              <dt class="sr-only">Price</dt>
+              <dd class="text-sm text-gray-500">
+                ${{ discoteca.min_price }} - ${{ discoteca.max_price }}
+              </dd>
+            </div>
 
-    <div>
-        <div v-for="nightClub in business" :key="nightClub.name">
-          <h2>{{ nightClub.name }}</h2>
-          <p>{{ nightClub.address }}</p>
-          <p>{{ nightClub.description }}</p>
-          
-          <h3>Combos:</h3>
-          <div v-for="combo in nightClub.id_business" :key="combo.id_combo">
-            <h4>{{ combo.name }}</h4>
-            <p>{{ combo.description }}</p>
-          </div>
-          
-          <h3>Horarios de apertura:</h3>
-          <ul>
-            <li v-for="(openingHours, day) in nightClub.opening_hours" :key="day">
-              {{ day }}: {{ openingHours.opening_time }} - {{ openingHours.closing_time }}
-            </li>
-          </ul>
-          
-          <hr />
+            <div>
+              <dt class="sr-only">Name</dt>
+              <dd class="font-medium text-m md:text-m">{{ discoteca.name }}</dd>
+            </div>
+            <div>
+              <dt class="sr-only">Address</dt>
+              <dd class="text-sm text-gray-500">
+                {{ displayTextStreet(discoteca.address) }} -
+                {{ discoteca.city }}
+              </dd>
+            </div>
+          </dl>
+
+          <div class="mt-2 flex items-center gap-4 text-xs"></div>
         </div>
+      </div>
     </div>
-
+  </div>
 </template>

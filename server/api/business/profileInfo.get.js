@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   );
   try {
     const { data, error } = await supabase
-      .from('night_clubs')
+      .from('discotecas')
       .select('*,promos_business(id,name,description,slug),opening_hours(*)')
       .eq('user_name', query.user_name)
       .is('is_active', true)

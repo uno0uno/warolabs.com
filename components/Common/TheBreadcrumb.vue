@@ -5,16 +5,19 @@ const path = ref();
 
 watchEffect(() => {
   path.value = route.path.split('/');
-  console.log(path.value[1] == '');
 });
+
+async function openBusiness(path) {
+  await navigateTo({ path: `/${path}` });
+}
+
 
 </script>
 
 <template>
   <nav v-if="path[1] !== ''" aria-label="Breadcrumb">
     <ol class="flex items-center gap-1 text-sm text-gray-600">
-    <li>
-    <NuxtLink :to="{ path: '/' }">
+    <li @click="openBusiness(path[0])" class="cursor-pointer" >
         <span class="sr-only"> Home </span>
 
         <svg
@@ -31,7 +34,6 @@ watchEffect(() => {
             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
           />
         </svg>
-      </NuxtLink>
     </li>
       <li class="rtl:rotate-180">
         <svg
@@ -48,10 +50,8 @@ watchEffect(() => {
         </svg>
       </li>
 
-      <li>
-      <NuxtLink :to="{ path: path[1] }">
+      <li @click="openBusiness(path[1])" class="cursor-pointer">
         {{path[1]}}
-      </NuxtLink>
       </li>
     </ol>
   </nav>
