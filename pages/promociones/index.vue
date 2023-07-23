@@ -71,7 +71,7 @@ async function openPromo(slug,id) {
         </div>
       </div>
     </div>
-
+    
     <Head>
       <Title>Descuentos discotecas en Bogotá | Waro Colombia</Title>
       <Meta

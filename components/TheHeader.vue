@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <nav class="bg-white z-20 top-0 border-b pb-4">
+  <nav class="bg-white z-20 top-0 border-b-2 pb-4">
     <div
       class="
         max-w-screen-xl

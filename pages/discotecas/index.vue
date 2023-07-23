@@ -72,6 +72,7 @@ async function openLocalBusiness(slug) {
         </div>
       </div>
     </div>
+
     <Head>
       <Title>Discotecas en Bogotá | Waro Colombia</Title>
       <Meta
