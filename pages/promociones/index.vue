@@ -18,6 +18,10 @@ async function openPromo(slug,id) {
   await navigateTo({ path: `/promociones/${slug}-PROM${id}` });
 }
 
+function displayText(value) {
+  return value.slice(0, 16) + '..';
+}
+
 </script>
 
 <template>
@@ -56,7 +60,7 @@ async function openPromo(slug,id) {
 
               <div>
                 <dt class="sr-only">Name Promotion</dt>
-                <dd class="font-medium text-m md:text-m">{{ promo.name }}</dd>
+                <dd class="font-medium text-m md:text-m">{{ displayText(promo.name) }}</dd>
               </div>
               <div>
                 <dt class="sr-only">Seller</dt>

@@ -21,6 +21,11 @@ function displayTextStreet(value) {
 async function openLocalBusiness(slug) {
   await navigateTo({ path: `/discotecas/${slug}` });
 }
+
+function displayText(value) {
+  return value.slice(0, 16) + '..';
+}
+
 </script>
 
 <template>
@@ -56,7 +61,7 @@ async function openLocalBusiness(slug) {
 
               <div>
                 <dt class="sr-only">Name</dt>
-                <dd class="font-medium text-m md:text-m">{{ discoteca.name }}</dd>
+                <dd class="font-medium text-m md:text-m">{{ displayText(discoteca.name) }}</dd>
               </div>
               <div>
                 <dt class="sr-only">Address</dt>
