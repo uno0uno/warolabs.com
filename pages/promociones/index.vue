@@ -6,7 +6,7 @@ const {
   refresh,
   execute,
   error,
-} = await useAsyncData('profile-info', () => {
+} = await useAsyncData('promotions', () => {
   try {
     return $fetch(`/api/promos/allPromos`);
   } catch (error) {

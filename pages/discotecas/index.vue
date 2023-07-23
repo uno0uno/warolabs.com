@@ -6,7 +6,7 @@ const {
   refresh,
   execute,
   error,
-} = await useAsyncData('profile-info', () => {
+} = await useAsyncData('discotecas', () => {
   try {
     return $fetch(`/api/business/allBusiness?category=discotecas`);
   } catch (error) {
