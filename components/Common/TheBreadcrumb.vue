@@ -22,7 +22,7 @@ async function openCategory(path) {
 
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
+          class="h-4 w-4 sm:h-6 sm:w-6"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -38,7 +38,7 @@ async function openCategory(path) {
       <li class="rtl:rotate-180">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
+          class="h-4 w-4 sm:h-6 sm:w-6"
           viewBox="0 0 20 20"
           fill="currentColor"
         >
@@ -50,7 +50,7 @@ async function openCategory(path) {
         </svg>
       </li>
 
-      <li @click="openCategory(path[1])" class="cursor-pointer">
+      <li @click="openCategory(path[1])" class="cursor-pointer text-slate-900 text-m md:text-lg">
         {{path[1]}}
       </li>
       
