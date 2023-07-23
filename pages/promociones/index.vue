@@ -34,18 +34,18 @@ async function openPromo(slug,id) {
       <div v-for="promo in promos" :key="promo.name">
         <div
           @click="openPromo(promo.slug,promo.id)"
-          class="block rounded-lg shadow-sm shadow-indigo-100 cursor-pointer"
+          class="block rounded-lg shadow-sm bg-slate-100 border-2 cursor-pointer"
         >
           <img
             itemprop="image"
-            class="md:rounded-xl rounded-xl object-cover w-full"
+            class="md:rounded-t-lg rounded-t-lg object-cover w-full"
             v-bind="{
               src: `https://warocolombia.infura-ipfs.io/ipfs/${promo.image}`,
               alt: promo.name,
             }"
           />
 
-          <div class="p-4">
+          <div class="p-2">
             <dl>
               <div class="flex">
                 <dt class="sr-only">Price</dt>

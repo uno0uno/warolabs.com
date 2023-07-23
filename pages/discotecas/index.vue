@@ -34,18 +34,18 @@ async function openLocalBusiness(slug) {
       <div v-for="discoteca in discotecas" :key="discoteca.name">
         <div
           @click="openLocalBusiness(discoteca.user_name)"
-          class="block rounded-lg shadow-sm shadow-indigo-100 cursor-pointer"
+          class="block rounded-lg shadow-sm bg-slate-100 border-2 cursor-pointer"
         >
           <img
             itemprop="image"
-            class="md:rounded-xl rounded-xl object-cover w-full"
+            class="md:rounded-t-lg rounded-t-lg object-cover w-full"
             v-bind="{
               src: `https://warocolombia.infura-ipfs.io/ipfs/${discoteca.logo_business}`,
               alt: discoteca.logo_business,
             }"
           />
 
-          <div class="p-4">
+          <div class="p-2">
             <dl>
               <div class="flex">
                 <dt class="sr-only">Price</dt>
