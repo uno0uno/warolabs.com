@@ -152,7 +152,7 @@ function formatPrice(price) {
       <Title>{{ promo.name }} | Waro Colombia </Title>
       <Meta
         property="og:title"
-        v-bind="{ content: `${promo.description} | Waro Colombia` }"
+        v-bind="{ content: `${promo.name} | Waro Colombia` }"
       />
       <Meta name="description" v-bind="{ content: `${promo.description}` }" />
       <Meta property="og:description" :content="promo.description" />
