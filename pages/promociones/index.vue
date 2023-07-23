@@ -71,6 +71,23 @@ async function openPromo(slug,id) {
         </div>
       </div>
     </div>
+
+    <Head>
+      <Title>Descuentos discotecas en Bogotá | Waro Colombia</Title>
+      <Meta
+        property="og:title"
+        v-bind="{ content: `Descuentos discotecas en Bogotá | Waro Colombia` }"
+      />
+      <Meta name="description" v-bind="{ content: `Descubre los mejores descuentos en discotecas de Bogotá. ¡Conoce más!` }" />
+      <Meta property="og:description" v-bind="{ content: `Descubre los mejores descuentos en discotecas de Bogotá. ¡Conoce más!` }" />
+      <Meta
+        property="og:image"
+        v-bind="{
+          content: `https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`,
+        }"
+      />
+      <Meta name="twitter:card" content="summary_large_image" />
+    </Head>
   </div>
 </template>
 

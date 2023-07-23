@@ -72,5 +72,21 @@ async function openLocalBusiness(slug) {
         </div>
       </div>
     </div>
+    <Head>
+      <Title>Discotecas en Bogotá | Waro Colombia</Title>
+      <Meta
+        property="og:title"
+        v-bind="{ content: `Discotecas en Bogotá | Waro Colombia` }"
+      />
+      <Meta name="description" v-bind="{ content: `Descubre las mejores discotecas de Bogotá con promociones y ofertas increíbles. ¡Conoce más!` }" />
+      <Meta property="og:description" v-bind="{ content: `Descubre las mejores discotecas de Bogotá con promociones y ofertas increíbles. ¡Conoce más!` }" />
+      <Meta
+        property="og:image"
+        v-bind="{
+          content: `https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`,
+        }"
+      />
+      <Meta name="twitter:card" content="summary_large_image" />
+    </Head>
   </div>
 </template>
