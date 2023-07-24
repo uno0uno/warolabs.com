@@ -39,14 +39,13 @@
               sm:flex-row sm:space-x-4 sm:space-y-0
             "
           >
-            <a
+            <NuxtLink :to="{ path: '/landing' }"
               class=" inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-slate-900 text-white hover:bg-slate-700 cursor-pointer"
             >
               <span>Registrarme </span>
-            </a>
+            </NuxtLink>
           </div>
           <div class="md:flex md:gap-1 hidden">
-            <LogosTheNewsletter class="block md:h-8 md:w-8 cursor-pointer" />
             <a href="https://twitter.com/saifer101_?t=gmHIJIM6DvRPJmrHB49h4g&s=09" target="_blank">
               <LogosTheTikTok class="block md:h-8 md:w-8 cursor-pointer" />
             </a>
