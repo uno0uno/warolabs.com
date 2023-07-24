@@ -50,7 +50,7 @@
               <LogosTheTikTok class="block md:h-8 md:w-8 cursor-pointer" />
             </a>
             <a href="https://twitter.com/saifer101_" target="_blank">
-              <LogosTheTwitter class="block md:h-8 md:w-8 cursor-pointer" />
+              <LogosTheX class="block md:h-9 md:w-9 cursor-pointer" />
             </a>
           </div>
 
