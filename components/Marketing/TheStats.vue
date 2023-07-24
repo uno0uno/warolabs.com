@@ -32,7 +32,7 @@
               Total Sales
             </dt>
 
-            <dd class="text-3xl font-extrabold text-slate-900 md:text-5xl">
+            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
               $4.8
             </dd>
           </div>
@@ -43,7 +43,7 @@
               Total Sales
             </dt>
 
-            <dd class="text-3xl font-extrabold text-slate-900 md:text-5xl">
+            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
               $4.8
             </dd>
           </div>
@@ -54,7 +54,7 @@
               Total Sales
             </dt>
 
-            <dd class="text-3xl font-extrabold text-slate-900 md:text-5xl">
+            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
               $4.8
             </dd>
           </div>
@@ -65,7 +65,7 @@
               Total Sales
             </dt>
 
-            <dd class="text-3xl font-extrabold text-slate-900 md:text-5xl">
+            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
               $4.8
             </dd>
           </div>

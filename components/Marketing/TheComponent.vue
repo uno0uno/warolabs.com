@@ -10,7 +10,7 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div class=" relative flex flex-col items-center p-6 gap-2 rounded-lg bg-slate-50"> 
             <div class="p-4 bg-slate-900 rounded-lg">
               <LogosTheBitcoin class="h-6 w-6 md:h-6 md:w-6 text-white"/>

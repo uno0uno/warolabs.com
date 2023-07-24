@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col gap-24 py-12">
+  <div class="flex flex-col gap-14 sm:gap-24 py-6 sm:py-12">
     
     <MarketingTheBannerTwoGrid></MarketingTheBannerTwoGrid>
     <MarketingTheTestimonial></MarketingTheTestimonial>
