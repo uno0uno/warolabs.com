@@ -31,8 +31,8 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      'Roboto+Slab': [100, 200, 300, 400, 500, 600, 700, 800, 900],
-    },
+      Lato: true
+    }
   },
   devtools: { enabled: true },
   css: ['~/assets/css/main.scss'],

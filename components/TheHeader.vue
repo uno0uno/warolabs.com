@@ -9,6 +9,7 @@
         items-center
         justify-between
         mx-auto
+        font-principal
       "
     >
       <div

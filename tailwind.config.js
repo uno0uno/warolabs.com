@@ -9,10 +9,8 @@ module.exports = {
     "./app.vue",
   ],
   theme: {
-    extend: {
-      fontFamily: {
-        principal: ['Roboto Slab', 'sans-serif'],
-      },
+    fontFamily: {
+      principal: ['Lato']
     },
   },
   plugins: [

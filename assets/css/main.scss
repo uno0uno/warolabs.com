@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.article-style {
+  @apply prose sm:prose-2xl prose-img:rounded-lg text-left leading-normal prose-h2:mt-6 sm:prose-h2:mt-16 prose-headings:text-slate-900 prose-p:text-slate-600
+}
