@@ -1,13 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-function getClubsWithKey(clubs) {
-  const clubsWithKey = clubs.map((club) => ({
-    slugId: `/discotecas/${club.user_name}`
+function getArticlesWithKey(articles) {
+  const articlesWithKey = articles.map((article) => ({
+    slugId: `/articulos/${article.slug}-PUB${article.id}`
   }));
 
-  return clubsWithKey;
+  return articlesWithKey;
 }
-
 export default defineEventHandler(async (event) => {
   const supabase = createClient(
     process.env.NUXT_SUPABASE_URL,
@@ -15,15 +14,16 @@ export default defineEventHandler(async (event) => {
   );
   try {
     const { data, error } = await supabase
-      .from('discotecas')
-      .select('user_name')
+      .from('articles')
+      .select('slug,id')
+      .is('published', true)
       .is('is_active', true);
     if (error) {
       return error;
     }
     if (data) {
-      const clubsWithKey = getClubsWithKey(data);
-      return clubsWithKey;
+      const articlesWithKey = getArticlesWithKey(data);
+      return articlesWithKey;
     }
   } catch (error) {
     return error;

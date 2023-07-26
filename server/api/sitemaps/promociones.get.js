@@ -1,11 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
-function getClubsWithKey(clubs) {
-  const clubsWithKey = clubs.map((club) => ({
-    slugId: `/discotecas/${club.user_name}`
+function getPromosWithKey(promos) {
+  const promosWithKey = promos.map((promo) => ({
+    slugId: `/promociones/${promo.slug}-PROM${promo.id}`
   }));
 
-  return clubsWithKey;
+  return promosWithKey;
 }
 
 export default defineEventHandler(async (event) => {
@@ -15,15 +15,16 @@ export default defineEventHandler(async (event) => {
   );
   try {
     const { data, error } = await supabase
-      .from('discotecas')
-      .select('user_name')
-      .is('is_active', true);
+      .from('promos_business')
+      .select('slug,id')
+      .is('active', true);
+
     if (error) {
       return error;
     }
     if (data) {
-      const clubsWithKey = getClubsWithKey(data);
-      return clubsWithKey;
+      const promosWithKey = getPromosWithKey(data);
+      return promosWithKey;
     }
   } catch (error) {
     return error;

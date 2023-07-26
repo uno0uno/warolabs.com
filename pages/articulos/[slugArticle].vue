@@ -2,6 +2,7 @@
 import MarkdownIt from 'markdown-it';
 const md = new MarkdownIt();
 const renderedMarkdown = ref('');
+const { slugArticle } = useRoute().params;
 
 const {
   data: articles,
@@ -11,13 +12,15 @@ const {
   error,
 } = await useAsyncData('article-content', () => {
   try {
-    return $fetch(`/api/articles/articleContent`);
+    return $fetch(`/api/articles/articleContent?slug=${slugArticle}`);
   } catch (error) {
     return error;
   }
 });
 
 </script>
+
+
 
 <template>
   <div v-if="pending">LOADING...</div>
@@ -47,7 +50,7 @@ const {
               {{article.creator.full_name}}
             </p>
             <p class="text-sm sm:text-normal w-2/3">
-              Puplicado: {{article.created_at}}
+              Publicadó: {{article.created_at}}
             </p>
           </div>
     </div >

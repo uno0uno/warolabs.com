@@ -1,9 +1,13 @@
 //server/api/_sitemap-urls.ts
 export default defineEventHandler(async () => {
-  const [discotecas] = await Promise.all([$fetch('/api/sitemaps/discotecas')]);
-  return [...discotecas].map((p) => {
+  const [discotecas,articulos,promociones] = await Promise.all([
+    $fetch('/api/sitemaps/discotecas'),
+    $fetch('/api/sitemaps/articulos'),
+    $fetch('/api/sitemaps/promociones'),
+  ]);
+  return [...discotecas,...articulos,...promociones].map((p) => {
     return {
-      loc: `/discotecas/${p.user_name}`,
+      loc: p.slugId,
       changefreq: 'daily',
       priority: 0.8,
     };
