@@ -20,7 +20,12 @@ const {
 </script>
 
 <template>
+  <div v-if="pending">LOADING...</div>
+  <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
+  <div v-else-if="articles.length === 0">Not found</div>
+  <div v-else-if="articles.code == '22P02'">Not found</div>
   <div
+  v-else
     v-for="article in articles"
     :key="article.slug"
     class="flex flex-col gap-6 sm:gap-12 justify-center font-principal pb-12"
@@ -32,19 +37,39 @@ const {
   </div>
 
 
-
-  <div class="not-prose flex gap-4 items-start sm:px-10">
-        <img itemprop="image"
-        class="rounded-lg object-cover w-20"
-        v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator.profile_pic}`, 'alt':article.slug}">
-        <div class="flex flex-col gap-0">
-          <p class="text-normal">Puplicado: {{article.created_at}}</p>
-          <p class="text-normal font-bold">{{article.creator.full_name}}</p>
-        </div>
-
+<div class="not-prose flex flex-col sm:flex-row gap-1 items-start">
+    <div class="not-prose flex gap-4 items-start sm:px-10">
+          <img itemprop="image"
+          class="rounded-lg object-cover w-20"
+          v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator.profile_pic}`, 'alt':article.slug}">
+          <div class="flex flex-col w-auto">
+            <p class="text-normal sm:text-lg font-bold w-full">
+              {{article.creator.full_name}}
+            </p>
+            <p class="text-sm sm:text-normal w-2/3">
+              Puplicado: {{article.created_at}}
+            </p>
+          </div>
+    </div >
+    <div class="flex gap-0 sm:gap-4 sm:px-10">
+      <div class="flex gap-2 items-center cursor-pointer hover:bg-slate-100 p-2 hover:rounded-lg">
+        <LogosTheExplodingHead class="h-6 w-6 sm:h-8 sm:w-8"/>
+        <p class="text-xl">10</p>
+      </div>
+      <div class="flex gap-2 items-center cursor-pointer hover:bg-slate-100 p-2 hover:rounded-lg">
+        <LogosTheShakaHand class="h-6 w-6 sm:h-8 sm:w-8"/>
+        <p class="text-xl">10</p>
+      </div>
+      
+      <div class="flex gap-2 items-center cursor-pointer hover:bg-slate-100 p-2 hover:rounded-lg">
+        <LogosThefire class="h-6 w-6 sm:h-8 sm:w-8"/>
+        <p class="text-xl">10</p>
+      </div>
+      
+    </div>
   </div>
 
-  <article class="article-style sm:px-10 sm:pt-6">
+  <article class="article-style sm:px-10">
           <div v-html="md.render(article.content)"></div>
   </article>
   
