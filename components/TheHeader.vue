@@ -107,13 +107,17 @@
               text-slate-900
               font-extrabold
             "
-          >
+          > 
+            <li>
+              <NuxtLink :to="{ path: '/articulos' }"> Opinion </NuxtLink>
+            </li>
             <li>
               <NuxtLink :to="{ path: '/discotecas' }"> Discotecas </NuxtLink>
             </li>
             <li>
               <NuxtLink :to="{ path: '/promociones' }"> Promociones </NuxtLink>
             </li>
+
           </ul>
         </div>
       </div>
