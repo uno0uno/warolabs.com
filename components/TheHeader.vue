@@ -29,18 +29,19 @@
         </div>
       </div>
       <div class="flex flex-col sm:gap-2 gap-1">
-        <div class="flex items-center justify-end gap-2">
+        <div class="flex items-center sm:justify-end gap-2">
           <div
             class="
               flex flex-col
-              w-full
-              sm:w-auto
+              sm:w-full
+              justify-end
+              w-auto
               space-y-2
               sm:flex-row sm:space-x-4 sm:space-y-0
             "
           >
             <NuxtLink :to="{ path: '/landing' }"
-              class=" inline-flex justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-slate-900 text-white hover:bg-slate-700 cursor-pointer"
+              class="flex justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-slate-900 text-white hover:bg-slate-700 cursor-pointer"
             >
               <span>Registrarme </span>
             </NuxtLink>
@@ -61,7 +62,7 @@
           <ul
             class="
               flex
-              justify-start
+              sm:justify-start
               items-center
               gap-4
               sm:text-2xl
