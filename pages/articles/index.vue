@@ -44,7 +44,7 @@ const {
 
           </div>
 
-          <div class="pt-16" v-html="md.render(article.content)"></div>
+          <div class="pt-6 sm:pt-16" v-html="md.render(article.content)"></div>
   </article>
 </div>
 </template>
