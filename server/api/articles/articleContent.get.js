@@ -8,7 +8,7 @@ export default defineEventHandler(async () => {
   try {
     const { data, error } = await supabase
       .from('articles')
-      .select('*')
+      .select('*,creator(*)')
 
     if (error) {
       return error;
