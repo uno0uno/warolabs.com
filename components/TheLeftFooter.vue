@@ -10,12 +10,11 @@ function openSocialLink(value) {
 </script>
 
 <template>
-  <div class="flex flex-col gap-3 items-center sm:items-start">
-    <img src="/logos/warocol.logo.svg" alt="Logo-warocolombia" class="w-36" />
+  <div class="flex flex-col gap-3 items-start">
+    <img src="/logos/warocol.logo.svg" alt="Logo-warocolombia" class="w-28 md:w-36" />
     <p
       class="
-        text-sm text-center
-        sm:text-left
+        text-left
         text-normal text-slate-900
         md:w-2/3
         lg:w-2/4

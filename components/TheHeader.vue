@@ -47,7 +47,7 @@
             </NuxtLink>
           </div>
           <div class="flex gap-1">
-            <a href="https://twitter.com/saifer101_?t=gmHIJIM6DvRPJmrHB49h4g&s=09" target="_blank">
+            <a href="https://www.tiktok.com/@saifer101_" target="_blank">
               <LogosTheTikTok class=" h-8 w-8 cursor-pointer" />
             </a>
             <a href="https://twitter.com/saifer101_" target="_blank">
