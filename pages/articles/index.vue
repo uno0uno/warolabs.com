@@ -33,18 +33,37 @@ const {
 
 
 
-          <div class="not-prose flex gap-4 items-start sm:px-10">
-                <img itemprop="image"
-                class="rounded-lg object-cover w-20"
-                v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator.profile_pic}`, 'alt':article.slug}">
-                <div class="flex flex-col gap-0">
-                  <p class="text-normal">Puplicado: {{article.created_at}}</p>
-                  <p class="text-normal font-bold">{{article.creator.full_name}}</p>
-                </div>
+  <div class="not-prose flex gap-4 items-start sm:px-10">
+        <img itemprop="image"
+        class="rounded-lg object-cover w-20"
+        v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator.profile_pic}`, 'alt':article.slug}">
+        <div class="flex flex-col gap-0">
+          <p class="text-normal">Puplicado: {{article.created_at}}</p>
+          <p class="text-normal font-bold">{{article.creator.full_name}}</p>
+        </div>
 
-          </div>
+  </div>
+
   <article class="article-style sm:px-10 sm:pt-6">
           <div v-html="md.render(article.content)"></div>
   </article>
+  
+  <Head>
+      <Title>{{ article.title }} | Waro Colombia </Title>
+      <Meta
+        property="og:title"
+        v-bind="{ content: `${article.title} | Waro Colombia` }"
+      />
+      <Meta name="description" v-bind="{ content: `${article.description_seo}` }" />
+      <Meta property="og:description" :content="article.description_seo" />
+      <Meta
+        property="og:image"
+        v-bind="{
+          content: `https://warocolombia.infura-ipfs.io/ipfs/${article.cover}`,
+        }"
+      />
+      <Meta name="twitter:card" content="summary_large_image" />
+  </Head>
+
 </div>
 </template>
