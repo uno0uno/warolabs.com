@@ -5,7 +5,7 @@
     <div
       class="
         flex flex-col sm:flex-row
-        items-center
+        sm:items-center
         justify-between
         mx-auto
         gap-2
