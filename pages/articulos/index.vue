@@ -49,10 +49,10 @@ async function openArticle(slug,id) {
           />
         </div>
           <div class="px-2 sm:px-4 col-span-2">
-            <dl class="flex flex-col gap-0.5">
+            <dl class="flex flex-col justify-center gap-0.5">
               <div>
                 <dt class="sr-only">Name</dt>
-                <dd class="font-normal text-sm sm:text-normal md:text-lg">{{ article.title }}</dd>
+                <h2 class="font-normal text-sm sm:text-normal md:text-lg">{{ article.title }}</h2>
               </div>
             </dl>
           </div>

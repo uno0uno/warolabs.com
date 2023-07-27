@@ -19,7 +19,7 @@ async function openPromo(slug,id) {
 }
 
 function displayText(value) {
-  return value.slice(0, 16) + '..';
+  return value.slice(0, 14) + '..';
 }
 
 </script>
@@ -34,7 +34,7 @@ function displayText(value) {
 
     <CommonTheBreadcrumb></CommonTheBreadcrumb>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 md:gap-4 gap-2 py-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-4 gap-2 py-4">
       <div v-for="promo in promos" :key="promo.name">
         <div
           @click="openPromo(promo.slug,promo.id)"
