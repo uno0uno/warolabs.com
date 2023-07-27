@@ -9,7 +9,9 @@ export default defineEventHandler(async (event) => {
     const { data, error } = await supabase
       .from('articles')
       .select('*,creator(*)')
-      .is('is_active', true);
+      .is('is_active', true)
+      .is('published', true)
+      .is('draft', false);
 
     if (error) {
       return error;

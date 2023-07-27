@@ -19,7 +19,7 @@ function displayTextDescription(value) {
 }
 
 async function openArticle(slug,id) {
-  await navigateTo({ path: `/articulos/${slug}-PROM${id}` });
+  await navigateTo({ path: `/articulos/${slug}-PUB${id}` });
 }
 
 

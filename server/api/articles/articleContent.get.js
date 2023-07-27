@@ -11,7 +11,7 @@ async function getSlug(value) {
 }
 
 export default defineEventHandler(async (event) => {
-    const query = getQuery(event);
+  const query = getQuery(event);
   const id = await getId(query.slug);
   const slug = await getSlug(query.slug);
   const supabase = createClient(
@@ -22,7 +22,11 @@ export default defineEventHandler(async (event) => {
     const { data, error } = await supabase
       .from('articles')
       .select('*,creator(*)')
-      .is('is_active', true);
+      .eq('id',id)
+      .eq('slug',slug)
+      .is('is_active', true)
+      .is('published', true)
+      .is('draft', false);
 
     if (error) {
       return error;
