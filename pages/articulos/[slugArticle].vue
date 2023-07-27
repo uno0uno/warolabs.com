@@ -56,22 +56,6 @@ const {
             </p>
           </div>
     </div >
-    <div class="flex gap-0 sm:gap-4 sm:px-10">
-      <div class="flex gap-2 items-center cursor-pointer hover:bg-slate-100 p-2 hover:rounded-lg">
-        <LogosTheExplodingHead class="h-6 w-6 sm:h-8 sm:w-8"/>
-        <p class="text-xl">10</p>
-      </div>
-      <div class="flex gap-2 items-center cursor-pointer hover:bg-slate-100 p-2 hover:rounded-lg">
-        <LogosTheShakaHand class="h-6 w-6 sm:h-8 sm:w-8"/>
-        <p class="text-xl">10</p>
-      </div>
-      
-      <div class="flex gap-2 items-center cursor-pointer hover:bg-slate-100 p-2 hover:rounded-lg">
-        <LogosThefire class="h-6 w-6 sm:h-8 sm:w-8"/>
-        <p class="text-xl">10</p>
-      </div>
-      
-    </div>
   </div>
 
   <article class="article-style sm:px-10">

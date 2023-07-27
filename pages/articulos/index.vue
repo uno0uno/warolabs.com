@@ -30,28 +30,32 @@ async function openArticle(slug,id) {
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
   <div v-else-if="allArticles.length === 0">Not found</div>
   <div v-else-if="allArticles.code == '22P02'">Not found</div>
-  <div v-else class="flex flex-col gap-2">
+  <div v-else class="flex flex-col">
   <CommonTheBreadcrumb></CommonTheBreadcrumb>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 md:gap-4 gap-2 py-4">
+    <div class="grid divide-x justify-items-center divide-dashed grid-cols-1 md:grid-cols-2 lg:grid-cols-2 md:gap-4 py-4">
       <div v-for="article in allArticles" :key="article.title">
         <div
           @click="openArticle(article.slug,article.id)"
-          class="grid grid-cols-5 content-center rounded-lg shadow-sm bg-slate-50 border-1 cursor-pointer"
-        >
-        <div class="col-span-2">
-          <img
-            itemprop="image"
-            class=" rounded-l-lg object-cover w-auto"
-            v-bind="{
-              src: `https://warocolombia.infura-ipfs.io/ipfs/${article.thumbnail}`,
-              alt: article.title,
-            }"
-          />
-        </div>
-        <div class="flex flex-col justify-center gap-1 p-2 sm:px-4 col-span-3">
-            <p class="font-normal text-sm sm:text-normal md:text-lg text-slate-600">X: {{ article.creator.full_name }}</p>
-            <h2 class="font-normal text-sm sm:text-normal md:text-lg text-slate-900">{{ article.title }}</h2>
-        </div>
+          class="flex flex-col w-full py-2 sm:py-4 pl-2 pr-4 gap-1 rounded-lg hover:bg-slate-50 border-1 cursor-pointer"
+        > 
+          <div class="flex gap-2 items-center">
+          <div class="flex gap-1 items-center">
+            <LogosTheHashTag class="h-4 w-4 md:h-6 md:w-6 text-slate-900"/>
+            <p class="font-normal text-sm sm:text-lg text-slate-600">{{ article.tags }}</p>
+          </div>
+          <div class="flex gap-1 items-center">
+            <LogosTheWorld class="h-4 w-4 md:h-6 md:w-6 text-slate-900"/>
+            <p class="font-normal text-sm sm:text-lg text-slate-600 capitalize">{{ article.planet }}, {{ article.city }} </p>
+          </div>
+          </div>
+            <h2 class="font-bold  text-left text-xl sm:text-3xl text-slate-900">{{ article.title }}</h2>
+          <div class="flex gap-2 items-center">
+          <div class="flex gap-1 items-center">
+            <LogosTheStats class="h-4 w-4 md:h-6 md:w-6 text-slate-900"/>
+            <p class="font-normal text-sm sm:text-lg text-slate-600">{{ article.views }}</p>
+          </div>
+          </div>
+
         </div>
       </div>
     </div>
