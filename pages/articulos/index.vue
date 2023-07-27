@@ -32,7 +32,7 @@ async function openArticle(slug,id) {
   <div v-else-if="allArticles.code == '22P02'">Not found</div>
   <div v-else class="flex flex-col">
   <CommonTheBreadcrumb></CommonTheBreadcrumb>
-    <div class="grid divide-x divide-y divide-x-2 divide-y-2 justify-items-center divide-dotted grid-cols-1 md:grid-cols-2 lg:grid-cols-2 py-4">
+    <div class="grid divide-x divide-y divide-x-2 divide-y-2 divide-slate-200 justify-items-center divide-dotted grid-cols-1 md:grid-cols-2 lg:grid-cols-2 py-4">
       <div v-for="article in allArticles" :key="article.title">
         <div
           @click="openArticle(article.slug,article.id)"
@@ -40,7 +40,7 @@ async function openArticle(slug,id) {
         > 
           <div class="flex gap-2 items-center">
           <div class="flex gap-1 items-center">
-            <LogosTheHashTag class="h-4 w-4 md:h-6 md:w-6 text-slate-900"/>
+            <LogosTheHashTag class="h-4 w-4 md:h-6 md:w-6 text-emerald-500"/>
             <p class="font-normal text-sm sm:text-lg text-slate-600">{{ article.tags }}</p>
           </div>
           <div class="flex gap-1 items-center">
