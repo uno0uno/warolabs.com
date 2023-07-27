@@ -32,43 +32,29 @@ async function openArticle(slug,id) {
   <div v-else-if="allArticles.code == '22P02'">Not found</div>
   <div v-else class="flex flex-col gap-2">
   <CommonTheBreadcrumb></CommonTheBreadcrumb>
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 md:gap-4 gap-2 py-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 md:gap-4 gap-2 py-4">
       <div v-for="article in allArticles" :key="article.title">
         <div
           @click="openArticle(article.slug,article.id)"
-          class="block rounded-lg shadow-sm bg-slate-100 border-2 cursor-pointer"
+          class="grid grid-cols-3 items-center rounded-lg shadow-sm bg-slate-50 border-1 cursor-pointer"
         >
+        <div class="col-span-1">
           <img
             itemprop="image"
-            class="md:rounded-t-lg rounded-t-lg object-cover w-full"
+            class=" rounded-l-lg object-cover"
             v-bind="{
-              src: `https://warocolombia.infura-ipfs.io/ipfs/${article.cover}`,
+              src: `https://warocolombia.infura-ipfs.io/ipfs/${article.thumbnail}`,
               alt: article.title,
             }"
           />
-
-          <div class="p-2">
+        </div>
+          <div class="px-2 sm:px-4 col-span-2">
             <dl class="flex flex-col gap-0.5">
               <div>
                 <dt class="sr-only">Name</dt>
-                <dd class="font-bold text-m md:text-m">{{ article.title }}</dd>
+                <dd class="font-normal text-sm sm:text-normal md:text-lg">{{ article.title }}</dd>
               </div>
-              <div class="flex">
-                <dt class="sr-only">Price</dt>
-                <dd class="text-sm text-gray-600">
-                  Autor: {{ article.creator.full_name }} 
-                </dd>
-              </div>
-              <div>
-                <dt class="sr-only">Address</dt>
-                <dd class="text-sm text-gray-900">
-                  {{ displayTextDescription(article.description_seo) }}
-                </dd>
-              </div>
-
             </dl>
-
-            <div class="mt-2 flex items-center gap-4 text-xs"></div>
           </div>
         </div>
       </div>
