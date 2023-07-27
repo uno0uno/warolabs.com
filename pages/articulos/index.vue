@@ -36,9 +36,9 @@ async function openArticle(slug,id) {
       <div v-for="article in allArticles" :key="article.title">
         <div
           @click="openArticle(article.slug,article.id)"
-          class="grid grid-cols-3 content-center rounded-lg shadow-sm bg-slate-50 border-1 cursor-pointer"
+          class="grid grid-cols-5 content-center rounded-lg shadow-sm bg-slate-50 border-1 cursor-pointer"
         >
-        <div class="col-span-1">
+        <div class="col-span-2">
           <img
             itemprop="image"
             class=" rounded-l-lg object-cover w-auto"
@@ -48,8 +48,9 @@ async function openArticle(slug,id) {
             }"
           />
         </div>
-        <div class="flex items-center px-2 sm:px-4 col-span-2">
-            <h2 class="font-normal text-sm sm:text-normal md:text-lg">{{ article.title }}</h2>
+        <div class="flex flex-col justify-center gap-1 p-2 sm:px-4 col-span-3">
+            <p class="font-normal text-sm sm:text-normal md:text-lg text-slate-600">X: {{ article.creator.full_name }}</p>
+            <h2 class="font-normal text-sm sm:text-normal md:text-lg text-slate-900">{{ article.title }}</h2>
         </div>
         </div>
       </div>
