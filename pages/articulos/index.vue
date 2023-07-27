@@ -32,11 +32,11 @@ async function openArticle(slug,id) {
   <div v-else-if="allArticles.code == '22P02'">Not found</div>
   <div v-else class="flex flex-col">
   <CommonTheBreadcrumb></CommonTheBreadcrumb>
-    <div class="grid divide-x justify-items-center divide-dashed grid-cols-1 md:grid-cols-2 lg:grid-cols-2 md:gap-4 py-4">
+    <div class="grid divide-x divide-y divide-x-2 divide-y-2 justify-items-center divide-dotted grid-cols-1 md:grid-cols-2 lg:grid-cols-2 py-4">
       <div v-for="article in allArticles" :key="article.title">
         <div
           @click="openArticle(article.slug,article.id)"
-          class="flex flex-col w-full py-2 sm:py-4 pl-2 pr-4 gap-1 rounded-lg hover:bg-slate-50 border-1 cursor-pointer"
+          class="flex flex-col w-full py-2 sm:py-4 px-2 gap-1 rounded-lg hover:bg-slate-50 border-1 cursor-pointer"
         > 
           <div class="flex gap-2 items-center">
           <div class="flex gap-1 items-center">
