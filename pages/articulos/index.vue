@@ -36,26 +36,21 @@ async function openArticle(slug,id) {
       <div v-for="article in allArticles" :key="article.title">
         <div
           @click="openArticle(article.slug,article.id)"
-          class="grid grid-cols-3 items-center rounded-lg shadow-sm bg-slate-50 border-1 cursor-pointer"
+          class="grid grid-cols-3 content-center rounded-lg shadow-sm bg-slate-50 border-1 cursor-pointer"
         >
         <div class="col-span-1">
           <img
             itemprop="image"
-            class=" rounded-l-lg object-cover"
+            class=" rounded-l-lg object-cover w-auto"
             v-bind="{
               src: `https://warocolombia.infura-ipfs.io/ipfs/${article.thumbnail}`,
               alt: article.title,
             }"
           />
         </div>
-          <div class="px-2 sm:px-4 col-span-2">
-            <dl class="flex flex-col justify-center gap-0.5">
-              <div>
-                <dt class="sr-only">Name</dt>
-                <h2 class="font-normal text-sm sm:text-normal md:text-lg">{{ article.title }}</h2>
-              </div>
-            </dl>
-          </div>
+        <div class="flex items-center px-2 sm:px-4 col-span-2">
+            <h2 class="font-normal text-sm sm:text-normal md:text-lg">{{ article.title }}</h2>
+        </div>
         </div>
       </div>
     </div>
