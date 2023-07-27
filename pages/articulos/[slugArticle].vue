@@ -61,6 +61,7 @@ const {
   <article class="article-style sm:px-10">
           <div v-html="md.render(article.content)"></div>
   </article>
+  <CommonTheFeedBackBox></CommonTheFeedBackBox>
   
   <Head>
       <Title>{{ article.title }} | Waro Colombia </Title>
