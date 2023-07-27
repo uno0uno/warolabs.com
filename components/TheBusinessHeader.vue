@@ -65,17 +65,6 @@ const { logo_bussines,name,address,country, city, description, whatsapp, min_pri
             </button>
 
             <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2">
-              <span>Pago manual<!-- --> 
-              </span>
-            </button>
-          </div>
-          <div class="flex gap-2">
-            <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2 ">
-              <span>🔥 200<!-- --> 
-              </span>
-            </button>
-
-            <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2">
               <span>Compartir<!-- --> 
               </span>
             </button>
