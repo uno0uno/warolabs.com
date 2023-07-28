@@ -1,5 +1,6 @@
 <script setup>
 import MarkdownIt from 'markdown-it';
+
 const md = new MarkdownIt();
 const renderedMarkdown = ref('');
 const { slugArticle } = useRoute().params;

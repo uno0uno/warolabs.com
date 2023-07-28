@@ -1,4 +1,5 @@
 <script setup>
+
 const { slug } = useRoute().params;
 
 const counterAmountProduct = ref(1);

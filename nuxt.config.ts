@@ -8,11 +8,14 @@ export default defineNuxtConfig({
     head: {
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'charset', content: 'utf-8' },
-        { name: 'lang', content: 'es-CO' },
+        { name: 'charset', content: 'utf-8' }
       ],
       link: [{ rel: 'canonical', href: 'https://warocol.com/' }],
+      htmlAttrs: {
+        lang: 'es',
+      },
     },
+
   },
   buildModules: ['@nuxtjs/google-fonts'],
   modules: ['nuxt-simple-sitemap', 'nuxt-simple-robots'],

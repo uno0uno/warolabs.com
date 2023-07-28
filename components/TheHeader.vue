@@ -64,7 +64,7 @@
               flex
               justify-start
               items-center
-              gap-2
+              gap-4
               text-lg
               sm:text-2xl
               lg:text-3xl
