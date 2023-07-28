@@ -62,9 +62,10 @@
           <ul
             class="
               flex
-              sm:justify-start
+              justify-start
               items-center
-              gap-4
+              gap-2
+              text-lg
               sm:text-2xl
               lg:text-3xl
               text-slate-900
