@@ -5,6 +5,9 @@ const props = defineProps({
     });
 
 const { slug } = toRefs(props);
+
+const { copyToClipboard } = useClipboard();
+
 const link = ref(`https://warocol.com${slug.value}`);
 
 const toggle = ref(false);
@@ -16,6 +19,11 @@ function open() {
 function displayText(value) {
   return value.slice(0, 19) + '..';
 }
+
+const handleCopy = async () => {
+  await copyToClipboard(link.value);
+  toggle.value = !toggle.value;
+};
 
 </script>
 <template>
@@ -48,12 +56,14 @@ function displayText(value) {
     <div class=" flex gap-4">
       <button
         @click="open()"
-        class="inline-block rounded-lg bg-slate-900 hover:bg-slate-700 px-5 py-3 text-center text-sm font-semibold text-white sm:w-auto"
+        class="inline-block rounded-lg bg-white hover:bg-slate-100 border px-5 py-3 text-center text-sm font-semibold text-slate-900 sm:w-auto"
         href=""
       >
         cancelar
       </button>
-                <button class="bg-indigo-500 hover:bg-indigo-300 rounded-lg px-4 py-2 text-white">
+      <button 
+        @click="handleCopy()"
+        class="bg-indigo-500 hover:bg-indigo-300 rounded-lg px-4 py-2 text-white">
         copiar
       </button>
     </div>
