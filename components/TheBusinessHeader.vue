@@ -10,10 +10,11 @@ const props = defineProps({
     whatsapp: {type: Number},
     min_price: {type: Number},
     max_price: {type: Number},
-    category_tags: {type: Object}
+    category_tags: {type: Object},
+    slug:{type: Object},
     });
 
-const { logo_bussines,name,address,country, city, description, whatsapp, min_price, max_price, category_tags } = toRefs(props);
+const { logo_bussines,name,address,country, city, description, whatsapp, min_price, max_price, category_tags,slug } = toRefs(props);
 
 </script>
 
@@ -62,7 +63,10 @@ const { logo_bussines,name,address,country, city, description, whatsapp, min_pri
             <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-900 text-white hover:bg-slate-800 cursor-pointer border-2 ">
               opinar
             </button>         
-              <CommonTheShareBox/>
+              <CommonTheShareBox
+              v-bind:slug="slug"
+              >
+              </CommonTheShareBox>
           </div>
       </div>
 

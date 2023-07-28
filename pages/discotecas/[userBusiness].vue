@@ -1,5 +1,5 @@
 <script setup>
-const { userBusiness } = useRoute().params;
+const route = useRoute();
 
 const {
   data: business,
@@ -9,7 +9,7 @@ const {
   error,
 } = await useAsyncData('profile-info', () => {
   try {
-    return $fetch(`/api/business/profileInfo?user_name=${userBusiness}`);
+    return $fetch(`/api/business/profileInfo?user_name=${route.params.userBusiness}`);
   } catch (error) {
     return error;
   }
@@ -17,7 +17,6 @@ const {
 </script>
 
 <template>
-
   <div v-if="pending">LOADING...</div>
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
   <div v-else-if="business.length === 0">Not found</div>
@@ -42,6 +41,7 @@ const {
       v-bind:min_price="nightClub.min_price"
       v-bind:max_price="nightClub.max_price"
       v-bind:category_tags="nightClub.category_tags"
+      v-bind:slug="route.path"
     >
     </TheBusinessHeader>
     <div class="mx-auto max-h-full font-principal">
