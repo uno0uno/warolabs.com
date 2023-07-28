@@ -5,7 +5,6 @@ const path = ref();
 
 watchEffect(() => {
   path.value = route.path.split('/');
-  console.log(path.value[2] !== '' )
 });
 
 async function openCategory(path) {

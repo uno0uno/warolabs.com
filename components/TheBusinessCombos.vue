@@ -32,28 +32,6 @@ async function openCombo(id, slug) {
       class="p-4 w-full h-full rounded-lg cursor-pointer bg-slate-100 border-2"
     >
       <div @click="openCombo(item.id, item.slug)" class="flex flex-col gap-2">
-        <div class="flex gap-2 items-center">
-          <span class="relative flex h-3 w-3">
-            <span
-              class="
-                animate-ping
-                absolute
-                inline-flex
-                h-full
-                w-full
-                rounded-full
-                bg-sky-400
-                opacity-75
-              "
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-3 w-3 bg-slate-500"
-            ></span>
-          </span>
-          <span class="text-m md:text-lg text-slate-900 text-text-subdued"
-            >0 disponibles</span
-          >
-        </div>
         <div class="">
           <p class="mb-0 text-2xl md:text-3xl font-bold text-slate-900">
             {{ item.name }}

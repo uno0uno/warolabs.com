@@ -64,7 +64,6 @@ const {
             font-bold
             capitalize
             hover:text-text-default
-            relative
             bg-transparent
             outline-none
             mx-4
@@ -104,7 +103,6 @@ const {
             font-bold
             capitalize
             hover:text-text-default
-            relative
             bg-transparent
             outline-none
             mx-4

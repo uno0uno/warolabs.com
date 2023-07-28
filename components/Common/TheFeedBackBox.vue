@@ -3,7 +3,7 @@
 
 </script>
 <template>
-<div class="flex flex-col items-left gap-2 m-auto">
+<div class="flex flex-col items-left gap-2">
     <blockquote class="text-3xl sm:text-4xl font-semibold italic text-slate-900 py-2">
       Escribe un
       <span class="before:block before:absolute before:-inset-1 before:-skew-y-2 before:bg-slate-900 relative inline-block">
@@ -33,17 +33,18 @@
         <LogosTheZzz class="h-6 w-6 md:h-8 md:w-8 text-slate-900"/>
       </label>
     </div>
-   <div>
-   <div class="flex flex-col gap-2">
-    <div class="flex flex-col gap-1">
-        <label for="nombre" class="text-xl sm:text-2xl font-normal italic">Correo electrónico</label>
-        <input type="email" id="nombre" class="rounded-md text-gray-700 p-2" />
-    </div>
-      <div class="flex flex-col gap-1">
-        <label for="nombre" class="text-xl sm:text-2xl font-normal italic">Tú opinion</label>
-        <textarea  id="nombre" class="rounded-md text-gray-700 p-2" />
-    </div>
-   </div>
-   </div>
+      <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-1">
+            <label for="nombre" class="text-xl sm:text-2xl font-normal italic">Correo electrónico</label>
+            <input type="email" id="nombre" class="rounded-md text-gray-700 p-2" />
+        </div>
+        <div class="flex flex-col gap-1">
+            <label for="nombre" class="text-xl sm:text-2xl font-normal italic">Tú opinion</label>
+            <textarea  id="nombre" class="rounded-md text-gray-700 p-2" />
+        </div>
+      </div>
+    <button class="flex justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-slate-900 text-white hover:bg-slate-700 cursor-pointer">
+    Enviar
+    </button>
 </div>
 </template>
