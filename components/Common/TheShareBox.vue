@@ -29,9 +29,9 @@ const handleCopy = async () => {
 <template>
   
   <button @click="open()"
-    class="w-full rounded-lg py-3 px-4 bg-slate-100 font-semibold text-slate-900 hover:bg-slate-200 cursor-pointer border-2">
+    class="w-full rounded-lg py-2 px-4 bg-slate-900 font-semibold text-white hover:bg-slate-700 cursor-pointer">
     <div class="flex items-center justify-center gap-2 ">
-      <LogosTheShare class="h-6 w-6 md:h-8 md:w-8 text-slate-900"/>
+      <LogosTheShare class="h-6 w-6 md:h-8 md:w-8 text-white"/>
       <p class="capitalize">compartir</p>
     </div>
   </button>

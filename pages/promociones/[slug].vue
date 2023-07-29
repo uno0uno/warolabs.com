@@ -1,6 +1,6 @@
 <script setup>
 
-const { slug } = useRoute().params;
+const route = useRoute();
 
 const counterAmountProduct = ref(1);
 
@@ -12,7 +12,7 @@ const {
   error,
 } = await useAsyncData('combo-data', () => {
   try {
-    return $fetch(`/api/promos/promoInfo?slug=${slug}`);
+    return $fetch(`/api/promos/promoInfo?slug=${route.params.slug}`);
   } catch (error) {
     return error;
   }
@@ -56,13 +56,13 @@ function formatPrice(price) {
     v-else
     v-for="promo in promoData"
     :key="promo.name"
-    class="flex gap-6 flex-col gap-2 mx-auto max-h-full font-principal"
+    class="flex gap-4 flex-col  mx-auto max-h-full font-principal"
   >
     <CommonTheBreadcrumb></CommonTheBreadcrumb>
     <div
       class="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4 md:gap-10"
     >
-      <div class="md:col-span-6 lg:col-span-7 flex flex-col gap-6 md:gap-8">
+      <div class="md:col-span-6 lg:col-span-7 flex flex-col gap-6 md:gap-6">
         <PromotionTheHeadPromo
           v-bind:name_product="promo.name"
           v-bind:discoteca_info="promo.discotecas"
@@ -126,13 +126,13 @@ function formatPrice(price) {
             </div>
           </div>
           
-          <div class="flex justify-end items-center">
+          <div class="gap-2 flex flex-col">
             <button
               class="
-                w-full
+                w-auto
                 text-m
                 font-bold
-                py-2
+                py-3
                 px-4
                 bg-slate-900
                 text-white
@@ -141,6 +141,12 @@ function formatPrice(price) {
             >
               <span>Reservar en 2 clicks</span>
             </button>
+            <div class="w-auto">
+              <CommonTheShareBox
+                v-bind:slug="route.path"
+                >
+              </CommonTheShareBox>
+            </div>
           </div>
         </div>
         <PromotionThePromoInfo v-bind:reazon_sell_product="promo.description">

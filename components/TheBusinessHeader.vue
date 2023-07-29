@@ -58,15 +58,16 @@ const { logo_bussines,name,address,country, city, description, whatsapp, min_pri
         </div>
       </div>
     </div>
-      <div class=" sm:-mx-8 pt-4 sm:pt-16 sm:px-8 sm:gap-2 gap-0 flex flex-col space-y-2 sm:flex-col  sm:space-y-0">
+      <div class="sm:-mx-8 pt-3 sm:pt-16 sm:px-8 sm:gap-2 gap-0 flex flex-col space-y-2 sm:flex-col sm:space-y-0">
           <div class="flex gap-2 w-full">
-            <button class="w-full  rounded-lg text-m font-semibold py-3 px-4 bg-slate-900 text-white hover:bg-slate-800 cursor-pointer border-2 ">
-              opinar
-            </button>         
               <CommonTheShareBox
+              class="w-full"
               v-bind:slug="slug"
               >
               </CommonTheShareBox>
+            <button class="w-full  rounded-lg text-m font-semibold px-4 bg-slate-100 text-slate-900 hover:bg-slate-200 cursor-pointer border-2 ">
+              opinar
+            </button>  
           </div>
       </div>
 
