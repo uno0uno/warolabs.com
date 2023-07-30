@@ -10,7 +10,7 @@ function displayText(value) {
 }
 
 async function openCombo(id, slug) {
-  await navigateTo({ path: `/es/promociones/${slug}-PROM${id}` });
+  await navigateTo({ path: `/promociones/${slug}-PROM${id}` });
 }
 </script>
 
