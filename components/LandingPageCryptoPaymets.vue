@@ -6,7 +6,7 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <template>
-<div class="flex flex-col gap-14 sm:gap-20 font-principal">
+<div class="flex flex-col gap-14 sm:gap-20">
     <div class="sm:flex justify-between sm:mt-2 gap-2">
             <div class="relative mx-auto flex flex-col items-center sm:items-start md:w-3/4 max-w-container gap-6 sm:gap-8">
                     <div class=" h-7 text-base font-semibold leading-7" aria-hidden="true">
@@ -65,7 +65,7 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
                 </div>
                 </div>
             </div>
-                <h1 class="text-4xl max-w-[36rem] font-extrabold text-center sm:text-right font-principal tracking-tight text-slate-900 sm:text-6xl md:text-6xl">
+                <h1 class="text-4xl max-w-[36rem] font-extrabold text-center sm:text-right  tracking-tight text-slate-900 sm:text-6xl md:text-6xl">
                     Tus fans pueden donarte.
                 </h1>
                 <p class="max-w-lg text-normal text-center sm:text-right text-slate-900">

@@ -9,7 +9,6 @@
         justify-between
         mx-auto
         gap-2
-        font-principal
       "
     >
       <div
