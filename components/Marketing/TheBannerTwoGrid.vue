@@ -22,7 +22,7 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
                             </div>
                         </div>
                     </div>
-                    <h1 class="max-w-[36rem] text-center text-4xl font-extrabold font-principal tracking-tight text-slate-900 sm:text-6xl md:text-6xl">
+                    <h1 class="max-w-[36rem] text-center text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-6xl">
                         Ahora puedes cobrar en dolares.
                     </h1>
                     <p class="col-start-1 row-start-3 max-w-lg text-center text-normal text-slate-900">
