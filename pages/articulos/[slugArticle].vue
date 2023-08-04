@@ -60,7 +60,7 @@ const {
           </div >
           <div class="w-auto">
             <CommonTheShareBox
-              v-bind:slug="route.path"
+              v-bind:slug="slugArticle"
               >
             </CommonTheShareBox>
           </div>
@@ -69,7 +69,9 @@ const {
     <article class="article-style sm:px-10">
             <div v-html="md.render(article.content)"></div>
     </article>
-    <CommonTheFeedBackBox class="sm:px-10"></CommonTheFeedBackBox>
+    <CommonTheFeedBackBox 
+    v-bind:id="route.path"
+    ></CommonTheFeedBackBox>
     
     <Head>
         <Title>{{ article.title }} | Waro Colombia </Title>

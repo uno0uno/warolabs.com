@@ -1,5 +1,6 @@
 // useClipboard.js
 export default function useClipboard() {
+  
   const copyToClipboard = async (contentToCopy) => {
     try {
       await navigator.clipboard.writeText(contentToCopy);

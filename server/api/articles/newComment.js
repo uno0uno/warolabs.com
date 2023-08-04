@@ -6,35 +6,39 @@ async function getId(value) {
   return match ? match[1] : null;
 }
 
-async function getSlug(value) {
-  return value.replace(/(-)?PUB\d+$/, '');
-}
-
 export default defineEventHandler(async (event) => {
-  const query = getQuery(event);
-  const id = await getId(query.slug);
-  const slug = await getSlug(query.slug);
+
+  const query = getQuery(event)
+  const body = await readBody(event)
+  const id = await getId(body.id)
+
   const supabase = createClient(
     process.env.NUXT_PUBLIC_SUPABASE_URL,
     process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY
   );
+
   try {
     const { data, error } = await supabase
-      .from('articles')
-      .select('*,creator(*)')
-      .eq('id',id)
-      .eq('slug',slug)
-      .is('is_active', true)
-      .is('published', true)
-      .is('draft', false);
-
-    if (error) {
-      return error;
+    .from('article_comments')
+    .insert([
+      { 
+        email: query.email ,
+        comment: body.comment,
+        emotion_emoji: body.emotionEmoji,
+        article_id: id, 
+        is_active: false,
+        shadowban: false,
+      },
+    ])
+    .select()
+    if(error){
+      console.log(error);
     }
     if (data) {
-      return data;
+      console.log(1, data);
     }
   } catch (error) {
-    return error;
+    console.log(error)
   }
+  
 });

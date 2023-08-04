@@ -61,7 +61,6 @@ const { logo_bussines,name,address,country, city, description, whatsapp, min_pri
       <div class="sm:-mx-8 pt-3 sm:pt-16 sm:px-8 sm:gap-2 gap-0 flex flex-col space-y-2 sm:flex-col sm:space-y-0">
           <div class="flex gap-2 w-full">
               <CommonTheShareBox
-              class="w-full"
               v-bind:slug="slug"
               >
               </CommonTheShareBox>

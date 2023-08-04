@@ -9,8 +9,8 @@ function getArticlesWithKey(articles) {
 }
 export default defineEventHandler(async (event) => {
   const supabase = createClient(
-    process.env.NUXT_SUPABASE_URL,
-    process.env.NUXT_SUPABASE_ANON_KEY
+    process.env.NUXT_PUBLIC_SUPABASE_URL,
+    process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY
   );
   try {
     const { data, error } = await supabase

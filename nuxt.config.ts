@@ -2,6 +2,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       gtmContainerId: '',
+      supabaseUrl: '',
+      supabaseAnonKey: ''
     },
   },
   app: {

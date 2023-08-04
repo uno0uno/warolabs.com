@@ -15,8 +15,8 @@ export default defineEventHandler(async (event) => {
   const id = await getId(query.slug);
   const slug = await getSlug(query.slug);
   const supabase = createClient(
-    process.env.NUXT_SUPABASE_URL,
-    process.env.NUXT_SUPABASE_ANON_KEY
+    process.env.NUXT_PUBLIC_SUPABASE_URL,
+    process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY
   );
 
   try {
