@@ -11,12 +11,12 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
                     <div class=" h-7 text-base font-semibold leading-7" aria-hidden="true">
                         <div class="flex gap-4">
                             <div class="flex items-center gap-1">
-                                <ReceiptPercentIcon class="h-4 w-4 md:h-4 md:w-4 text-sky-500"/>
+                                <ReceiptPercentIcon class="h-4 w-4 md:h-4 md:w-4 text-slate-900"/>
                                 <p class="text-sm text-slate-500"
                                 >$800 COP</p>
                             </div>
                             <div class="flex items-center gap-1">
-                                <BoltIcon class="h-4 w-4 md:h-4 md:w-4 text-sky-500"/>
+                                <BoltIcon class="h-4 w-4 md:h-4 md:w-4 text-slate-900"/>
                                 <p class="text-sm text-slate-500"
                                 >Simple y 100% online.</p>
                             </div>
