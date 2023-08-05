@@ -5,7 +5,7 @@
 <section class="bg-white">
   <div class="lg:grid lg:min-h-1/2 lg:grid-cols-12">
     <section
-      class="relative flex h-32 items-end bg-slate-900 rounded-lg lg:col-span-5 lg:h-full xl:col-span-6"
+      class="relative flex h-32 items-end bg-black rounded-lg lg:col-span-5 lg:h-full xl:col-span-6"
     >
 
       <div class="hidden lg:relative lg:block lg:p-12">
