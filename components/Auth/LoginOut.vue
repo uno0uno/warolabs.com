@@ -60,7 +60,7 @@
         <form action="#" class="mt-8 grid grid-cols-6 gap-6">
         <div class="col-span-6">
             <h2 class="mt-6 text-2xl font-bold text-slate-900 sm:text-3xl md:text-4xl">
-              Elige tu plataforma favorita 
+              Elige tu plataforma favorita 👇🏼
             </h2>
           </div>
           <div class="col-span-6 flex flex-col gap-2">
