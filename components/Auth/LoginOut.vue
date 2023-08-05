@@ -3,7 +3,7 @@
 <template>
 
 <section class="bg-white">
-  <div class="lg:grid lg:min-h-1/2 lg:grid-cols-12">
+  <div class="lg:grid lg:min-h-auto lg:grid-cols-12">
     <section
       class="relative flex h-32 items-end bg-black rounded-lg lg:col-span-5 lg:h-full xl:col-span-6"
     >
@@ -58,53 +58,40 @@
         </div>
 
         <form action="#" class="mt-8 grid grid-cols-6 gap-6">
+        <div class="col-span-6">
+            <h2 class="mt-6 text-2xl font-bold text-slate-900 sm:text-3xl md:text-4xl">
+              Elige tu plataforma favorita 
+            </h2>
+          </div>
+          <div class="col-span-6 flex flex-col gap-2">
+          <div class=" ">
 
-
-          <div class="col-span-6">
-            <label for="Email" class="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-
-            <input
-              type="email"
-              id="Email"
-              name="email"
-              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
+            <button class="flex gap-2 items-center justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-white text-slate-900 border border-2 border-color-black cursor-pointer w-full" >
+              <LogosTheGoogle
+                class="w-4 h-4 text-slate-900"
+              ></LogosTheGoogle>
+              Google
+            </button>
           </div>
 
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="Password"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Password
-            </label>
+          <div class="flex w-full  gap-2">
+            <button class="flex gap-2 items-center justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-white text-slate-900 border border-2 border-color-black cursor-pointer w-full" >
+              <LogosTheApple
+                class="w-4 h-4 text-slate-900"
+              ></LogosTheApple>
+              Apple
+            </button>
 
-            <input
-              type="password"
-              id="Password"
-              name="password"
-              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
+        
+            <button class="flex gap-2 items-center justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-white text-slate-900 border border-2 border-color-black cursor-pointer w-full" >
+              <LogosTheMicrosoft
+                class="w-4 h-4 text-slate-900"
+              ></LogosTheMicrosoft>
+              Microsoft
+            </button>
+
           </div>
-
-          <div class="col-span-6 sm:col-span-3">
-            <label
-              for="PasswordConfirmation"
-              class="block text-sm font-medium text-gray-700"
-            >
-              Password Confirmation
-            </label>
-
-            <input
-              type="password"
-              id="PasswordConfirmation"
-              name="password_confirmation"
-              class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-            />
           </div>
-
           <div class="col-span-6">
 
           </div>
@@ -121,16 +108,21 @@
           </div>
 
           <div class="col-span-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-4">
-            <button
-              class="inline-block shrink-0 rounded-md border border-slate-900 bg-slate-900 px-4 py-2 text-sm font-medium text-white"
-            >
-              Crear una cuenta
-            </button>
-             <button
-              class="inline-block shrink-0 rounded-md border border-slate-900 bg-white px-4 py-2 text-sm font-medium text-slate-900 transition  focus:outline-none focus:ring active:text-blue-500"
-            >
-              Iniciar sesion
-            </button>
+            <blockquote class="rounded-lg bg-slate-50 p-4">
+              <div class="flex items-center gap-4">
+                <img
+                  alt="Man"
+                  src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80"
+                  class="h-16 w-16 rounded-lg object-cover"
+                />
+
+
+                <p class="line-clamp-2 sm:line-clamp-none text-stale-900 text-sm text-gray-500">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt
+                  voluptatem alias ut provident sapiente repellendus.
+                </p>
+              </div>
+            </blockquote>
           </div>
         </form>
       </div>

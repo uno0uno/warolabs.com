@@ -31,6 +31,7 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
                                     text-4xl sm:text-6xl md:text-8xl font-semibold italic text-slate-900 py-2
                                     before:block
                                     before:absolute
+                                    before:rounded-xl
                                     before:-inset-0.5
                                     before:-skew-y-1
                                     before:bg-slate-900
