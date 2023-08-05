@@ -6,9 +6,9 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <template>
-    <div class="sm:flex justify-between  gap-2">
-            <div class="relative mx-auto flex flex-col items-center md:w-3/4 max-w-container gap-6">
-                    <div class=" h-7 text-base font-semibold leading-7" aria-hidden="true">
+    <div class="sm:flex justify-between ">
+            <div class="relative mx-auto flex flex-col items-center max-w-container gap-6">
+                    <div class="  text-base font-semibold ">
                         <div class="flex gap-4">
                             <div class="flex items-center gap-1">
                                 <ReceiptPercentIcon class="h-4 w-4 md:h-4 md:w-4 text-slate-900"/>
@@ -22,9 +22,26 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
                             </div>
                         </div>
                     </div>
-                    <h1 class="max-w-[36rem] text-center text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-6xl">
-                        Ahora puedes cobrar en dolares.
-                    </h1>
+                        <h1 class=" text-center text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-8xl">
+                            Ahora puedes
+
+        
+                                <span
+                                    class="
+                                    text-4xl sm:text-6xl md:text-8xl font-semibold italic text-slate-900 py-2
+                                    before:block
+                                    before:absolute
+                                    before:-inset-0.5
+                                    before:-skew-y-1
+                                    before:bg-slate-900
+                                    relative
+                                    inline-block
+                                    "
+                                >
+                                    <span class="relative text-white">cobrar en dolares.</span>
+                                </span>
+
+                        </h1>
                     <p class="col-start-1 row-start-3 max-w-lg text-center text-normal text-slate-900">
                         Permite que tus clientes escaneen tu codigo Qr, nosotros convertimos y consignamos tu dinero en el banco que desees.
                     </p>
