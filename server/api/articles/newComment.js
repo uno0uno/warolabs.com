@@ -8,7 +8,6 @@ async function getId(value) {
 
 export default defineEventHandler(async (event) => {
 
-  const query = getQuery(event)
   const body = await readBody(event)
   const id = await getId(body.id)
 
@@ -22,23 +21,18 @@ export default defineEventHandler(async (event) => {
     .from('article_comments')
     .insert([
       { 
-        email: query.email ,
         comment: body.comment,
         emotion_emoji: body.emotionEmoji,
         article_id: id, 
         is_active: false,
         shadowban: false,
       },
-    ])
-    .select()
-    if(error){
-      console.log(error);
-    }
+    ]).select()
     if (data) {
-      console.log(1, data);
+      return data
     }
   } catch (error) {
-    console.log(error)
+    return error
   }
   
 });

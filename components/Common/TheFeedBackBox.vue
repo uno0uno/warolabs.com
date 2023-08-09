@@ -5,14 +5,12 @@ const props = defineProps({
     });
 
 const { id } = toRefs(props);
+const toggle = ref(false);
+const sended = ref(false);
 
-const email = ref('');
 const comment = ref('');
-const emotionEmoji = ref('');
+const emotionEmoji = ref();
 
-const token = 'eyJhbGciOiJIUzI1NiIsImtpZCI6ImpIa3dZTnJjZ2hhS2pEMWkiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNjkxMTA5MTEwLCJpYXQiOjE2OTExMDU1MTAsImlzcyI6Imh0dHBzOi8va2FucW5lbXBlcWdkZXNldWp5YWsuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjIyMzlhOTNjLWFlOWQtNDZmNy05NTY5LWJmNzZjM2IxMTA3MSIsImVtYWlsIjoiYW5kZXJzb24uZWxlY3Ryb25pY29AZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJlbWFpbCIsInByb3ZpZGVycyI6WyJlbWFpbCJdfSwidXNlcl9tZXRhZGF0YSI6e30sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib3RwIiwidGltZXN0YW1wIjoxNjkxMTA1NTEwfV0sInNlc3Npb25faWQiOiJjYmUyNzRlNi0wMjkxLTRkZjYtODBiYS1hNTQzNzMyZjZjZTgifQ.-qr1leYWmSh13pdjh9i2bwO8u62Q0jjZR9aGFZQFth4';
-
-const refresh_token = 'EFZHCEZPjG3ozYWy7S9Nmw';
 
 async function sendComment (){
   
@@ -24,34 +22,41 @@ async function sendComment (){
   error,
 } = await useAsyncData('send-comment', () => {
   try {
-    return $fetch(`/api/articles/newComment?email=${email.value}`, {
+    return $fetch(`/api/articles/newComment`, {
     method: 'POST',
     body: { 
       comment: comment.value,
       emotionEmoji: emotionEmoji.value,
       id: id.value,
-      jwt: token,
-      refreshToken: refresh_token
       }
   });
   } catch (error) {
     return error;
   }
-  console.log(response);
 });
+if(toRaw(response.value[0].id)){
+  sended.value = true
+}
+  
 
 }
 
+watchEffect(() => {
+  if(emotionEmoji.value){
+    toggle.value = true;
+  }
+})
 
-watchEffect(() => console.log(email.value, comment.value, emotionEmoji.value))
+
+
 
 </script>
 <template>
-  <div class="flex flex-col items-left gap-2">
+  <div  v-if="sended == false" class="flex flex-col items-left gap-2">
     <blockquote
       class="text-3xl sm:text-4xl font-semibold italic text-slate-900 py-2"
     >
-      Escribe un
+      ¿Te ha resultado 
       <span
         class="
           before:block
@@ -63,11 +68,11 @@ watchEffect(() => console.log(email.value, comment.value, emotionEmoji.value))
           inline-block
         "
       >
-        <span class="relative text-white">comentario</span>
+        <span class="relative text-white">útil?</span>
       </span>
     </blockquote>
 
-    <div class="flex gap-2">
+    <div v-if="toggle == false" class="flex gap-2">
       <input
         type="radio"
         name="reaction"
@@ -152,20 +157,16 @@ watchEffect(() => console.log(email.value, comment.value, emotionEmoji.value))
         <LogosTheZzz class="h-6 w-6 md:h-8 md:w-8 text-slate-900" />
       </label>
     </div>
-    <div class="flex flex-col gap-2">
-      <div class="flex flex-col gap-1">
+    <div v-if="toggle == true" class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2">
         <label for="nombre" class="text-xl sm:text-2xl font-normal italic"
-          >Correo electrónico</label
-        >
-        <input type="email" id="nombre" class="rounded-md text-gray-700 p-2"  v-model="email" />
-      </div>
-      <div class="flex flex-col gap-1">
-        <label for="nombre" class="text-xl sm:text-2xl font-normal italic"
-          >Tú opinion</label
+          >Tú opinion (opcional)</label
         >
         <textarea id="nombre" class="rounded-md text-gray-700 p-2" v-model="comment" />
+                <label for="nombre" class="text-xl sm:text-m font-normal text-slate-600 "
+          >No incluyas información personal en tu comentario.</label
+        >
       </div>
-    </div>
     <button
     @click = 'sendComment()'
       class="
@@ -184,5 +185,13 @@ watchEffect(() => console.log(email.value, comment.value, emotionEmoji.value))
     >
       Enviar
     </button>
+        </div>
   </div>
+    <div v-if="sended == true"  class="flex flex-col items-left gap-2">
+    <blockquote
+      class="text-3xl sm:text-4xl font-semibold italic text-slate-900 py-2"
+    >
+      Gracias por tu opinion
+    </blockquote>
+    </div>
 </template>

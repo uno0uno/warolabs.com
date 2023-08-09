@@ -19,7 +19,7 @@ function displayTextDescription(value) {
 }
 
 async function openArticle(slug,id) {
-  await navigateTo({ path: `/articulos/${slug}-PUB${id}` });
+  await navigateTo({ path: `/blog/${slug}-PUB${id}` });
 }
 
 
@@ -51,7 +51,7 @@ async function openArticle(slug,id) {
             <h2 class="font-bold  text-left text-2xl sm:text-3xl text-slate-900">{{ article.title }}</h2>
           <div class="flex gap-2 items-center">
           <div class="flex gap-1 items-center">
-            <LogosTheStats class="h-4 w-4 md:h-6 md:w-6 text-slate-900"/>
+            <LogosTheEye class="h-4 w-4 md:h-6 md:w-6 text-slate-900"/>
             <p class="font-normal text-sm sm:text-lg text-slate-600">{{ article.views }}</p>
           </div>
           </div>

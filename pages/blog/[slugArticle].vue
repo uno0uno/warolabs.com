@@ -4,7 +4,6 @@ import MarkdownIt from 'markdown-it';
 const route = useRoute();
 const md = new MarkdownIt();
 const renderedMarkdown = ref('');
-const { slugArticle } = useRoute().params;
 
 const {
   data: articles,
@@ -14,7 +13,7 @@ const {
   error,
 } = await useAsyncData('article-content', () => {
   try {
-    return $fetch(`/api/articles/articleContent?slug=${slugArticle}`);
+    return $fetch(`/api/articles/articleContent?slug=${route.params.slugArticle}`);
   } catch (error) {
     return error;
   }
@@ -53,14 +52,14 @@ const {
                   <p class="text-normal sm:text-lg font-bold">
                     {{article.creator.full_name}}
                   </p>
-                  <p class="text-sm sm:text-normal">
+                  <p class="text-sm sm:text-normal sm:w-1/2">
                     Publicadó: {{article.created_at}}
                   </p>
                 </div>
           </div >
           <div class="w-auto">
             <CommonTheShareBox
-              v-bind:slug="slugArticle"
+              v-bind:slug="route.path"
               >
             </CommonTheShareBox>
           </div>

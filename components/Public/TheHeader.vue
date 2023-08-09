@@ -57,10 +57,10 @@
             "
           > 
             <li>
-              <NuxtLink :to="{ path: '/articulos' }"> Blog </NuxtLink>
+              <NuxtLink :to="{ path: '/blog' }"> Blog </NuxtLink>
             </li>
             <li>
-              <NuxtLink :to="{ path: '/articulos' }"> Nosotros </NuxtLink>
+              <NuxtLink :to="{ path: '/blog' }"> Nosotros </NuxtLink>
             </li>
           </ul>
         </div>
