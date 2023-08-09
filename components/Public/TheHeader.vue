@@ -29,22 +29,7 @@
       </div>
       <div class="flex flex-col sm:gap-2 gap-1">
         <div class="flex items-center sm:justify-end gap-2">
-          <div
-            class="
-              flex flex-col
-              sm:w-full
-              justify-end
-              w-auto
-              space-y-2
-              sm:flex-row sm:space-x-4 sm:space-y-0
-            "
-          >
-            <NuxtLink :to="{ path: '/ingresar' }"
-              class="flex justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-slate-900 text-white hover:bg-slate-700 cursor-pointer"
-            >
-              <span>Ingresar </span>
-            </NuxtLink>
-          </div>
+
           <div class="flex gap-1">
             <a href="https://www.tiktok.com/@saifer101_" target="_blank">
               <LogosTheTikTok class=" h-8 w-8 cursor-pointer" />

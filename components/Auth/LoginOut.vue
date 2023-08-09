@@ -1,4 +1,23 @@
-<script setup></script>
+<script setup>
+import { createClient } from '@supabase/supabase-js';
+
+const { public: { supabaseUrl, supabaseAnonKey }, } = useRuntimeConfig()
+
+const supabase = createClient( supabaseUrl, supabaseAnonKey);
+
+async function loginthroughOTP (){
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+  provider: 'google',
+    options: {
+      redirectTo: 'https://warocol.com'
+    }
+  })
+}
+
+
+
+</script>
 
 <template>
 
@@ -57,7 +76,7 @@
           </p>
         </div>
 
-        <form action="#" class="mt-8 grid grid-cols-6 gap-6">
+        <div class="mt-8 grid grid-cols-6 gap-6">
         <div class="col-span-6">
             <h2 class="mt-6 text-2xl font-bold text-slate-900 sm:text-3xl md:text-4xl">
               Elige tu plataforma favorita 👇🏼
@@ -66,7 +85,8 @@
           <div class="col-span-6 flex flex-col gap-2">
           <div class=" ">
 
-            <button class="flex gap-2 items-center justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-white text-slate-900 border border-2 border-color-black cursor-pointer w-full" >
+            <button @click="loginthroughOTP()"
+            class="flex gap-2 items-center justify-center rounded-lg text-sm font-semibold py-2 px-4 bg-white text-slate-900 border border-2 border-color-black cursor-pointer w-full" >
               <LogosTheGoogle
                 class="w-4 h-4 text-slate-900"
               ></LogosTheGoogle>
@@ -124,7 +144,7 @@
               </div>
             </blockquote>
           </div>
-        </form>
+        </div>
       </div>
     </main>
   </div>
