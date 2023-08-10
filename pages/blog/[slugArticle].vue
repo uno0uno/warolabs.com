@@ -31,7 +31,7 @@ const {
   <div
   v-else
     v-for="article in articles"
-    :key="article.slug"
+    :key="article.article_slug"
     class="flex flex-col gap-3 sm:gap-6  justify-start items-start pb-12"
   >
     <div class="flex flex-col gap-2 sm:gap-8 ">
@@ -41,20 +41,24 @@ const {
       <div class="">
             <img itemprop="image"
             class="md:rounded-xl rounded-xl object-cover w-full"
-            v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.cover}`, 'alt':article.slug}">
+            v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.article_cover}`, 'alt':article.article_slug}">
       </div>
       <div class=" flex flex-col sm:flex-row  w-full sm:px-10 ">
           <div class=" flex gap-4 items-start">
                 <img itemprop="image"
                 class="rounded-lg object-cover w-20"
-                v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator.profile_pic}`, 'alt':article.slug}">
+                v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator_profile_pic}`, 'alt':article.creator_full_name}">
                 <div class="flex flex-col">
                   <p class="text-normal sm:text-lg font-bold">
-                    {{article.creator.full_name}}
+                    {{article.creator_full_name}}
                   </p>
                   <p class="text-sm sm:text-normal sm:w-3/4">
-                    Publicadó: {{article.created_at}}
+                    Publicadó: {{article.article_created_at}}
                   </p>
+                <div class="flex gap-1 items-center">
+                  <LogosTheEye class="h-42w-4 md:h-4 md:w-4 text-slate-900"/>
+                  <p class="font-normal text-sm sm:text-normal text-slate-600">{{ article.article_views }}</p>
+                </div>  
                 </div>
           </div >
           <div class="w-auto">
@@ -69,7 +73,7 @@ const {
 
 
     <article class="article-style sm:px-10">
-            <div v-html="md.render(article.content)"></div>
+            <div v-html="md.render(article.article_content)"></div>
     </article>
     <CommonTheFeedBackBox 
     v-bind:id="route.path"
@@ -79,14 +83,14 @@ const {
         <Title>{{ article.title }} | Waro Colombia </Title>
         <Meta
           property="og:title"
-          v-bind="{ content: `${article.title} | Waro Colombia` }"
+          v-bind="{ content: `${article.article_title} | Waro Colombia` }"
         />
-        <Meta name="description" v-bind="{ content: `${article.description_seo}` }" />
-        <Meta property="og:description" :content="article.description_seo" />
+        <Meta name="description" v-bind="{ content: `${article.article_description_seo}` }" />
+        <Meta property="og:description" :content="article.article_description_seo" />
         <Meta
           property="og:image"
           v-bind="{
-            content: `https://warocolombia.infura-ipfs.io/ipfs/${article.cover}`,
+            content: `https://warocolombia.infura-ipfs.io/ipfs/${article.article_cover}`,
           }"
         />
         <Meta name="twitter:card" content="summary_large_image" />

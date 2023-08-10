@@ -12,21 +12,17 @@ async function getSlug(value) {
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const id = await getId(query.slug);
-  const slug = await getSlug(query.slug);
+  const id_input = await getId(query.slug);
+  const slug_input = await getSlug(query.slug);
   const supabase = createClient(
     process.env.NUXT_PUBLIC_SUPABASE_URL,
     process.env.NUXT_PUBLIC_SUPABASE_ANON_KEY
   );
   try {
-    const { data, error } = await supabase
-      .from('articles')
-      .select('*,creator(*)')
-      .eq('id',id)
-      .eq('slug',slug)
-      .is('is_active', true)
-      .is('published', true)
-      .is('draft', false);
+    let { data, error } = await supabase.rpc('get_article_and_increment_view', {
+      id_input, 
+      slug_input
+    })
 
     if (error) {
       return error;
