@@ -32,19 +32,19 @@ const {
   v-else
     v-for="article in articles"
     :key="article.slug"
-    class="flex flex-col gap-3 sm:gap-8 justify-start  items-start font-principal pb-12"
+    class="flex flex-col gap-3 sm:gap-6  justify-start items-start pb-12"
   >
-    <div class="flex flex-col gap-2 sm:gap-4">
+    <div class="flex flex-col gap-2 sm:gap-8 ">
+    <div class="sm:px-10">
       <CommonTheBreadcrumb></CommonTheBreadcrumb>
-      <div class="md:col-span-6 lg:col-span-5">
+      </div>
+      <div class="">
             <img itemprop="image"
             class="md:rounded-xl rounded-xl object-cover w-full"
             v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.cover}`, 'alt':article.slug}">
       </div>
-    </div>
-
-    <div class="not-prose flex flex-col sm:flex-row justify-between w-full gap-4">
-          <div class="not-prose flex gap-4 items-start sm:px-10">
+      <div class=" flex flex-col sm:flex-row  w-full sm:px-10 ">
+          <div class=" flex gap-4 items-start">
                 <img itemprop="image"
                 class="rounded-lg object-cover w-20"
                 v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator.profile_pic}`, 'alt':article.slug}">
@@ -52,7 +52,7 @@ const {
                   <p class="text-normal sm:text-lg font-bold">
                     {{article.creator.full_name}}
                   </p>
-                  <p class="text-sm sm:text-normal sm:w-1/2">
+                  <p class="text-sm sm:text-normal sm:w-3/4">
                     Publicadó: {{article.created_at}}
                   </p>
                 </div>
@@ -64,6 +64,9 @@ const {
             </CommonTheShareBox>
           </div>
     </div>
+    </div>
+
+
 
     <article class="article-style sm:px-10">
             <div v-html="md.render(article.content)"></div>
