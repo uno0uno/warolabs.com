@@ -9,7 +9,7 @@
     v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/QmY3FXUVUSZ7imPfNEgBYGGkrnY6gWZe3LJe5tiB1WzVw4`, 'alt':` | waro colombia`}"
     class="h-56 w-full  sm:w-1/2 object-cover sm:h-64 rounded-lg"
   />
-  <div class="p-6 w-full  sm:w-1/2">
+  <div class="p-6 w-full sm:w-1/2">
     <div
       class="flex flex-col gap-6 mx-auto max-w-xl text-center ltr:sm:text-left rtl:sm:text-right"
     >

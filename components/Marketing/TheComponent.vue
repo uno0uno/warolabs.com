@@ -11,7 +11,7 @@
         </div>
 
         <div class="flex gap-4">
-          <div class=" relative flex flex-col items-center p-2 sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
+          <div class=" relative flex flex-col items-center p-2 py-4 sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
             <div class="p-4 bg-slate-900 rounded-lg">
               <LogosTheDisappointedFull class="h-4 w-4 md:h-6 md:w-6 text-white"/>
             </div>
@@ -22,7 +22,7 @@
               Paginas ofrecen dinero a cambio de esa "opinión"
             </p>
           </div>
-          <div class=" relative flex flex-col items-center p-2 sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
+          <div class=" relative flex flex-col items-center p-2 py-4  sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
             <div class="p-4 bg-slate-900 rounded-lg">
               <LogosTheTrash class="h-4 w-4 md:h-6 md:w-6 text-white"/>
             </div>
