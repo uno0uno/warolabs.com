@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     xslTips: false,
   },
   robots: {
+    credits: false,
     groups: [
       {
         userAgents: ['GPTBot'],
