@@ -29,16 +29,15 @@ export default defineNuxtConfig({
   },
   robots: {
     disallow: ['/api/*'],
-    credits: false,
-    groups: [
-      // block specific robots from specific pages
-      {
-        userAgents: ['GPTBot'],
-        disallow: ['/api/*'],
-        allow: ['/'],
-      },
-    ]
+    credits: false
   },
+  groups: [
+    {
+      userAgents: ['GPTBot'],
+      disallow: ['/api/*'],
+      allow: ['/'],
+    },
+  ],
   head: {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },

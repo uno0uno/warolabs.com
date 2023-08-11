@@ -6,7 +6,7 @@
 
     <NuxtLoadingIndicator />
 
-    <div class="mx-auto pb-2 px-4 md:px-16 lg:px-32 xl:px-32 2xl:px-[30rem]">
+    <div class="pb-2 px-4 md:px-16 lg:px-32 xl:px-32 2xl:px-[30rem]">
       <slot />
     </div>
 
