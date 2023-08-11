@@ -80,7 +80,7 @@ const {
     ></CommonTheFeedBackBox>
     
     <Head>
-        <Title>{{ article.title }} | Waro Colombia </Title>
+        <Title>{{ article.article_title }} | Waro Colombia </Title>
         <Meta
           property="og:title"
           v-bind="{ content: `${article.article_title} | Waro Colombia` }"

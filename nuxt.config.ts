@@ -28,16 +28,14 @@ export default defineNuxtConfig({
     xslTips: false,
   },
   robots: {
-    disallow: ['/api/*'],
-    credits: false
+    groups: [
+      {
+        userAgents: ['GPTBot'],
+        disallow: ['/api/*'],
+        allow: ['/'],
+      },
+    ]
   },
-  groups: [
-    {
-      userAgents: ['GPTBot'],
-      disallow: ['/api/*'],
-      allow: ['/'],
-    },
-  ],
   head: {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
