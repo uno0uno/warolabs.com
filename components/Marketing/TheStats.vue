@@ -36,7 +36,7 @@ const { title } = toRefs(props);
                 <h4 class="text-xl text-center font-bold leading-snug tracking-tight">
                   Viajeros Se Arrepienten
                 </h4>
-                <p class="text-gray-600 text-center">
+                <p class="text-gray-600 text-sm sm:text-lg  text-center">
                   Cuando visitaron una nueva ciudad no pudieron conocer más que los mismos lugares .
                 </p>
           </div>
@@ -47,7 +47,7 @@ const { title } = toRefs(props);
                 <h4 class="text-xl text-center font-bold leading-snug tracking-tight mb-1">
                   Conocen los mismos lugares
                 </h4>
-                <p class="text-gray-600 text-center">
+                <p class="text-gray-600 text-sm sm:text-lg  text-center">
                   Viajeros solo visitan una fracción de los lugares que quieren visitar.
                 </p>
           </div>

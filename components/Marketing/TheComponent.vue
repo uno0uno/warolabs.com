@@ -10,37 +10,26 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div class=" relative flex flex-col items-center p-6 gap-2 rounded-lg bg-slate-50"> 
+        <div class="flex gap-4">
+          <div class=" relative flex flex-col items-center p-2 sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
             <div class="p-4 bg-slate-900 rounded-lg">
-              <LogosTheClose class="h-6 w-6 md:h-6 md:w-6 text-white"/>
+              <LogosTheDisappointedFull class="h-4 w-4 md:h-6 md:w-6 text-white"/>
             </div>
-            <h4 class="text-xl font-bold leading-snug tracking-tight mb-1">
-              Inteligencia artificial
-            </h4>
-            <p class="text-gray-600 text-center">
-              Las reseñas falsas generadas por IA están aumentando.
-            </p>
-          </div>
-          <div class=" relative flex flex-col items-center p-6 gap-2 rounded-lg bg-slate-50"> 
-            <div class="p-4 bg-slate-900 rounded-lg">
-              <LogosTheDisappointed class="h-6 w-6 md:h-6 md:w-6 text-white"/>
-            </div>
-            <h4 class="text-xl font-bold leading-snug tracking-tight mb-1">
+            <h4 class="text-xl text-center font-bold leading-snug tracking-tight mb-1">
               Reseñas pagas
             </h4>
-            <p class="text-gray-600 text-center">
+            <p class="text-gray-600 text-sm sm:text-lg text-center">
               Paginas ofrecen dinero a cambio de esa "opinión"
             </p>
           </div>
-          <div class=" relative flex flex-col items-center p-6 gap-2 rounded-lg bg-slate-50"> 
+          <div class=" relative flex flex-col items-center p-2 sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
             <div class="p-4 bg-slate-900 rounded-lg">
-              <LogosTheTrash class="h-6 w-6 md:h-6 md:w-6 text-white"/>
+              <LogosTheTrash class="h-4 w-4 md:h-6 md:w-6 text-white"/>
             </div>
-            <h4 class="text-xl font-bold leading-snug tracking-tight mb-1">
+            <h4 class="text-xl text-center font-bold leading-snug tracking-tight mb-1">
               Spam con viajes
             </h4>
-            <p class="text-gray-600 text-center">
+            <p class="text-gray-600 text-sm sm:text-lg  text-center">
               correos electronicos relacionado con viajes (3 de 5) son estafas.
             </p>
           </div>

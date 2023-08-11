@@ -17,7 +17,7 @@
         Las inscripciones al programa están cerradas.
       </h2>
 
-       <p class="hidden text-gray-500 md:block">
+       <p class="hidden  text-sm sm:text-lg text-gray-500 md:block">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Et, egestas
         tempus tellus
       </p>
