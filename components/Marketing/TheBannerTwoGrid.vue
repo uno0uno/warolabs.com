@@ -8,53 +8,23 @@ import { ReceiptPercentIcon } from '@heroicons/vue/24/outline'
 <template>
     <div class="sm:flex justify-between ">
             <div class="relative mx-auto flex flex-col items-center max-w-container gap-6">
-                    <div class="  text-base font-semibold ">
-                        <div class="flex gap-4">
-                            <div class="flex items-center gap-1">
-                                <ReceiptPercentIcon class="h-4 w-4 md:h-4 md:w-4 text-slate-900"/>
-                                <p class="text-sm text-slate-500"
-                                >$800 COP</p>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <BoltIcon class="h-4 w-4 md:h-4 md:w-4 text-slate-900"/>
-                                <p class="text-sm text-slate-500"
-                                >Simple y 100% online.</p>
-                            </div>
-                        </div>
-                    </div>
-                        <h1 class=" text-center text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-8xl">
-                            Ahora puedes
-
-        
+                        <h1 class=" text-center text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl md:text-7xl">
                                 <span
                                     class="
-                                    text-4xl sm:text-6xl md:text-8xl font-semibold italic text-slate-900 py-2
+                                    text-4xl sm:text-6xl md:text-7xl font-ultrabold text-slate-900 py-2
                                     before:block
                                     before:absolute
                                     before:rounded-xl
                                     before:-inset-0.5
                                     before:-skew-y-1
-                                    before:bg-slate-900
                                     relative
                                     inline-block
                                     "
                                 >
-                                    <span class="relative text-white">cobrar en dolares.</span>
+                                    <span class="relative text-black">Tú guía cultural de Bogotá</span>
                                 </span>
 
                         </h1>
-                    <p class="col-start-1 row-start-3 max-w-lg text-center text-normal text-slate-900">
-                        Permite que tus clientes escaneen tu codigo Qr, nosotros convertimos y consignamos tu dinero en el banco que desees.
-                    </p>
-                    <div class="flex flex-col w-full sm:w-auto space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                        <a class="inline-flex justify-center rounded-lg text-sm font-semibold py-3 px-4 bg-slate-900 text-white hover:bg-slate-700 cursor-pointer">
-                            <span>Registrarme gratis<!-- --> 
-                                <span aria-hidden="true" class="hidden text-slate-400 sm:inline">
-                                    →
-                                </span>
-                            </span>
-                        </a>
-                    </div>
             </div>
     </div>
 

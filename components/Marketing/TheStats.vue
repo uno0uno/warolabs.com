@@ -1,4 +1,12 @@
-<script setup></script>
+<script setup>
+
+const props = defineProps({
+  title: { type: String },
+});
+
+const { title } = toRefs(props);
+
+</script>
 
 <template>
   <section class="">
@@ -13,62 +21,37 @@
             sm:text-5xl
           "
         >
-          Read trusted reviews from our customers
+          {{title}}
         </h2>
 
-        <p class="mt-4 text-slate-500 sm:text-xl">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
-          dolores laborum labore provident impedit esse recusandae facere libero
-          harum sequi.
-        </p>
       </div>
 
       <div class="mt-8 sm:mt-12">
-        <dl class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          <div
-            class="flex flex-col rounded-lg bg-slate-50 px-4 py-8 text-center"
-          >
-            <dt class="order-last text-sm sm:text-lg font-medium text-slate-900">
-              Total Sales
-            </dt>
+        <dl class="flex flex-col sm:flex-row gap-5">
 
-            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
-              $4.8
-            </dd>
+          <div class=" flex flex-col items-center p-6 gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
+                <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
+                  63%
+                </dd>
+                <h4 class="text-xl text-center font-bold leading-snug tracking-tight">
+                  Viajeros Se Arrepienten
+                </h4>
+                <p class="text-gray-600 text-center">
+                  Cuando visitaron una nueva ciudad no pudieron conocer más que los mismos lugares .
+                </p>
           </div>
-          <div
-            class="flex flex-col rounded-lg bg-slate-50 px-4 py-8 text-center"
-          >
-            <dt class="order-last text-sm sm:text-lg font-medium text-slate-900">
-              Total Sales
-            </dt>
+          <div class="lex flex-col items-center p-6 gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
+                <dd class="text-4xl text-center font-extrabold text-slate-900 md:text-5xl">
+                  72%
+                </dd>
+                <h4 class="text-xl text-center font-bold leading-snug tracking-tight mb-1">
+                  Conocen los mismos lugares
+                </h4>
+                <p class="text-gray-600 text-center">
+                  Viajeros solo visitan una fracción de los lugares que quieren visitar.
+                </p>
+          </div>
 
-            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
-              $4.8
-            </dd>
-          </div>
-          <div
-            class="flex flex-col rounded-lg bg-slate-50 px-4 py-8 text-center"
-          >
-            <dt class="order-last text-sm sm:text-lg font-medium text-slate-900">
-              Total Sales
-            </dt>
-
-            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
-              $4.8
-            </dd>
-          </div>
-          <div
-            class="flex flex-col rounded-lg bg-slate-50 px-4 py-8 text-center"
-          >
-            <dt class="order-last text-sm sm:text-lg font-medium text-slate-900">
-              Total Sales
-            </dt>
-
-            <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
-              $4.8
-            </dd>
-          </div>
         </dl>
       </div>
     </div>

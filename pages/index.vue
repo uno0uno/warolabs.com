@@ -1,14 +1,25 @@
 <script setup>
+const h2 = ref('¿Cansado de los mismos lugares?');
+const stats = reactive({
+  number1: '60%',
+  title1: '60%',
+  description1: '60%',
+})
 
 </script>
 
 <template>
-  <div class="flex flex-col gap-14 sm:gap-24 py-6 sm:py-12">
+  <div class="flex flex-col gap-10 sm:gap-24 py-6 sm:pb-12">
     
     <MarketingTheBannerTwoGrid></MarketingTheBannerTwoGrid>
-    <MarketingTheTestimonial></MarketingTheTestimonial>
-    <MarketingTheStats></MarketingTheStats>
+    <MarketingTheCtaOne></MarketingTheCtaOne>
+    <MarketingTheStats
+      v-bind:title="h2"
+    ></MarketingTheStats>
     <MarketingTheComponent></MarketingTheComponent>
+    <MarketingTheTestimonial></MarketingTheTestimonial>
+
+    
     <MarketingTheLogoCloud></MarketingTheLogoCloud>
   </div>
 </template>
