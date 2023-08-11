@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 function getArticlesWithKey(articles) {
   const articlesWithKey = articles.map((article) => ({
-    slugId: `/articulos/${article.slug}-PUB${article.id}`
+    slugId: `/blog/${article.slug}-PUB${article.id}`
   }));
 
   return articlesWithKey;
