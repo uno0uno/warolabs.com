@@ -28,7 +28,7 @@ const { title } = toRefs(props);
           text-primary-500
           "
         >
-          {{title}}
+          ¿Cansado de los <br /> mismos lugares?
         </h2>
 
       </div>
@@ -36,24 +36,24 @@ const { title } = toRefs(props);
       <div class="mt-8 sm:mt-12">
         <dl class="flex  gap-4">
 
-          <div class=" flex flex-col items-center p-2 py-4 gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
+          <div class=" flex flex-col items-center p-4 sm:p-6 gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
                 <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
                   63%
                 </dd>
-                <h4 class="text-md text-center lg:text-lg font-bold text-primary-500">
+                <h3>
                   Viajeros se arrepienten
-                </h4>
+                </h3>
                 <p class="p-cards">
                   Cuando visitaron una nueva ciudad no pudieron conocer más que los mismos lugares .
                 </p>
           </div>
-          <div class="flex flex-col items-center p-2 py-4 gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
+          <div class="flex flex-col p-4 sm:p-6 items-center gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
                 <dd class="text-4xl text-center font-extrabold text-slate-900 md:text-5xl">
                   72%
                 </dd>
-                <h4 class="text-md text-center  lg:text-lg font-bold text-primary-500">
+                <h3 >
                   Conocen lo mismo
-                </h4>
+                </h3>
                 <p class="p-cards">
                   Viajeros solo visitan una fracción de los lugares que quieren visitar.
                 </p>

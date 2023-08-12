@@ -32,8 +32,7 @@
               relative
               flex flex-col
               items-center
-              p-2
-              py-4
+              p-4
               sm:p-6
               gap-2
               rounded-lg
@@ -41,17 +40,9 @@
               w-1/2
             "
           >
-            <h4
-              class="
-                text-xl text-center
-                font-bold
-                leading-snug
-                tracking-tight
-                mb-1
-              "
-            >
+            <h3>
               Reseñas pagas
-            </h4>
+            </h3>
             <p class="p-cards">
               Ves una opinión, pero no sabes si es real. Muchas de ellas son
               pagas
@@ -62,8 +53,7 @@
               relative
               flex flex-col
               items-center
-              p-2
-              py-4
+              p-4
               sm:p-6
               gap-2
               rounded-lg
@@ -71,17 +61,9 @@
               w-1/2
             "
           >
-            <h4
-              class="
-                text-xl text-center
-                font-bold
-                leading-snug
-                tracking-tight
-                mb-1
-              "
-            >
+            <h3>
               Spam con viajes
-            </h4>
+            </h3>
             <p class="p-cards">
               Casi dos tercios de los correos electrónicos de viaje son spam.
             </p>

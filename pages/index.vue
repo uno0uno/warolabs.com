@@ -1,5 +1,5 @@
 <script setup>
-const h2 = ref('¿Cansado de los mismos lugares?');
+const h2 = ref('¿Cansado de los <br /> mismos lugares?');
 const stats = reactive({
   number1: '60%',
   title1: '60%',

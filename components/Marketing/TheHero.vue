@@ -6,7 +6,8 @@
       class="
         flex
         flex-col
-        gap-4
+        gap-0
+        sm:gap-4
         text-left
         w-full
         shrink-0
