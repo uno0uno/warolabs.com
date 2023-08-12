@@ -65,7 +65,7 @@
               Spam con viajes
             </h3>
             <p class="p-cards">
-              Casi dos tercios de los correos electrónicos de viaje son spam.
+              Casi dos tercios de los correos electrónicos de viaje son spam
             </p>
           </div>
         </div>
