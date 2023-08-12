@@ -4,7 +4,7 @@
   <nav class="bg-white z-20 top-0 border-b-2 pb-2">
     <div
       class="
-        flex flex-col sm:flex-row
+        flex
         sm:items-center
         justify-between
         mx-auto
@@ -46,7 +46,9 @@
           <ul
             class="
               flex
-              justify-start
+              justify-end
+              px-2
+              sm:p-0
               items-center
               gap-4
               text-lg

@@ -40,7 +40,7 @@
               w-1/2
             "
           >
-            <h3>
+            <h3 class="text-center font-semibold">
               Reseñas pagas
             </h3>
             <p class="p-cards">
@@ -61,7 +61,7 @@
               w-1/2
             "
           >
-            <h3>
+            <h3 class="text-center font-semibold">
               Spam con viajes
             </h3>
             <p class="p-cards">

@@ -40,7 +40,7 @@ const { title } = toRefs(props);
                 <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
                   63%
                 </dd>
-                <h3>
+                <h3 class="text-center font-semibold">
                   Viajeros se arrepienten
                 </h3>
                 <p class="p-cards">
@@ -51,7 +51,7 @@ const { title } = toRefs(props);
                 <dd class="text-4xl text-center font-extrabold text-slate-900 md:text-5xl">
                   72%
                 </dd>
-                <h3 >
+                <h3 class="text-center font-semibold">
                   Conocen lo mismo
                 </h3>
                 <p class="p-cards">
