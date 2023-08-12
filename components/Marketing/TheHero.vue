@@ -18,16 +18,9 @@
       "
     >
       <h1
-        class="
-          text-4xl
-          font-medium
-          tracking-tight
-          sm:text-6xl md:text-7xl
-          text-slate-900
-        "
+        class="text-2xl leading-[1.6rem] font-bold tracking-tight text-primary-500 sm:text-4xl sm:leading-[3rem] lg:text-6xl"
       >
-        <span class="font-bold text-yellow-500"> La guía cultural</span>  <span class="font-bold text-indigo-800"> para viajeros que <br class="hidden md:block" /> quieren explorar</span> 
-        <span class="font-bold text-red-600"> Bogotá</span> 
+         La guía cultura para viajeros que <br class="hidden md:block" /> quieren explorar Bogotá
       </h1>
       <div class="flex justify-center">
       <p
