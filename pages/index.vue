@@ -9,7 +9,7 @@ const stats = reactive({
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 sm:gap-20 sm:pb-12">
+  <div class="flex flex-col gap-12 sm:gap-20 sm:pb-12">
     <MarketingTheHero></MarketingTheHero>
     <MarketingTheStats
       v-bind:title="h2"

@@ -22,7 +22,7 @@
               text-primary-500
             "
           >
-            Internet esta repleto de reseñas <br class="hidden md:block" /> y calificaciones falsas
+            Internet esta repleto de reseñas falsas
           </h2>
         </div>
 
@@ -41,11 +41,6 @@
               w-1/2
             "
           >
-            <div class="p-4 bg-slate-900 rounded-lg">
-              <LogosTheDisappointedFull
-                class="h-4 w-4 md:h-6 md:w-6 text-white"
-              />
-            </div>
             <h4
               class="
                 text-xl text-center
@@ -57,7 +52,7 @@
             >
               Reseñas pagas
             </h4>
-            <p class="text-gray-600 text-sm sm:text-lg text-center">
+            <p class="p-cards">
               Ves una opinión, pero no sabes si es real. Muchas de ellas son
               pagas
             </p>
@@ -76,9 +71,6 @@
               w-1/2
             "
           >
-            <div class="p-4 bg-slate-900 rounded-lg">
-              <LogosTheTrash class="h-4 w-4 md:h-6 md:w-6 text-white" />
-            </div>
             <h4
               class="
                 text-xl text-center
@@ -90,7 +82,7 @@
             >
               Spam con viajes
             </h4>
-            <p class="text-gray-600 text-sm sm:text-lg text-center">
+            <p class="p-cards">
               Casi dos tercios de los correos electrónicos de viaje son spam.
             </p>
           </div>

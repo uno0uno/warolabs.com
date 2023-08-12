@@ -43,18 +43,18 @@ const { title } = toRefs(props);
                 <h4 class="text-md lg:text-lg font-bold text-primary-500">
                   Viajeros se arrepienten
                 </h4>
-                <p class="text-gray-600 text-sm sm:text-lg  text-center">
+                <p class="p-cards">
                   Cuando visitaron una nueva ciudad no pudieron conocer más que los mismos lugares .
                 </p>
           </div>
-          <div class="lex flex-col text-sm sm:text-lg text-center p-2 py-4 gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
+          <div class="flex flex-col items-center p-2 py-4 gap-2 rounded-lg bg-slate-50 sm:w-1/2"> 
                 <dd class="text-4xl text-center font-extrabold text-slate-900 md:text-5xl">
                   72%
                 </dd>
                 <h4 class="text-md lg:text-lg font-bold text-primary-500">
                   Conocen lo mismo
                 </h4>
-                <p class="text-gray-600 text-sm sm:text-lg  text-center">
+                <p class="p-cards">
                   Viajeros solo visitan una fracción de los lugares que quieren visitar.
                 </p>
           </div>

@@ -1,9 +1,12 @@
 <script setup></script>
 
 <template>
-  <div class="flex flex-col lg:flex-row lg:items-center sm:justify-center">
+  <div class="flex flex-col pt-6  sm:pt-12 lg:flex-row sm:items-center sm:justify-center">
     <div
       class="
+        flex
+        flex-col
+        gap-4
         text-left
         w-full
         shrink-0
@@ -19,133 +22,67 @@
           font-medium
           tracking-tight
           sm:text-6xl md:text-7xl
-          text-primary-500
+          text-slate-900
         "
       >
-        <span class="font-bold text-teal-500"> La guía cultural</span> para viajeros que quieren explorar<br class="hidden md:block" />
-        <span class="font-bold text-yellow-500"> Bogotá</span> 
+        <span class="font-bold text-yellow-500"> La guía cultural</span>  <span class="font-bold text-indigo-800"> para viajeros que quieren explorar</span> <br class="hidden md:block" />
+        <span class="font-bold text-red-600"> Bogotá</span> 
       </h1>
-      <h2
-        class="hidden sm:block text-md font-semibold text-gray-800 sm:text-xl"
-      >
-        2 años  de trabajando con eventos culturales
-      </h2>
+      <div class="flex justify-center">
       <p
-        id="convert-3-v1-p"
         class="
           text-sm
           leading-[1.4rem]
           md:text-lg
           font-normal
+          sm:w-1/2
           md:leading-[1.8rem]
           text-gray-600
         "
       >
-        Deja de lidiar con críticas falsas &amp; calificaciones deshonestas. - - todas las recomendaciones son cuidadosamente seleccionadas por expertos locales.
+        Ofrecemos sugerencias personalizadas de lugares &amp; experiencias que se alinean con tus gustos a través de un pago único para que puedas disfrutarlo. 
       </p>
+      </div>
       <div class="relative space-y-5">
-        <div class="flex flex-col space-y-1 md:hidden">
-          <div class="flex items-center justify-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="w-5 h-5 w-3 h-3 text-green-500 mr-1.5"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="text-xs text-gray-400"
-              >Done in 2 hours, fast turn-around</span
+        <div class="flex flex-col space-y-1">
+          <div class="flex gap-2 items-center justify-start sm:justify-center">
+            <LogosTheCheck class="h-3 w-3 md:h-6 md:w-6 text-slate-900"/>
+            <span           
+            class="          
+          text-xs
+          leading-[1.4rem]
+          md:text-lg
+          font-normal
+          md:leading-[1.8rem]
+          text-gray-600"
+              >Verificamos con AI autenticidad de opinion</span
             >
           </div>
-          <div class="flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="w-5 h-5 w-3 h-3 text-green-500 mr-1.5"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <p class="text-xs font-normal text-gray-400">
-              Used by 20,691 happy customers
+          <div class="flex gap-2 items-center justify-start sm:justify-center">
+            <LogosTheCheck class="h-3 w-3 md:h-6 md:w-6 text-slate-900"/>
+            <p           
+              class="          
+            text-xs
+            leading-[1.4rem]
+            md:text-lg
+            font-normal
+            md:leading-[1.8rem]
+            text-gray-600">
+              Usamos analisis de sentimiento en lugar de calificación estandar
             </p>
-            <div class="flex items-center space-x-px ml-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-3 h-3 text-yellow-500"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-3 h-3 text-yellow-500"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-3 h-3 text-yellow-500"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-3 h-3 text-yellow-500"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                class="w-3 h-3 text-yellow-500"
-              >
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                ></path>
-              </svg>
-            </div>
+    
           </div>
-          <div class="flex items-center justify-start">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="w-5 h-5 w-3 h-3 text-green-500 mr-1.5"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span class="text-xs text-gray-400"
-              >3,439,182+ professional headshots already created</span
+          <div class="flex gap-2 items-center flex items-center justify-start sm:justify-center justify-start">
+            <LogosTheCheck class="h-3 w-3 md:h-6 md:w-6 text-slate-900"/>
+            <span 
+          class="          
+          text-xs
+          leading-[1.4rem]
+          md:text-lg
+          font-normal
+          md:leading-[1.8rem]
+          text-gray-600"
+              >Las recomendaciones son cuidadosamente seleccionadas por expertos locales</span
             >
           </div>
         </div>
@@ -159,7 +96,7 @@
               sm:justify-center sm:gap-6
             "
           >
-            <a href="/auth/login?redirect=%2Fapp" class=""
+            <a href="/" class=""
               ><button
                 role="button"
                 class="
@@ -171,7 +108,7 @@
                   gap-2
                   rounded-lg
                   border border-transparent
-                  bg-orange-500
+                  bg-slate-900
                   px-4
                   py-2
                   text-base
@@ -189,132 +126,12 @@
                   sm:w-auto
                 "
               >
-                <span class="block md:hidden">Start now</span>
-                <span class="hidden md:block">Get your headshots</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  class="h-5 w-5"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg></button
+                <span >Start now</span>
+                <LogosTheArrowRight class="h-5 w-5 text-white"/>
+  
+                </button
             ></a>
 
-          </div>
-        </div>
-        <div class="hidden md:flex items-center space-x-4">
-          <div class="flex -space-x-3 overflow-hidden">
-            <img
-              src="/_nuxt/img/avatar-01.f3da6f4.png"
-              alt=""
-              class="
-                inline-block
-                h-10
-                w-10
-                rounded-full
-                border-[3px] border-white
-              "
-            />
-            <img
-              src="/_nuxt/img/avatar-02.01b3db2.png"
-              alt=""
-              class="
-                inline-block
-                h-10
-                w-10
-                rounded-full
-                border-[3px] border-white
-              "
-            />
-            <img
-              src="/_nuxt/img/avatar-03.2ee9616.png"
-              alt=""
-              class="
-                inline-block
-                h-10
-                w-10
-                rounded-full
-                border-[3px] border-white
-              "
-            />
-            <img
-              src="/_nuxt/img/avatar-04.dbb3f5b.png"
-              alt=""
-              class="
-                inline-block
-                h-10
-                w-10
-                rounded-full
-                border-[3px] border-white
-              "
-            />
-            <img
-              src="/_nuxt/img/avatar-05.f0aa18d.png"
-              alt=""
-              class="
-                inline-block
-                h-10
-                w-10
-                rounded-full
-                border-[3px] border-white
-              "
-            />
-          </div>
-          <p class="mx-auto max-w-lg text-sm text-gray-500 lg:mx-0">
-            <strong>3,439,182</strong> AI headshots already created
-          </p>
-          <div class="flex">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="h-5 w-5 text-yellow-400"
-            >
-              <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              ></path></svg
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="h-5 w-5 text-yellow-400"
-            >
-              <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              ></path></svg
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="h-5 w-5 text-yellow-400"
-            >
-              <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              ></path></svg
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="h-5 w-5 text-yellow-400"
-            >
-              <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              ></path></svg
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="h-5 w-5 text-yellow-400"
-            >
-              <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              ></path>
-            </svg>
           </div>
         </div>
     
