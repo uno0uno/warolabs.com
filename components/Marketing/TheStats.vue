@@ -36,7 +36,7 @@ const { title } = toRefs(props);
       <div class="mt-8 sm:mt-12">
         <dl class="flex  gap-4">
 
-          <div class=" flex flex-col items-center p-4 sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
+          <div class=" flex flex-col items-center p-4 sm:p-6 gap-2 rounded-lg bg-slate-100 w-1/2"> 
                 <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
                   63%
                 </dd>
@@ -47,7 +47,7 @@ const { title } = toRefs(props);
                   Cuando visitaron una nueva ciudad no pudieron conocer más que los mismos lugares
                 </p>
           </div>
-          <div class="flex flex-col p-4 sm:p-6 items-center gap-2 rounded-lg bg-slate-50 w-1/2"> 
+          <div class="flex flex-col p-4 sm:p-6 items-center gap-2 rounded-lg bg-slate-100 w-1/2"> 
                 <dd class="text-4xl text-center font-extrabold text-slate-900 md:text-5xl">
                   72%
                 </dd>

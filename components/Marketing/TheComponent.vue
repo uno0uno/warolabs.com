@@ -36,7 +36,7 @@
               sm:p-6
               gap-2
               rounded-lg
-              bg-slate-50
+              bg-slate-100
               w-1/2
             "
           >
@@ -57,7 +57,7 @@
               sm:p-6
               gap-2
               rounded-lg
-              bg-slate-50
+              bg-slate-100
               w-1/2
             "
           >

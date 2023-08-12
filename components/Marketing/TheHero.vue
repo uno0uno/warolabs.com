@@ -26,7 +26,7 @@
           text-slate-900
         "
       >
-        <span class="font-bold text-yellow-500"> La guía cultural</span>  <span class="font-bold text-indigo-800"> para viajeros que quieren explorar</span> <br class="hidden md:block" />
+        <span class="font-bold text-yellow-500"> La guía cultural</span>  <span class="font-bold text-indigo-800"> para viajeros que <br class="hidden md:block" /> quieren explorar</span> 
         <span class="font-bold text-red-600"> Bogotá</span> 
       </h1>
       <div class="flex justify-center">
