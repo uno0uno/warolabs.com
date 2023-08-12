@@ -18,12 +18,11 @@
               text-3xl
               font-medium
               tracking-tight
-              sm:text-6xl
-              md:text-7xl
+              sm:text-5xl
               text-primary-500
             "
           >
-            Internet esta repleto de reseñas y calificaciones falsas
+            Internet esta repleto de reseñas <br class="hidden md:block" /> y calificaciones falsas
           </h2>
         </div>
 

@@ -24,7 +24,7 @@ const { title } = toRefs(props);
           text-3xl
           font-medium
           tracking-tight
-          sm:text-6xl md:text-7xl
+          sm:text-5xl
           text-primary-500
           "
         >
