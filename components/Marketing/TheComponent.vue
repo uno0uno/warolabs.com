@@ -22,7 +22,7 @@
               text-primary-500
             "
           >
-            Internet esta repleto de reseñas falsas
+            Internet esta repleto <br /> de reseñas falsas
           </h2>
         </div>
 

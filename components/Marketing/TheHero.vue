@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <div class="flex flex-col pt-6  sm:pt-12 lg:flex-row sm:items-center sm:justify-center">
+  <div class="flex flex-col pt-2  sm:pt-12 lg:flex-row sm:items-center sm:justify-center">
     <div
       class="
         flex
@@ -18,7 +18,7 @@
     >
       <h1
         class="
-          text-3xl
+          text-4xl
           font-medium
           tracking-tight
           sm:text-6xl md:text-7xl
@@ -31,7 +31,7 @@
       <div class="flex justify-center">
       <p
         class="
-          text-sm
+          text-m
           leading-[1.4rem]
           md:text-lg
           font-normal
@@ -55,7 +55,7 @@
           font-normal
           md:leading-[1.8rem]
           text-gray-600"
-              >Verificamos con AI autenticidad de opinion</span
+              >Verificamos con AI nuestras opiniones</span
             >
           </div>
           <div class="flex gap-2 items-center justify-start sm:justify-center">
@@ -68,7 +68,7 @@
             font-normal
             md:leading-[1.8rem]
             text-gray-600">
-              Usamos analisis de sentimiento en lugar de calificación estandar
+              Usamos analisis de sentimiento, segun opinion
             </p>
     
           </div>
@@ -82,7 +82,7 @@
           font-normal
           md:leading-[1.8rem]
           text-gray-600"
-              >Las recomendaciones son cuidadosamente seleccionadas por expertos locales</span
+              >expertos locales verifican recomendaciones</span
             >
           </div>
         </div>
@@ -126,7 +126,7 @@
                   sm:w-auto
                 "
               >
-                <span >Start now</span>
+                <span >Empezar gratis</span>
                 <LogosTheArrowRight class="h-5 w-5 text-white"/>
   
                 </button
