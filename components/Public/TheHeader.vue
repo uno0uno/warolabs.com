@@ -59,9 +59,6 @@
             <li>
               <NuxtLink :to="{ path: '/blog' }"> Blog </NuxtLink>
             </li>
-            <li>
-              <NuxtLink :to="{ path: '/blog' }"> Nosotros </NuxtLink>
-            </li>
           </ul>
         </div>
       </div>

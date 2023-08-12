@@ -11,14 +11,21 @@ const { title } = toRefs(props);
 <template>
   <section class="">
     <div class="mx-auto max-w-screen-xl">
-      <div class="mx-auto max-w-3xl text-center flex flex-col gap-6">
+      <div class="
+        text-left
+        w-full
+        shrink-0
+        space-y-3
+        md:text-center
+        lg:mx-0
+        sm:text-center">
         <h2
           class="
-            text-center text-4xl
-            font-bold
-            text-slate-900
-            tracking-tight
-            sm:text-5xl
+          text-3xl
+          font-medium
+          tracking-tight
+          sm:text-6xl md:text-7xl
+          text-primary-500
           "
         >
           {{title}}
@@ -33,7 +40,7 @@ const { title } = toRefs(props);
                 <dd class="text-4xl font-extrabold text-slate-900 md:text-5xl">
                   63%
                 </dd>
-                <h4 class="text-xl text-sm sm:text-lg text-center font-bold leading-snug tracking-tight">
+                <h4 class="text-md lg:text-lg font-bold text-primary-500">
                   Viajeros se arrepienten
                 </h4>
                 <p class="text-gray-600 text-sm sm:text-lg  text-center">
@@ -44,7 +51,7 @@ const { title } = toRefs(props);
                 <dd class="text-4xl text-center font-extrabold text-slate-900 md:text-5xl">
                   72%
                 </dd>
-                <h4 class="text-xl text-center font-bold leading-snug tracking-tight mb-1">
+                <h4 class="text-md lg:text-lg font-bold text-primary-500">
                   Conocen lo mismo
                 </h4>
                 <p class="text-gray-600 text-sm sm:text-lg  text-center">

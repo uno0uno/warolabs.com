@@ -9,9 +9,6 @@ function displayText(value) {
   return value.slice(0, 110) + '...';
 }
 
-async function openCombo(id, slug) {
-  await navigateTo({ path: `/promociones/${slug}-PROM${id}` });
-}
 </script>
 
 <template>
@@ -31,7 +28,7 @@ async function openCombo(id, slug) {
       :key="item.id"
       class="p-4 w-full h-full rounded-lg cursor-pointer bg-slate-100 border-2"
     >
-      <div @click="openCombo(item.id, item.slug)" class="flex flex-col gap-2">
+      <div class="flex flex-col gap-2">
         <div class="">
           <p class="mb-0 text-2xl md:text-3xl font-bold text-slate-900">
             {{ item.name }}
