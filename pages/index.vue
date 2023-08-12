@@ -9,7 +9,7 @@ const stats = reactive({
 </script>
 
 <template>
-  <div class="flex flex-col gap-6 sm:gap-24 py-4 sm:pb-12">
+  <div class="flex flex-col gap-6 sm:gap-14 py-4 sm:pb-12">
     
     <MarketingTheBannerTwoGrid></MarketingTheBannerTwoGrid>
     <MarketingTheCtaOne></MarketingTheCtaOne>
