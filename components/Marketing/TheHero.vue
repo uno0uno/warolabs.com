@@ -18,7 +18,7 @@
       "
     >
       <h1
-        class="text-3xl leading-8 font-bold tracking-tight text-primary-500 sm:text-4xl sm:leading-[3rem] lg:text-6xl"
+        class="text-4xl leading-10 font-bold tracking-tight text-primary-500 sm:text-4xl sm:leading-[3rem] lg:text-6xl"
       >
          La guía cultura para viajeros que <br class="hidden md:block" /> quieren explorar Bogotá
       </h1>
