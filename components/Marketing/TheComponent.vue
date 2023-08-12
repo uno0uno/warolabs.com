@@ -19,7 +19,7 @@
               Reseñas pagas
             </h4>
             <p class="text-gray-600 text-sm sm:text-lg text-center">
-              Paginas ofrecen dinero a cambio de esa "opinión"
+              Ves una opinión, pero no sabes si es real. Muchas de ellas son pagas
             </p>
           </div>
           <div class=" relative flex flex-col items-center p-2 py-4  sm:p-6 gap-2 rounded-lg bg-slate-50 w-1/2"> 
@@ -30,7 +30,7 @@
               Spam con viajes
             </h4>
             <p class="text-gray-600 text-sm sm:text-lg  text-center">
-              correos electronicos relacionado con viajes (3 de 5) son estafas.
+              Casi dos tercios de los correos electrónicos de viaje son spam.
             </p>
           </div>
         </div>

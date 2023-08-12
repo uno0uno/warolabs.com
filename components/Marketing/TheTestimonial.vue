@@ -7,14 +7,14 @@
   <div class="mx-auto max-w-screen-xl">
     <div class="flex">
       <blockquote class="rounded-lg bg-slate-50 p-4">
-        <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-24">
+        <div class="flex w-full flex-col sm:flex-row items-center gap-2 sm:gap-8">
           <img
             alt="Man"
-            src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1180&q=80"
-            class="h-16 w-16 sm:h-52 sm:w-52 rounded-lg object-cover"
+            v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/QmY3FXUVUSZ7imPfNEgBYGGkrnY6gWZe3LJe5tiB1WzVw4`, 'alt':` | waro colombia`}"
+            class="h-56 w-full  sm:w-1/2 object-cover sm:h-64 rounded-lg"
           />
 
-          <div class="flex flex-col gap-4 text-center sm:text-start">
+          <div class="flex w-full  sm:w-1/2 flex-col gap-4 text-center sm:text-start">
           <p class="text-xl sm:text-left text-center font-bold leading-snug tracking-tight mb-1">
             Felipe Gostling
           </p>
