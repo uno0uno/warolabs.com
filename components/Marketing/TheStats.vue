@@ -33,7 +33,7 @@ const { title } = toRefs(props);
       </div>
 
       <div class="mt-8 sm:mt-12">
-        <dl class="flex flex-col sm:flex-row gap-4 divide-y-4 divide-x-4 divide-dashed">
+        <dl class="flex flex-col sm:flex-row">
           <div
             class="
               flex
@@ -41,8 +41,9 @@ const { title } = toRefs(props);
               p-4
               sm:p-6
               gap-4
-              rounded-lg
               sm:w-1/2
+              border-y-4
+              border-dashed
             "
           >
             <dd class="text-5xl font-extrabold text-slate-900 md:text-8xl">
@@ -63,8 +64,10 @@ const { title } = toRefs(props);
               p-4
               sm:p-6
               gap-4
-              rounded-lg
               sm:w-1/2
+              border-b-4
+              sm:border-y-4
+              border-dashed
             "
           >
             <dd
