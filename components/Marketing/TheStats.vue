@@ -9,7 +9,8 @@ const { title } = toRefs(props);
 <template>
   <section class="">
     <div class="mx-auto max-w-screen-xl">
-      <div class="max-w-5xl mx-auto text-center">
+      <div class="        w-full
+        sm:w-4/5 mx-auto text-center">
         <h2 class="text-m font-semibold"> Viajan &amp; no exploran</h2>
         <p
           class="

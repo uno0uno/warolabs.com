@@ -10,6 +10,8 @@
         sm:gap-4
         text-left
         w-full
+        sm:w-4/5
+        md:w-5/7
         shrink-0
         space-y-3
         md:text-center
@@ -18,9 +20,9 @@
       "
     >
       <h1
-        class="text-4xl leading-10 font-bold tracking-tight text-primary-500 sm:text-4xl sm:leading-[3rem] lg:text-6xl"
+        class="text-4xl leading-10 font-bold tracking-tight text-primary-500 sm:text-4xl md:text-5xl lg:text-6xl  sm:leading-12"
       >
-         La guía cultura para viajeros que <br class="hidden md:block" /> quieren explorar Bogotá
+         Tú guía cultura para viajeros que quieren explorar Bogotá
       </h1>
       <div class="flex justify-center">
       <p
