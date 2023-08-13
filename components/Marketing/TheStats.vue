@@ -15,7 +15,7 @@ const { title } = toRefs(props);
           class="
             mt-6
             text-3xl
-            font-medium
+            font-semibold
             lg:leading-[54px]
             tracking-tight
             sm:text-4xl
