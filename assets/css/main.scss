@@ -8,10 +8,13 @@
 }
 
 .p-cards{
-  @apply text-center    
+  @apply 
+  text-center    
   text-sm
+  sm:px-12
+  lg:px-0
   leading-[1.4rem]
-  md:text-lg
+  sm:text-lg
   font-normal
   md:leading-[1.8rem]
   text-gray-600
