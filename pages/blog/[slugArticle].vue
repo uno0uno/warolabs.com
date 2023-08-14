@@ -32,7 +32,7 @@ const {
   v-else
     v-for="article in articles"
     :key="article.article_slug"
-    class="flex flex-col gap-8 justify-start items-start pb-12"
+    class="flex flex-col gap-8 justify-start sm:px-20 items-start pb-12"
   >
     <div class="flex flex-col gap-6 w-full ">
     <div class="">
@@ -43,7 +43,7 @@ const {
             class="md:rounded-xl rounded-xl object-cover w-full"
             v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.article_cover}`, 'alt':article.article_slug}">
       </div>
-      <div class=" flex flex-col sm:flex-row gap-4 ">
+      <div class=" flex  flex-col sm:flex-row gap-4 ">
           <div class=" flex gap-4">
                 <img itemprop="image"
                 class="rounded-lg object-cover w-20"
@@ -75,10 +75,9 @@ const {
     <article class="article-style">
             <div v-html="md.render(article.article_content)"></div>
     </article>
-    <CommonTheFeedBackBox 
+        <CommonTheFeedBackBox 
     v-bind:id="route.path"
     ></CommonTheFeedBackBox>
-    
     <Head>
         <Title>{{ article.article_title }} | Waro Colombia </Title>
         <Meta
@@ -97,4 +96,5 @@ const {
     </Head>
 
   </div>
+  
 </template>
