@@ -47,7 +47,7 @@ const { title } = toRefs(props);
               border-dashed
             "
           >
-            <dd class="text-5xl font-extrabold text-slate-900 md:text-8xl">
+            <dd class="text-5xl font-extrabold text-slate-900 sm:text-6xl xl:text-7xl">
               63%
             </dd>
             <div class="flex flex-col gap-2">
@@ -72,12 +72,7 @@ const { title } = toRefs(props);
             "
           >
             <dd
-              class="
-                text-5xl text-center
-                font-extrabold
-                text-slate-900
-                md:text-8xl
-              "
+              class="text-5xl font-extrabold text-slate-900 sm:text-6xl xl:text-7xl"
             >
               72%
             </dd>
