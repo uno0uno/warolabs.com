@@ -32,7 +32,7 @@ const {
   v-else
     v-for="article in articles"
     :key="article.article_slug"
-    class="flex flex-col gap-8 justify-start sm:px-20 items-start pb-12"
+    class="flex flex-col gap-8 justify-start sm:px-32 items-start pb-12"
   >
     <div class="flex flex-col gap-6 w-full ">
     <div class="">
