@@ -4,14 +4,15 @@
   <section>
     <div class="max-w-screen-xl">
       <div class="grid grid-cols-1 gap-8 items-center gap-x-4">
-        <div       class="
-        w-full
-        shrink-0
-        space-y-3
-        text-center
-        lg:mx-0
-        sm:text-center
-      ">
+        <div       
+        class="
+          w-full
+          shrink-0
+          space-y-3
+          sm:text-center
+          lg:mx-0
+          sm:text-center
+        ">
 
           <h2
             class="
@@ -32,7 +33,8 @@
           <div
             class="
               relative
-              flex flex-col
+              flex 
+              flex-col
               items-center
               p-4
               sm:p-6
