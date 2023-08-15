@@ -28,11 +28,12 @@ const {
   <div v-else-if="error">Error al cargar los datos: {{ error }}</div>
   <div v-else-if="articles.length === 0">Not found</div>
   <div v-else-if="articles.code == '22P02'">Not found</div>
-  <div
+  <article
   v-else
     v-for="article in articles"
     :key="article.article_slug"
     class="flex flex-col gap-8 justify-start sm:px-32 items-start pb-12"
+    itemscope itemtype="http://schema.org/BlogPosting"
   >
     <div class="flex flex-col gap-6 w-full ">
     <div class="">
@@ -48,11 +49,21 @@ const {
                 <img itemprop="image"
                 class="rounded-lg object-cover w-20"
                 v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator_profile_pic}`, 'alt':article.creator_full_name}">
-                <div class="flex flex-col">
-                  <p class="text-normal sm:text-lg font-bold">
-                    {{article.creator_full_name}}
-                  </p>
-                  <p class="text-sm sm:text-normal sm:w-3/4">
+                <div 
+                
+                class="flex flex-col">
+                  <div
+                  itemprop="author"
+                  >
+                    <p 
+                    itemprop="name"
+                    class="text-normal sm:text-lg font-bold">
+                      {{article.creator_full_name}}
+                    </p>
+                  </div>
+                  <p 
+                  itemprop="datePublished"
+                  class="text-sm sm:text-normal w-3/4">
                     Publicadó: {{article.article_created_at}}
                   </p>
                 <div class="flex gap-1 items-center">
@@ -72,9 +83,9 @@ const {
 
 
 
-    <article class="article-style">
+    <div class="article-style">
             <div v-html="md.render(article.article_content)"></div>
-    </article>
+    </div>
         <CommonTheFeedBackBox 
     v-bind:id="route.path"
     ></CommonTheFeedBackBox>
@@ -95,6 +106,6 @@ const {
         <Meta name="twitter:card" content="summary_large_image" />
     </Head>
 
-  </div>
+  </article>
   
 </template>

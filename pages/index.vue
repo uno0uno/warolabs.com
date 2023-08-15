@@ -15,9 +15,6 @@ const stats = reactive({
       v-bind:title="h2"
     ></MarketingTheStats>
     <MarketingTheComponent></MarketingTheComponent>
-    <MarketingTheTestimonial></MarketingTheTestimonial>
-
-    
     <MarketingTheLogoCloud></MarketingTheLogoCloud>
   </div>
 </template>
