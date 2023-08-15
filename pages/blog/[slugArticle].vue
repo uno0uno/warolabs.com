@@ -38,7 +38,7 @@ const {
     <div class="flex flex-col gap-6 w-full ">
     <div class="">
       <CommonTheBreadcrumb></CommonTheBreadcrumb>
-      <meta itemprop="name" v-bind="{'content':`${article.article_title}`}">
+      <meta itemprop="headline" v-bind="{'content':`${article.article_title}`}">
        <meta itemprop="description" v-bind="{'content':`${article.article_description_seo}`}">
       </div>
       <div class="">
