@@ -38,6 +38,8 @@ const {
     <div class="flex flex-col gap-6 w-full ">
     <div class="">
       <CommonTheBreadcrumb></CommonTheBreadcrumb>
+      <meta itemprop="name" v-bind="{'content':`${article.article_title}`}">
+       <meta itemprop="description" v-bind="{'content':`${article.article_description_seo}`}">
       </div>
       <div class="">
             <img itemprop="image"
@@ -92,12 +94,10 @@ const {
     <Head>
         <Title >{{ article.article_title }} | Waro Colombia </Title>
         <Meta
-          itemprop="name"
           property="og:title"
           v-bind="{ content: `${article.article_title} | Waro Colombia` }"
         />
         <Meta 
-        itemprop="description"
         name="description" v-bind="{ content: `${article.article_description_seo}` }" />
         <Meta property="og:description" :content="article.article_description_seo" />
         <Meta
