@@ -3,26 +3,28 @@
 <template>
   <section>
     <div class="max-w-screen-xl">
-      <div class="grid grid-cols-1 gap-y-8 items-center gap-x-4">
+      <div class="grid grid-cols-1 gap-8 items-center gap-x-4">
         <div       class="
-        text-left
         w-full
         shrink-0
         space-y-3
-        md:text-center
+        text-center
         lg:mx-0
         sm:text-center
       ">
+
           <h2
             class="
-              text-3xl
-              font-medium
-              tracking-tight
-              sm:text-5xl
-              text-primary-500
+            text-3xl
+            font-semibold
+            lg:leading-[54px]
+            tracking-tight
+            sm:text-4xl
+            lg:text-5xl
+            text-primary-500
             "
           >
-            Internet esta repleto <br /> de reseñas falsas
+            Internet esta repleto <br /> de <span class="font-bold text-red-500">reseñas falsas</span> 
           </h2>
         </div>
 
@@ -36,11 +38,12 @@
               sm:p-6
               gap-2
               rounded-lg
-              bg-slate-100
+              border-4
+              border-dashed
               w-1/2
             "
           >
-            <h3 class="text-center font-semibold">
+            <h3 class="text-center font-semibold text-center font-semibold sm:text-2xl">
               Reseñas pagas
             </h3>
             <p class="p-cards">
@@ -57,11 +60,12 @@
               sm:p-6
               gap-2
               rounded-lg
-              bg-slate-100
+              border-4
+              border-dashed
               w-1/2
             "
           >
-            <h3 class="text-center font-semibold">
+            <h3 class="text-center font-semibold sm:text-2xl">
               Spam con viajes
             </h3>
             <p class="p-cards">
