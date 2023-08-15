@@ -83,14 +83,7 @@ watchEffect(() => {
       />
       <label
         for="fire"
-        class="
-          p-3
-          rounded-lg
-          border
-          cursor-pointer
-          peer-checked/fire:bg-slate-100
-        "
-      >
+        class="style-share-button">
         <LogosThefire class="h-6 w-6 md:h-8 md:w-8 text-slate-900" />
       </label>
 
@@ -104,14 +97,7 @@ watchEffect(() => {
       />
       <label
         for="smiling"
-        class="
-          p-3
-          rounded-lg
-          border
-          cursor-pointer
-          peer-checked/smiling:bg-slate-100
-        "
-      >
+        class="style-share-button">
         <LogosTheSmiling class="h-6 w-6 md:h-8 md:w-8 text-slate-900" />
       </label>
 
@@ -125,14 +111,7 @@ watchEffect(() => {
       />
       <label
         for="nauseated"
-        class="
-          p-3
-          rounded-lg
-          border
-          cursor-pointer
-          peer-checked/nauseated:bg-slate-100
-        "
-      >
+        class="style-share-button">
         <LogosTheNauseated class="h-6 w-6 md:h-8 md:w-8 text-slate-900" />
       </label>
 
@@ -146,14 +125,7 @@ watchEffect(() => {
       />
       <label
         for="zzz"
-        class="
-          p-3
-          rounded-lg
-          border
-          cursor-pointer
-          peer-checked/zzz:bg-slate-100
-        "
-      >
+        class="style-share-button">
         <LogosTheZzz class="h-6 w-6 md:h-8 md:w-8 text-slate-900" />
       </label>
     </div>
@@ -162,14 +134,14 @@ watchEffect(() => {
         <label for="nombre" class="text-xl sm:text-2xl font-normal italic"
           >Tú opinion (opcional)</label
         >
-        <textarea id="nombre" class="rounded-md text-gray-700 p-2" v-model="comment" />
+        <textarea id="nombre" class="rounded-md text-gray-700 p-2 border-4 border-dashed border-slate-900" v-model="comment" />
                 <label for="nombre" class="text-xl sm:text-m font-normal text-slate-600 "
           >No incluyas información personal en tu comentario.</label
         >
       </div>
     <button
     @click = 'sendComment()'
-      class="
+      class="        
         flex
         justify-center
         rounded-lg
@@ -180,9 +152,7 @@ watchEffect(() => {
         bg-slate-900
         text-white
         hover:bg-slate-700
-        cursor-pointer
-      "
-    >
+        cursor-pointer">
       Enviar
     </button>
         </div>

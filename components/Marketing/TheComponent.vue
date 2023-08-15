@@ -40,6 +40,7 @@
               rounded-lg
               border-4
               border-dashed
+              border-slate-900
               w-1/2
             "
           >
@@ -62,6 +63,7 @@
               rounded-lg
               border-4
               border-dashed
+              border-slate-900
               w-1/2
             "
           >

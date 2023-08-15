@@ -45,6 +45,7 @@ const { title } = toRefs(props);
               lg:w-1/2
               border-y-4
               border-dashed
+              border-slate-900
             "
           >
             <dd class="text-5xl font-extrabold text-slate-900 sm:text-6xl">
@@ -68,6 +69,7 @@ const { title } = toRefs(props);
               border-b-4
               lg:border-y-4
               border-dashed
+              border-slate-900
             "
           >
             <dd
