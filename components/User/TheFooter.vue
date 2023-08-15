@@ -4,7 +4,7 @@
 
 <template>
   <div>
-      <div class="flex flex-col items-start gap-4 py-6 sm:flex border-t-2 md:flex-row md:justify-between h-auto md:py-6">
+      <div class="flex flex-col items-start gap-4 py-6 sm:flex border-t-4 border-dashed md:flex-row md:justify-between h-auto md:py-6">
         <TheLeftFooter />
         <TheRightFooter />
       </div>
