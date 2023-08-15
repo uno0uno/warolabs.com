@@ -21,12 +21,12 @@ const { title } = toRefs(props);
             tracking-tight
             sm:text-4xl
             lg:text-5xl
-            text-primary-500
+            text-slate-500
           "
         >
           <span class="font-bold">10.000</span> 
           lugares que visitar <br class="hidden md:block" /> en
-          <span class="font-bold text-yellow-500"> la ciudad</span> más vibrante!
+          <span class="font-bold text-slate-900"> la ciudad</span> más vibrante!
         </p>
         <p class="mt-4 text-base font-normal text-gray-600">
           Disfruta de Bogotá, pero mira estos los siguientes datos
@@ -53,7 +53,7 @@ const { title } = toRefs(props);
             </dd>
             <div class="flex flex-col gap-2">
               <h3 class="text-center font-semibold">Viajeros se arrepienten</h3>
-              <p class="p-cards">
+              <p class="p-cards sm:px-24 lg:px-0">
                 Cuando visitaron una ciudad solo conocieron los mismos lugares
               </p>
             </div>
@@ -79,7 +79,7 @@ const { title } = toRefs(props);
             </dd>
             <div class="flex flex-col gap-2">
               <h3 class="text-center font-semibold">Conocen lo mismo</h3>
-              <p class="p-cards">
+              <p class="p-cards sm:px-24 lg:px-0">
                 Viajeros solo visitan una fracción de los lugares que quieren
                 visitar
               </p>

@@ -21,10 +21,10 @@
             tracking-tight
             sm:text-4xl
             lg:text-5xl
-            text-primary-500
+            text-slate-500
             "
           >
-            Internet esta repleto <br /> de <span class="font-bold text-red-500">reseñas falsas</span> 
+            Internet esta repleto <br /> de <span class="font-bold text-slate-900">reseñas falsas</span> 
           </h2>
         </div>
 
