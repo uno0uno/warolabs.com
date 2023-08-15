@@ -11,7 +11,7 @@
         text-left
         w-full
         sm:w-4/5
-        md:w-5/7
+        md:w-6/7
         shrink-0
         space-y-3
         md:text-center
