@@ -39,14 +39,14 @@ const handleCopy = async () => {
 
 <!-- Elemento del popup -->
 <div  class="fixed inset-1 flex items-center justify-center backdrop-blur-sm backdrop-filter bg-opacity-100" v-bind:class="{ '': toggle, 'hidden': !toggle }">
-  <div class="rounded-2xl flex gap-4 flex-col items-center border border-blue-100 bg-white p-4 shadow-lg sm:p-6 lg:p-8 mx-automd:px-16 lg:mx-auto xl:mx-auto 2xl:mx-auto">
+  <div class="rounded-2xl flex gap-4 flex-col items-center border-4 border-slate-900 border-dashed bg-white p-4 shadow-lg sm:p-6 lg:p-8 mx-automd:px-16 lg:mx-auto xl:mx-auto 2xl:mx-auto">
     <div class="flex flex-col items-center gap-2">
       <blockquote class="text-3xl sm:text-4xl font-semibold italic text-slate-900 py-2">
         <span class="before:block before:absolute before:-inset-1 before:-skew-y-2 before:bg-slate-900 relative inline-block">
           <span class="relative text-white capitalize">compartir</span>
         </span>
       </blockquote>
-      <div class="flex border items-center py-2 px-4 rounded-xl">
+      <div class="flex border-2 border-slate-900 border-dashed items-center py-2 px-4 rounded-xl">
           <p class="text-center">
             {{displayText(link)}}
           </p>
@@ -56,14 +56,14 @@ const handleCopy = async () => {
     <div class=" flex gap-4">
       <button
         @click="open()"
-        class="inline-block rounded-lg bg-white hover:bg-slate-100 border px-5 py-3 text-center text-sm font-semibold text-slate-900 sm:w-auto"
+        class="inline-block border-2 border-slate-900 border-dashed rounded-lg bg-white hover:bg-slate-100 border px-5 py-3 text-center text-sm font-semibold text-slate-900 sm:w-auto"
         href=""
       >
         cancelar
       </button>
       <button 
         @click="handleCopy()"
-        class="bg-indigo-500 hover:bg-indigo-300 rounded-lg px-4 py-2 text-white">
+        class="bg-slate-900 border-2 border-white border-dashed hover:bg-indigo-300 rounded-lg px-4 py-2 text-white">
         copiar
       </button>
     </div>
