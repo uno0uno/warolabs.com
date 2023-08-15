@@ -32,7 +32,7 @@ const {
   v-else
     v-for="article in articles"
     :key="article.article_slug"
-    class="flex flex-col gap-8 justify-start sm:px-32 items-start pb-12"
+    class="flex flex-col gap-8 justify-start sm:px-10 md:px-18 items-start pb-12"
     itemscope itemtype="http://schema.org/BlogPosting"
   >
     <div class="flex flex-col gap-6 w-full ">
@@ -62,9 +62,9 @@ const {
                     </p>
                   </div>
                   <p 
-                  itemprop="datePublished"
+                  
                   class="text-sm sm:text-normal w-3/4">
-                    Publicadó: {{article.article_created_at}}
+                    Publicadó: <span itemprop="datePublished" >{{article.article_created_at}}</span>
                   </p>
                 <div class="flex gap-1 items-center">
                   <LogosTheEye class="h-42w-4 md:h-4 md:w-4 text-slate-900"/>
@@ -90,12 +90,15 @@ const {
     v-bind:id="route.path"
     ></CommonTheFeedBackBox>
     <Head>
-        <Title>{{ article.article_title }} | Waro Colombia </Title>
+        <Title >{{ article.article_title }} | Waro Colombia </Title>
         <Meta
+          itemprop="name"
           property="og:title"
           v-bind="{ content: `${article.article_title} | Waro Colombia` }"
         />
-        <Meta name="description" v-bind="{ content: `${article.article_description_seo}` }" />
+        <Meta 
+        itemprop="description"
+        name="description" v-bind="{ content: `${article.article_description_seo}` }" />
         <Meta property="og:description" :content="article.article_description_seo" />
         <Meta
           property="og:image"
