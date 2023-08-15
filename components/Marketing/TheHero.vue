@@ -103,27 +103,20 @@
                   justify-center
                   gap-2
                   rounded-lg
-                  border border-transparent
-                  bg-slate-900
+                  border-slate-900
+                  border-4
+                  border-dashed
                   px-4
                   py-2
                   text-base
                   font-semibold
                   leading-6
-                  text-white
-                  shadow-sm
-                  transition-all
-                  duration-150
-                  hover:bg-gray-500
-                  focus-visible:outline
-                  focus-visible:outline-2
-                  focus-visible:outline-offset-2
-                  focus-visible:outline-primary-500
+                  text-slate-900
                   sm:w-auto
                 "
               >
                 <span >Empezar gratis</span>
-                <LogosTheArrowRight class="h-5 w-5 text-white"/>
+                <LogosTheArrowRight class="h-5 w-5 text-slate-900"/>
   
                 </button
             ></a>
