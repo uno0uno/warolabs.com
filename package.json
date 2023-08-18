@@ -25,6 +25,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "@azure/communication-email": "^1.0.0",
     "@heroicons/vue": "^2.0.18",
     "@nuxt/devtools": "0.7.0",
     "@supabase/supabase-js": "^2.26.0",

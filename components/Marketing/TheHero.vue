@@ -91,35 +91,10 @@
               content-center
               sm:justify-center sm:gap-6
             "
-          >
-            <a href="/" class=""
-              ><button
-                role="button"
-                class="
-                  inline-flex
-                  h-12
-                  w-full
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-lg
-                  border-slate-900
-                  border-4
-                  border-dashed
-                  px-4
-                  py-2
-                  text-base
-                  font-semibold
-                  leading-6
-                  text-slate-900
-                  sm:w-auto
-                "
-              >
-                <span >Empezar gratis</span>
-                <LogosTheArrowRight class="h-5 w-5 text-slate-900"/>
-  
-                </button
-            ></a>
+          > 
+          <div class="">
+                <CommonTheNewLead ></CommonTheNewLead>
+          </div>
 
           </div>
         </div>

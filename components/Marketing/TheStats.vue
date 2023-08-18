@@ -38,7 +38,7 @@ const { title } = toRefs(props);
             class="
               flex
               items-center
-              p-4
+              p-2
               sm:p-6
               gap-4
               lg:w-1/2
@@ -52,7 +52,7 @@ const { title } = toRefs(props);
             </dd>
             <div class="flex flex-col gap-2">
               <h3 class="text-center font-semibold">Viajeros se arrepienten</h3>
-              <p class="p-cards sm:px-24 lg:px-0">
+              <p class="p-cards sm:px-24 lg:px-4">
                 Cuando visitaron una ciudad solo conocieron los mismos lugares
               </p>
             </div>
@@ -61,7 +61,7 @@ const { title } = toRefs(props);
             class="
               flex
               items-center
-              p-4
+              p-2
               md:p-6
               gap-4
               lg:w-1/2
@@ -78,7 +78,7 @@ const { title } = toRefs(props);
             </dd>
             <div class="flex flex-col gap-2">
               <h3 class="text-center font-semibold">Conocen lo mismo</h3>
-              <p class="p-cards sm:px-24 lg:px-0">
+              <p class="p-cards sm:px-24 lg:px-4">
                 Viajeros solo visitan una fracción de los lugares que quieren
                 visitar
               </p>
