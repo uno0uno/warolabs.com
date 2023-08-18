@@ -32,7 +32,6 @@
         <div class="flex gap-4">
           <div
             class="
-              relative
               flex 
               flex-col
               items-center
@@ -56,7 +55,7 @@
           </div>
           <div
             class="
-              relative
+
               flex flex-col
               items-center
               p-4
