@@ -46,7 +46,7 @@
             "
           >
             <h3 class="text-center font-semibold text-center font-semibold sm:text-2xl">
-              Reseñas pagas
+              Reseñas pagadas
             </h3>
             <p class="p-cards">
               Ves una opinión, pero no sabes si es real. Muchas de ellas son
