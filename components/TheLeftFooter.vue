@@ -1,7 +1,7 @@
 <script setup>
 const msgsocial = ref('Nuestras redes');
 const descriptionWaro = ref(
-  'Waro Colombia conecta a comerciantes, artistas y creadores de Colombia para recibir pagos en USDC a través de blockchain.'
+  'waro colombia conecta a viajeros del mundo que visitan Bogotá con las mejores experiencias culturales de nuestra ciudad segun expertos locales'
 );
 
 function openSocialLink(value) {
