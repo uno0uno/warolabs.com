@@ -53,7 +53,7 @@ const { title } = toRefs(props);
             <div class="flex flex-col gap-2">
               <h3 class="text-center font-semibold">Viajeros se arrepienten</h3>
               <p class="p-cards sm:px-24 lg:px-4">
-                Cuando visitaron una ciudad solo conocieron los mismos lugares
+                Cuando visitaron una ciudad sólo conocieron los mismos lugares
               </p>
             </div>
           </div>
