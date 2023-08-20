@@ -8,7 +8,7 @@ const { slug } = toRefs(props);
 
 const { copyToClipboard } = useClipboard();
 
-const link = ref(`https://warocol.com/${slug.value}`);
+const link = ref(`https://warocol.com${slug.value}`);
 
 const toggle = ref(false);
 
