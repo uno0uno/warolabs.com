@@ -107,7 +107,7 @@ const {
 
         <Meta name="twitter:card" content="summary_large_image" />
         <Meta name="twitter:site" content="@saifer101_" />
-        <Meta name="twitter:title" :content="`▷ ${article.article_title} | Waro Colombia`" />
+        <Meta name="twitter:title" :content="`▷ ${article.article_title}`" />
         <Meta name="twitter:description" :content="`${article.article_description_seo}`" />
         <Meta name="twitter:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/${article.article_cover}`" />
     </Head>

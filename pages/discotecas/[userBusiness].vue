@@ -143,7 +143,7 @@ const {
 
         <Meta name="twitter:card" content="summary_large_image" />
         <Meta name="twitter:site" content="@saifer101_" />
-        <Meta name="twitter:title" :content="`▷ ${nightClub.name} | Waro Colombia`" />
+        <Meta name="twitter:title" :content="`▷ ${nightClub.name}`" />
         <Meta name="twitter:description" :content="`${nightClub.how_party}`" />
         <Meta name="twitter:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/${nightClub.logo_business}`" />
     </Head>
