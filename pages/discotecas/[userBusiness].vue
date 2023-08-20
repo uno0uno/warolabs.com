@@ -1,8 +1,5 @@
 <script setup>
 
-definePageMeta({
-  layout: "user"
-});
 
 const route = useRoute();
 
@@ -132,20 +129,26 @@ const {
     </ProfileTheFaqs>
 
     <Head>
-      <Title>{{ nightClub.name }} | Waro Colombia </Title>
-      <Meta
-        property="og:title"
-        v-bind="{ content: `${nightClub.name} | Waro Colombia` }"
-      />
-      <Meta name="description" v-bind="{ content: `${nightClub.how_party}` }" />
-      <Meta property="og:description" :content="nightClub.how_party" />
-      <Meta
-        property="og:image"
-        v-bind="{
-          content: `https://warocolombia.infura-ipfs.io/ipfs/${nightClub.logo_business}`,
-        }"
-      />
-      <Meta name="twitter:card" content="summary_large_image" />
+        <Title >▷ {{ nightClub.name }} | Waro Colombia</Title>
+        <Meta name="description" :content="`${nightClub.how_party}`" />
+
+        <Meta property="og:type" content="website" />
+        <Meta property="og:title" :content="`▷ ${nightClub.name} | Waro Colombia`" />
+        <Meta property="og:description" :content="`${nightClub.how_party}`" />
+        <Meta property="og:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/${nightClub.logo_business}`" />
+        <Meta property="og:image:width" content="828" />
+        <Meta property="og:image:height" content="450" />
+        <Meta property="og:url" :content="`https://warocol.com${route.path}`" />
+        <Meta property="og:site_name" content="Waro Colombia" />
+
+        <Meta name="twitter:card" content="summary_large_image" />
+        <Meta name="twitter:site" content="@saifer101_" />
+        <Meta name="twitter:title" :content="`▷ ${nightClub.name} | Waro Colombia`" />
+        <Meta name="twitter:description" :content="`${nightClub.how_party}`" />
+        <Meta name="twitter:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/${nightClub.logo_business}`" />
     </Head>
+
+
+
   </div>
 </template>
