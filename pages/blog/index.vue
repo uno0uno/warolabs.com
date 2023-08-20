@@ -59,22 +59,27 @@ async function openArticle(slug,id) {
         </div>
       </div>
     </div>
+
     <Head>
-      <Title>Opinion | Waro Colombia</Title>
-      <Meta
-        property="og:title"
-        v-bind="{ content: `Opinion | Waro Colombia` }"
-      />
-      <Meta name="description" v-bind="{ content: `La cultura es un derecho de todos los ciudadanos. ¡Apóyala!` }" />
-      <Meta property="og:description" v-bind="{ content: `La cultura es un derecho de todos los ciudadanos. ¡Apóyala!` }" />
-      <Meta
-        property="og:image"
-        v-bind="{
-          content: `https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`,
-        }"
-      />
-      <Meta name="twitter:card" content="summary_large_image" />
+        <Title >▷ Qué hacer en bogotá | Waro Colombia</Title>
+        <Meta name="description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
+
+        <Meta property="og:type" content="website" />
+        <Meta property="og:title" :content="`▷ Qué hacer en bogotá | Waro Colombia`" />
+        <Meta property="og:description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
+        <Meta property="og:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`" />
+        <Meta property="og:image:width" content="828" />
+        <Meta property="og:image:height" content="450" />
+        <Meta property="og:url" :content="`https://warocol.com/blog`" />
+        <Meta property="og:site_name" content="Waro Colombia" />
+
+        <Meta name="twitter:card" content="summary_large_image" />
+        <Meta name="twitter:site" content="@saifer101_" />
+        <Meta name="twitter:title" :content="`▷ Qué hacer en bogotá | Waro Colombia`" />
+        <Meta name="twitter:description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
+        <Meta name="twitter:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`" />
     </Head>
+
   </div>
 
 </template>
