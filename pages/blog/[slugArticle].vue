@@ -1,4 +1,7 @@
 <script setup>
+
+const { public: { siteUrl }, } = useRuntimeConfig()
+
 import MarkdownIt from 'markdown-it';
 
 const route = useRoute();
@@ -93,6 +96,7 @@ const {
     ></CommonTheFeedBackBox>
 
     <Head>
+        <Link rel="canonical" :href="`https://warocol.com${route.path}`" />
         <Title >▷ {{ article.article_title }} | Waro Colombia</Title>
         <Meta name="description" :content="`${article.article_description_seo}`" />
 

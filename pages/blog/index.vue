@@ -1,5 +1,7 @@
 <script setup>
 
+const { public: { siteUrl }, } = useRuntimeConfig()
+
 const {
   data: allArticles,
   pending,
@@ -61,6 +63,7 @@ async function openArticle(slug,id) {
     </div>
 
     <Head>
+        <Link rel="canonical" :href="`${siteUrl}blog`" />
         <Title >▷ Qué hacer en bogotá | Waro Colombia</Title>
         <Meta name="description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
 
