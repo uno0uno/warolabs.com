@@ -1,4 +1,7 @@
 <script setup>
+
+const { public: { siteUrl }, } = useRuntimeConfig()
+
 const h2 = ref('¿Cansado de los <br /> mismos lugares?');
 const stats = reactive({
   number1: '60%',
@@ -19,6 +22,7 @@ const stats = reactive({
   </div>
 
       <Head>
+        <Link rel="canonical" :href="`${siteUrl}`" />
         <Title >▷ Qué hacer en bogotá | Waro Colombia</Title>
         <Meta name="description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
 

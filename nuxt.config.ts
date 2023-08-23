@@ -3,7 +3,8 @@ export default defineNuxtConfig({
     public: {
       gtmContainerId: '',
       supabaseUrl: '',
-      supabaseAnonKey: ''
+      supabaseAnonKey: '',
+      siteUrl: ''
     },
   },
   app: {
@@ -12,7 +13,6 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'charset', content: 'utf-8' }
       ],
-      link: [{ rel: 'canonical', href: 'https://warocol.com/' }],
       htmlAttrs: {
         lang: 'es',
       },

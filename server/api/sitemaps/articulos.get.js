@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
     const { data, error } = await supabase
       .from('articles')
       .select('slug,id')
+      .eq('lang', 'es')
       .is('published', true)
       .is('is_active', true);
     if (error) {
