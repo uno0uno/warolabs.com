@@ -47,13 +47,13 @@ const {
       <div class="">
             <img itemprop="image"
             class="md:rounded-xl rounded-xl object-cover w-full"
-            v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.article_cover}`, 'alt':article.article_slug}">
+            v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.article_cover}`, 'alt':`${article.article_title} | waro colombia`}">
       </div>
       <div class=" flex  flex-col sm:flex-row gap-4 ">
           <div class=" flex gap-4">
                 <img itemprop="image"
                 class="rounded-lg object-cover w-20"
-                v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator_profile_pic}`, 'alt':article.creator_full_name}">
+                v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/${article.creator_profile_pic}`, 'alt':`${article.creator_full_name} | waro colombia`}">
                 <div 
                 
                 class="flex flex-col">

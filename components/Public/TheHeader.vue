@@ -54,10 +54,10 @@
 
           <div class="flex gap-1 items-center">
             <a href="https://www.tiktok.com/@saifer101_" target="_blank">
-              <LogosTheTikTok class="h-8 w-8 cursor-pointer" />
+              <LogosTheTikTok class="h-8 w-8 cursor-pointer" aria-label="Enlace al perfil de tiktok de saifer101"/>
             </a>
             <a href="https://twitter.com/saifer101_" target="_blank">
-              <LogosTheX class="h-10 w-10 cursor-pointer" />
+              <LogosTheX class="h-10 w-10 cursor-pointer" aria-label="Enlace al perfil de X de saifer101" />
             </a>
           </div>
         </div>
