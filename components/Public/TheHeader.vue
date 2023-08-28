@@ -45,9 +45,11 @@
               font-extrabold
             "
           > 
-            <li class="text-3xl">
+          <!--  
+            <li class="text-xl sm:text-3xl">
               <NuxtLink :to="{ path: '/blog' }"> Blog </NuxtLink>
             </li>
+          -->
           </ul>
         </div>
                 <div class="flex items-center sm:justify-end gap-2">
