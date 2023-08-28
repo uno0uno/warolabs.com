@@ -7,33 +7,29 @@ watchEffect(() => {
   path.value = route.path.split('/');
 });
 
-async function openCategory(path) {
-  await navigateTo({ path: `/${path}` });
-}
-
 </script>
 
 <template>
-  <nav v-if="path[1] !== ''" aria-label="Breadcrumb">
-    <ol class="flex items-center gap-1 text-sm text-gray-600">
-    <li @click="openCategory(path[0])" class="cursor-pointer" >
-        <span class="sr-only"> Home </span>
+  <nav v-if="path.length > 1" aria-label="Breadcrumb">
+    <ol
+      itemscope
+      itemtype="http://schema.org/BreadcrumbList"
+      class="flex items-center gap-1 text-sm text-gray-600"
+    >
+      <!-- Elemento "Inicio" -->
+      <li
+        itemprop="itemListElement"
+        itemscope
+        itemtype="http://schema.org/ListItem"
+        class="cursor-pointer text-slate-900 text-lg"
+      >
+        <NuxtLink :to="`/`">
+          <span itemprop="name">Inicio</span>
+        </NuxtLink>
+        <meta itemprop="position" content="1" />
+      </li>
 
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-          />
-        </svg>
-    </li>
+      <!-- Separador -->
       <li class="rtl:rotate-180">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,12 +45,25 @@ async function openCategory(path) {
         </svg>
       </li>
 
-      <li @click="openCategory(path[1])" class="cursor-pointer text-slate-900 text-lg">
-        {{path[1]}}
-      </li>
-      
+      <!-- Segmentos de la ruta -->
+      <template v-for="(segment, index) in path.slice(1, path.length - 1)" :key="index">
+
+        <li
+          itemprop="itemListElement"
+          itemscope
+          itemtype="http://schema.org/ListItem"
+          class="cursor-pointer text-slate-900 text-lg"
+        >
+          <NuxtLink :to="`/${segment}`">
+            <span itemprop="name">{{ segment }}</span>
+          </NuxtLink>
+          <meta itemprop="position" :content="index + 2" />
+        </li>
+      </template>
     </ol>
   </nav>
 </template>
+
+
 
 <style lang="scss" scoped></style>
