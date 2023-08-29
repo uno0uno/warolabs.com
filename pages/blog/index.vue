@@ -33,7 +33,7 @@ async function openArticle(slug,id) {
   <div v-else-if="allArticles.length === 0">Not found</div>
   <div v-else-if="allArticles.code == '22P02'">Not found</div>
   <div v-else class="flex flex-col">
-  <CommonTheBreadcrumb></CommonTheBreadcrumb>
+    <CommonTheBreadcrumb></CommonTheBreadcrumb>
     <div class="grid justify-items-center grid-cols-1 md:grid-cols-2 lg:grid-cols-2 py-4 gap-4">
       <div class="border-4 border-dashed rounded-xl" v-for="article in allArticles" :key="article.title">
         <div
@@ -62,7 +62,9 @@ async function openArticle(slug,id) {
       </div>
     </div>
 
-    <Head>
+  </div>
+
+      <Head>
         <Link rel="canonical" :href="`${siteUrl}blog`" />
         <Title >▷ Qué hacer en bogotá | waro colombia</Title>
         <Meta name="description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
@@ -82,7 +84,5 @@ async function openArticle(slug,id) {
         <Meta name="twitter:description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
         <Meta name="twitter:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`" />
     </Head>
-
-  </div>
 
 </template>
