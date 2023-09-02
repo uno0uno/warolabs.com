@@ -72,7 +72,7 @@ async function openArticle(slug,id) {
         <Meta property="og:type" content="website" />
         <Meta property="og:title" :content="`▷ Qué hacer en bogotá | waro colombia`" />
         <Meta property="og:description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
-        <Meta property="og:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`" />
+        <Meta property="og:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/QmWy4HmmQZneM1FkAWQrS79pv1kkvMcCZg7zvcpB9b4oay`" />
         <Meta property="og:image:width" content="828" />
         <Meta property="og:image:height" content="450" />
         <Meta property="og:url" :content="`https://warocol.com/blog`" />
@@ -82,7 +82,7 @@ async function openArticle(slug,id) {
         <Meta name="twitter:site" content="@saifer101_" />
         <Meta name="twitter:title" :content="`▷ Qué hacer en bogotá | waro colombia`" />
         <Meta name="twitter:description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
-        <Meta name="twitter:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/Qmf2N1fW4SKpgrY5Zy1nvVJsWTsPJVZYPyYbUuQWjBCsFt`" />
+        <Meta name="twitter:image" :content="`https://warocolombia.infura-ipfs.io/ipfs/QmWy4HmmQZneM1FkAWQrS79pv1kkvMcCZg7zvcpB9b4oay`" />
     </Head>
 
 </template>
