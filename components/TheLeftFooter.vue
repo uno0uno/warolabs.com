@@ -11,11 +11,7 @@ function openSocialLink(value) {
 
 <template>
   <div class="flex flex-col gap-3 items-start">
-        <div class="w-36 h-auto lg:w-56">
-      <img itemprop="image"
-              class="w-auto"
-              v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/QmbNmX65nwyDt2cYWN9tanXr1Vx6e2V6rcYxfxGntyfogq`, 'alt':`waro colombia logo`}">
-    </div>
+        <theImgLogo />
     <p
       class="
         text-left
