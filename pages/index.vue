@@ -2,7 +2,6 @@
 
 const { public: { siteUrl }, } = useRuntimeConfig()
 
-const h2 = ref('¿Cansado de los <br /> mismos lugares?');
 const stats = reactive({
   number1: '60%',
   title1: '60%',
@@ -12,12 +11,8 @@ const stats = reactive({
 </script>
 
 <template>
-  <div class="flex flex-col gap-12 sm:gap-20 pb-12">
+  <div class="flex flex-col gap-8 sm:gap-12 pb-12">
     <MarketingTheHero></MarketingTheHero>
-    <MarketingTheStats
-      v-bind:title="h2"
-    ></MarketingTheStats>
-    <MarketingTheComponent></MarketingTheComponent>
     <MarketingTheLogoCloud></MarketingTheLogoCloud>
   </div>
 

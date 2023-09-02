@@ -5,8 +5,7 @@
 
 <template>
 <div class="bg-white">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <h2 class="text-center text-lg font-semibold leading-8 text-slate-900">Con la confianza de los equipos más innovadores del mundo</h2>
+  <div class="">
     <div class="mx-auto mt-10 grid max-w-lg items-center gap-4 grid-cols-3 justify-items-stretch">
       
       <img itemprop="image" type="image/webp" class="w-16 h-auto sm:w-36 sm:h-auto justify-self-center" v-bind="{'src':`https://warocolombia.infura-ipfs.io/ipfs/QmdVBhvkCb2THNQJLns5zBYWXEoAsv9oc7TvYebGgNZeRe`, 'alt':`sonidero bogotano logo`}">

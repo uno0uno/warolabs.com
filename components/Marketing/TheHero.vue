@@ -10,8 +10,6 @@
         sm:gap-4
         text-left
         w-full
-        sm:w-4/5
-        md:w-6/7
         shrink-0
         space-y-3
         md:text-center
@@ -21,8 +19,8 @@
     >
       <h1
         class="text-4xl leading-10 font-bold tracking-tight text-primary-500 sm:text-4xl md:text-5xl lg:text-6xl  sm:leading-12"
-      >
-         Tú guía cultura para viajeros que quieren explorar Bogotá
+      >  
+        tu guía de restaurantes y discotecas para explorar Bogotá
       </h1>
       <div class="flex justify-center">
       <p
@@ -36,7 +34,7 @@
           text-gray-600
         "
       >
-        Ofrecemos sugerencias personalizadas de lugares &amp; experiencias que se alinean con tus gustos a través de un pago único para que puedas disfrutarlo. 
+      traemos las opiniones más honestas y confiables para que la pases delicioso con las personas que amas
       </p>
       </div>
       <div class="relative space-y-5">
@@ -51,7 +49,7 @@
           font-normal
           md:leading-[1.8rem]
           text-gray-600"
-              >Verificamos con AI nuestras opiniones</span
+              >personas reales, con opiniones reales</span
             >
           </div>
           <div class="flex gap-2 items-center justify-start sm:justify-center">
@@ -64,22 +62,9 @@
             font-normal
             md:leading-[1.8rem]
             text-gray-600">
-              Usamos analisis de sentimiento, segun opinion
+              reseñas, guías honestas y confiables
             </p>
     
-          </div>
-          <div class="flex gap-2 items-center flex items-center justify-start sm:justify-center justify-start">
-            <LogosTheCheck class="h-3 w-3 md:h-6 md:w-6 text-slate-900"/>
-            <span 
-          class="          
-          text-xs
-          leading-[1.4rem]
-          md:text-lg
-          font-normal
-          md:leading-[1.8rem]
-          text-gray-600"
-              >expertos locales verifican recomendaciones</span
-            >
           </div>
         </div>
         <div class="space-x-2">

@@ -10,7 +10,7 @@ const { title } = toRefs(props);
   <section class="">
     <div class="mx-auto max-w-screen-xl">
       <div class="w-full sm:w-4/5 mx-auto sm:text-center">
-        <h2 class="text-m font-semibold"> Viajan &amp; no exploran</h2>
+        <h2 class="text-m font-semibold"> ¿buscas nuevos lugares en Bogotá?</h2>
         <p
           class="
             mt-4
@@ -28,7 +28,7 @@ const { title } = toRefs(props);
           <span class="font-bold text-slate-900"> la ciudad</span> más vibrante!
         </p>
         <p class="mt-4 text-base font-normal text-gray-600">
-          Disfruta de Bogotá, pero mira estos los siguientes datos
+          disfruta de Bogotá, pero mira los siguientes datos
         </p>
       </div>
 
