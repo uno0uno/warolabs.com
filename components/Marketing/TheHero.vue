@@ -20,7 +20,7 @@
       <h1
         class="text-4xl leading-10 font-bold tracking-tight text-primary-500 sm:text-4xl md:text-5xl lg:text-6xl  sm:leading-12"
       >  
-        tu guía de restaurantes y discotecas para explorar Bogotá
+        tu guía de bares &amp;  restaurantes para explorar Bogotá
       </h1>
       <div class="flex justify-center">
       <p
