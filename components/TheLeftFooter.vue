@@ -1,7 +1,7 @@
 <script setup>
 const msgsocial = ref('Nuestras redes');
 const descriptionWaro = ref(
-  'waro colombia conecta a viajeros del mundo que visitan Bogotá con las mejores experiencias culturales de nuestra ciudad segun expertos locales'
+  'waro colombia conecta a personas que quieren conocer Bogotá con las mejores experiencias culturales de nuestra ciudad según expertos locales'
 );
 
 function openSocialLink(value) {
