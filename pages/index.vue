@@ -19,7 +19,7 @@ const stats = reactive({
       <Head>
         <Link rel="canonical" :href="`${siteUrl}`" />
         <Title >▷ Qué hacer en bogotá | waro colombia</Title>
-        <Meta name="description" :content="`La cultura es un derecho de todos los ciudadanos. ¡Apóyala!`" />
+        <Meta name="description" :content="`La cultura es un derecho de todos los ciudadanos. Apóyala!`" />
 
         <Meta property="og:type" content="website" />
         <Meta property="og:title" :content="`▷ Qué hacer en bogotá | waro colombia`" />

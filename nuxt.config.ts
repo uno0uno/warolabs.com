@@ -19,8 +19,12 @@ export default defineNuxtConfig({
     },
 
   },
-  buildModules: ['@nuxtjs/google-fonts'],
-  modules: ['nuxt-simple-sitemap', 'nuxt-simple-robots'],
+  modules: [ 
+    ['@nuxtjs/google-fonts', {
+      families: {
+        Lato: true
+      }
+    }],'nuxt-simple-sitemap', 'nuxt-simple-robots'],
   site: {
     url: 'https://warocol.com/',
   },
@@ -39,11 +43,6 @@ export default defineNuxtConfig({
   },
   head: {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
-  },
-  googleFonts: {
-    families: {
-      Lato: true
-    }
   },
   devtools: { enabled: true },
   css: ['~/assets/css/main.scss'],
