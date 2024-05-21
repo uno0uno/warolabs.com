@@ -19,12 +19,12 @@ export default defineNuxtConfig({
     },
 
   },
-  modules: [ 
+  modules: [
     ['@nuxtjs/google-fonts', {
       families: {
         Lato: true
       }
-    }],'nuxt-simple-sitemap', 'nuxt-simple-robots'],
+    }], 'nuxt-simple-sitemap', 'nuxt-simple-robots'],
   site: {
     url: 'https://warocol.com/',
   },
