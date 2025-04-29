@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiKey: process.env.NUXT_API_KEY || '',
     public: {
-      baseUrl: process.env.NUXT_BASE_URL || ''
+      baseUrl: process.env.NUXT_BASE_URL || 'https://warolabs.com'
     }
   },
   app: {
@@ -16,21 +16,24 @@ export default defineNuxtConfig({
         { name: 'charset', content: 'utf-8' }
       ],
       htmlAttrs: {
-        lang: 'es',
-      },
-    },
+        lang: 'es'
+      }
+    }
   },
   modules: [
     ['@nuxtjs/google-fonts', {
       families: {
         Lato: true
       }
-    }], 'nuxt-simple-sitemap', 'nuxt-simple-robots'],
+    }],
+    'nuxt-simple-sitemap',
+    'nuxt-simple-robots'
+  ],
   site: {
-    url: 'https://warolabs.com/',
+    url: 'https://warolabs.com'
   },
   sitemap: {
-    xslTips: false,
+    xslTips: false
   },
   robots: {
     credits: false,
@@ -38,19 +41,19 @@ export default defineNuxtConfig({
       {
         userAgents: ['GPTBot'],
         disallow: ['/api/*'],
-        allow: ['/'],
-      },
+        allow: ['/']
+      }
     ]
   },
   head: {
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   devtools: { enabled: true },
   css: ['~/assets/css/main.scss'],
   postcss: {
     plugins: {
       tailwindcss: {},
-      autoprefixer: {},
-    },
+      autoprefixer: {}
+    }
   }
 });
