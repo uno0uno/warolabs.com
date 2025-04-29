@@ -1,10 +1,4 @@
 export default defineNuxtConfig({
-  runtimeConfig: {
-    public: {
-      gtmContainerId: '',
-      siteUrl: ''
-    },
-  },
   app: {
     head: {
       meta: [
@@ -24,7 +18,7 @@ export default defineNuxtConfig({
       }
     }], 'nuxt-simple-sitemap', 'nuxt-simple-robots'],
   site: {
-    url: 'https://warocol.com/',
+    url: 'https://warolabs.com/',
   },
   sitemap: {
     xslTips: false,
