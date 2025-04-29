@@ -16,9 +16,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "markdown-it": "^13.0.1",
     "nuxt": "^3.17.1",
-    "@nuxtjs/sitemap": "^7.2.10",
     "@nuxtjs/robots": "^4.0.0",
-    "nuxt-site-config": "^2.2.15",
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {

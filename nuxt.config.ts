@@ -26,18 +26,10 @@ export default defineNuxtConfig({
         Lato: true
       }
     }],
-    '@nuxtjs/sitemap',
     '@nuxtjs/robots'
   ],
   site: {
     url: 'https://warolabs.com'
-  },
-  sitemap: {
-    siteUrl: 'https://warolabs.com', // Obligatorio según la documentación
-    sources: ['/api/sitemap'], // Apunta al endpoint server/api/sitemap.ts
-    xslTips: false, // Desactiva consejos XSL, como en tu configuración previa
-    cacheMaxAgeSeconds: 600, // Caché de 10 minutos
-    debug: false // Desactiva logs de depuración en producción
   },
   robots: {
     credits: false,
@@ -60,4 +52,4 @@ export default defineNuxtConfig({
       autoprefixer: {}
     }
   }
-});
+})
