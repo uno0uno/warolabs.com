@@ -1,12 +1,13 @@
 {
   "name": "nuxt-app",
   "private": true,
-"scripts": {
-  "build": "nuxt build",
-  "dev": "nuxt dev",
-  "start": "node .output/server/index.mjs",
-  "preview": "nuxt preview"
-},
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
   "devDependencies": {
     "@heroicons/vue": "^2.0.18",
     "@nuxt/devtools": "0.7.0",

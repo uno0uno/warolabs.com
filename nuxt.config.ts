@@ -43,8 +43,5 @@ export default defineNuxtConfig({
       tailwindcss: {},
       autoprefixer: {},
     },
-  },
-  nitro: {
-    preset: 'node-server', // Servidor Node.js para SSR
-  },
+  }
 });
