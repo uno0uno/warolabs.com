@@ -1,6 +1,10 @@
 export default defineNuxtConfig({
   ssr: true, // Habilita SSR
   target: 'server', // Configura el target como 'server' para SSR
+  apiKey: process.env.NUXT_API_KEY || '',
+  public: {
+    baseUrl: process.env.NUXT_BASE_URL || ''
+  },
   nitro: {
     preset: 'aws_amplify'
   },
