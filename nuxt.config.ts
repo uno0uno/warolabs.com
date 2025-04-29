@@ -50,4 +50,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  nitro: {
+    preset: 'node-server', // Servidor Node.js para SSR
+  },
 });
