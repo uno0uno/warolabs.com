@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  nuxt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: warolabs-nuxt
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://saifer:96&Gd'2H+zjR@saifer-postgres-1:5432/postresWaroLabs
+      - REDIS_URL=redis://:3M[oG8QlNw)n!5@*n@rediswarolabs-redis-1:6379
+    volumes:
+      - nuxt-data:/app/storage
+    networks:
+      - warolabs-network
+    restart: unless-stopped
+networks:
+  warolabs-network:
+    name: warolabs-network
+    driver: bridge
+volumes:
+  nuxt-data:
