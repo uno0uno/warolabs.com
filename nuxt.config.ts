@@ -26,8 +26,8 @@ export default defineNuxtConfig({
         Lato: true
       }
     }],
-    '@nuxtjs/sitemap',
-    'nuxt-simple-robots'
+    // '@nuxtjs/sitemap',
+    '@nuxtjs/robots'
   ],
   site: {
     url: 'https://warolabs.com'
