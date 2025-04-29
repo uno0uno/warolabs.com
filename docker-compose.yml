@@ -15,35 +15,6 @@ services:
     networks:
       - warolabs-network
     restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-
-  postgres:
-    image: postgres:latest
-    container_name: saifer-postgres-1
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=saifer
-      - POSTGRES_PASSWORD=96&Gd'2H+zjR
-      - POSTGRES_DB=postresWaroLabs
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    networks:
-      - warolabs-network
-    restart: unless-stopped
-
-  redis:
-    image: redis:latest
-    container_name: rediswarolabs-redis-1
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    networks:
-      - warolabs-network
-    restart: unless-stopped
 
 networks:
   warolabs-network:
@@ -51,5 +22,3 @@ networks:
 
 volumes:
   nuxt-data:
-  postgres-data:
-  redis-data:
