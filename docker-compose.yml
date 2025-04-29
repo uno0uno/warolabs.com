@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   nuxt:
     build:
@@ -18,7 +17,6 @@ services:
     restart: unless-stopped
 networks:
   warolabs-network:
-    name: warolabs-network
-    driver: bridge
+    external: true
 volumes:
   nuxt-data:
