@@ -9,34 +9,24 @@
     "postinstall": "nuxt prepare",
     "start": "nuxt start"
   },
-  "devDependencies": {
+  "dependencies": {
     "@heroicons/vue": "^2.0.18",
-    "@nuxt/devtools": "0.7.0",
     "@nuxtjs/google-fonts": "^3.0.2",
     "@tailwindcss/forms": "^0.5.4",
     "@tailwindcss/typography": "^0.5.9",
+    "markdown-it": "^13.0.1",
+    "nuxt": "^3.17.1",
+    "@nuxtjs/sitemap": "^7.2.10",
+    "nuxt-simple-robots": "^4.0.0-rc.14",
+    "nuxt-site-config": "^2.2.15",
+    "tailwindcss": "^3.3.3"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^1.0.0",
     "@types/node": "^18.16.19",
     "autoprefixer": "^10.4.14",
-    "nuxt": "^3.6.5",
-    "nuxt-simple-robots": "^3.0.3",
-    "nuxt-simple-sitemap": "^3.0.12",
     "postcss": "^8.4.26",
     "sass": "^1.64.0",
     "typescript": "^4.7.4"
-  },
-  "dependencies": {
-    "@azure/communication-email": "^1.0.0",
-    "@heroicons/vue": "^2.0.18",
-    "@nuxt/devtools": "0.7.0",
-    "@tailwindcss/forms": "^0.5.4",
-    "@tailwindcss/typography": "^0.5.9",
-    "@types/node": "^18.16.19",
-    "autoprefixer": "^10.4.14",
-    "markdown-it": "^13.0.1",
-    "nuxt": "^3.6.5",
-    "nuxt-simple-sitemap": "^3.0.12",
-    "postcss": "^8.4.26",
-    "sass": "^1.64.0",
-    "tailwindcss": "^3.3.3"
   }
 }

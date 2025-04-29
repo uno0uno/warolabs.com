@@ -26,15 +26,16 @@ export default defineNuxtConfig({
         Lato: true
       }
     }],
-    'nuxt-simple-sitemap',
+    // '@nuxtjs/sitemap',
     'nuxt-simple-robots'
   ],
   site: {
     url: 'https://warolabs.com'
   },
-  sitemap: {
-    xslTips: false
-  },
+  // sitemap: {
+  //   xslTips: false,
+  //   sources: ['/api/sitemap']
+  // },
   robots: {
     credits: false,
     groups: [
@@ -56,4 +57,4 @@ export default defineNuxtConfig({
       autoprefixer: {}
     }
   }
-});
+})
