@@ -1,10 +1,10 @@
 # Etapa 1: Construcción
 FROM node:20-alpine AS build
 WORKDIR /app
-COPY package.json pnpm-lock.yaml .npmrc ./
-RUN corepack enable && pnpm i
+COPY package.json package-lock.json ./
+RUN npm install
 COPY . .
-RUN pnpm run build
+RUN npm run build
 
 # Etapa 2: Producción
 FROM node:20-alpine
