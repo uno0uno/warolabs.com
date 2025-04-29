@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   ssr: true, // Habilita SSR
   target: 'server', // Configura el target como 'server' para SSR
   nitro: {
-    preset: 'node-server', // Asegúrate de usar el preset correcto para SSR
+    preset: 'aws_amplify'
   },
   app: {
     head: {
