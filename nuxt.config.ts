@@ -1,4 +1,6 @@
 export default defineNuxtConfig({
+  ssr: true, // Habilita SSR
+  target: 'server', // Configura el target como 'server' para SSR
   app: {
     head: {
       meta: [
@@ -9,7 +11,6 @@ export default defineNuxtConfig({
         lang: 'es',
       },
     },
-
   },
   modules: [
     ['@nuxtjs/google-fonts', {
