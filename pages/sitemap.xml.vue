@@ -12,50 +12,36 @@ try {
     ];
 }
 
-// Opcional: Agregar rutas dinámicas desde un endpoint
-// if (process.env.NUXT_API_KEY) {
-//   const articles = await $fetch('/api/getUrlsSitemap', {
-//     headers: { Authorization: `Bearer ${process.env.NUXT_API_KEY}` }
-//   });
-//   routes.push(...articles.map(p => ({
-//     loc: `/noticias/${p.slug}-PUB${p.id}`,
-//     lastmod: new Date(p.created_at).toISOString().split('T')[0],
-//     changefreq: 'daily',
-//     priority: 0.8
-//   })));
-// }
-
-// Generar XML con formato legible (indentaciones y saltos de línea)
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> ${routes.map(route => ` <url> <loc>https://warolabs.com${route.loc}</loc> <lastmod>${route.lastmod}</lastmod> <changefreq>${route.changefreq}</changefreq> <priority>${route.priority}</priority> </url>`).join('\n')} </urlset>`;
-// Intentar establecer el Content-Type como application/xml
-useHead({
-    meta: [
-        { name: 'content-type', content: 'application/xml' }
-    ]
-});
+// Generar tabla HTML con las rutas
+const tableHtml = `
+<table class="table-auto w-full border-collapse border border-gray-300 mt-5">
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="border border-gray-300 px-4 py-2 text-left">Nombre del Sitio</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Última Modificación</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Frecuencia de Cambio</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Prioridad</th>
+        </tr>
+    </thead>
+    <tbody>
+        ${routes.map((route, index) => `
+        <tr class="${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100">
+            <td class="border border-gray-300 px-4 py-2">
+                <a href="https://warolabs.com${route.loc}" target="_blank" class="text-blue-600 hover:underline">${route.loc}</a>
+            </td>
+            <td class="border border-gray-300 px-4 py-2">${route.lastmod}</td>
+            <td class="border border-gray-300 px-4 py-2">${route.changefreq}</td>
+            <td class="border border-gray-300 px-4 py-2">${route.priority}</td>
+        </tr>`).join('')}
+    </tbody>
+</table>`;
 </script>
 
 <template>
-    <div class="sitemap-container">
-        <div v-html="xml" class="sitemap-content"></div>
+    <div class="p-5 bg-gray-50 border border-gray-300 rounded-lg">
+        <h1 class="text-2xl font-bold mb-4">Sitemap de Warolabs</h1>
+        <div v-html="tableHtml" class="overflow-x-auto"></div>
     </div>
 </template>
 
-<style scoped>
-.sitemap-container {
-    padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-family: Arial, sans-serif;
-    color: #333;
-    overflow-x: auto;
-}
-
-.sitemap-content {
-    white-space: pre-wrap;
-    font-size: 14px;
-    line-height: 1.6;
-}
-</style>
+<style scoped></style>
