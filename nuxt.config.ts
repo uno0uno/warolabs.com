@@ -26,7 +26,7 @@ export default defineNuxtConfig({
         Lato: true
       }
     }],
-    // '@nuxtjs/sitemap',
+    '@nuxtjs/sitemap',
     '@nuxtjs/robots'
   ],
   site: {
