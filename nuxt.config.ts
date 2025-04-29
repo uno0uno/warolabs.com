@@ -26,16 +26,16 @@ export default defineNuxtConfig({
         Lato: true
       }
     }],
-    '@nuxtjs/sitemap',
+    // '@nuxtjs/sitemap',
     '@nuxtjs/robots'
   ],
   site: {
     url: 'https://warolabs.com'
   },
-  sitemap: {
-    xslTips: false,
-    sources: ['/api/sitemap']
-  },
+  // sitemap: {
+  //   xslTips: false,
+  //   sources: ['/api/sitemap']
+  // },
   robots: {
     credits: false,
     groups: [
