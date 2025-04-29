@@ -24,4 +24,4 @@ logs
 
 #VS CODE
 .vscode
-.amplify-hosting/
+.amplify-hosting
