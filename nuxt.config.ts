@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   ssr: true,
   nitro: {
-    preset: 'aws_amplify'
+    preset: 'node-server'
   },
   runtimeConfig: {
     apiKey: process.env.NUXT_API_KEY || '',
