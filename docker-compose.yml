@@ -1,5 +1,5 @@
 services:
-  nuxt:
+  warolabs:
     build:
       context: .
       dockerfile: Dockerfile
