@@ -27,3 +27,8 @@
   cursor-pointer
   peer-checked/fire:bg-slate-100
 }
+
+.global-style{
+  @apply
+  px-4
+}
