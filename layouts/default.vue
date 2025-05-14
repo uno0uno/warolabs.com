@@ -9,7 +9,7 @@
 
     <CommonsTheHeader />
 
-    <div class="pb-2 px-4 md:px-16 2xl:px-[30rem] bg-red-50 w-full h-full">
+    <div class="pb-2 px-4 md:px-16 2xl:px-[30rem] w-full h-full">
       <slot />
     </div>
 

@@ -127,7 +127,7 @@ const images4 = [
 </script>
 
 <template>
-  <div class="text-center flex flex-col items-left w-full h-full justify-left gap-8 bg-blue-100">
+  <div class="text-center flex flex-col items-center w-full h-full justify-center gap-8 bg-blue-100  lg:min-w-[48rem]">
     <MarketingTheHeroSection :title="title" :description="description" />
     <MarketingTheClusterSection :title="title2" :description="description2" :items-images="images" />
     <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />

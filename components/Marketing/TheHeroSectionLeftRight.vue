@@ -21,8 +21,8 @@ defineProps({
 
 <template>
     <div
-        class="flex flex-col gap-8 items-left justify-start w-full text-left min-h-[12rem] bg-gray-100 max-w-5xl mx-auto  py-6 px-8">
-        <h1 class="text-5xl font-extrabold leading-tight text-black text-left w-full max-w-lg ">
+        class="flex flex-col gap-6 items-left justify-start w-full text-left min-h-[12rem] bg-gray-100 max-w-5xl mx-auto py-6 px-8">
+        <h1 class="text-4xl md:text-6xl font-bold leading-tight text-black text-left w-full max-w-lg ">
             {{ title }}
         </h1>
         <button v-if="descriptionButton" class="self-start">

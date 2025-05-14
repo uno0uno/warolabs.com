@@ -19,13 +19,13 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex bg-white w-full h-[20rem] max-w-5xl mx-auto py-4 px-8 justify-center items-center gap-8">
+    <div class="flex flex-col md:flex-row bg-white w-full h-auto md:h-[20rem] max-w-5xl mx-auto py-4 md:px-8 justify-center items-center gap-8 global-style">
         <!-- left container -->
-        <div class="flex flex-col gap-6 text-left w-1/2 h-full items-start justify-center">
+        <div class="flex flex-col gap-6 text-left md:w-1/2 h-full items-start justify-center">
             <p class="text-2xl font-light leading-relaxed w-full text-stone-600">
                 {{ description }}
             </p>
-            <h2 class="text-4xl font-extrabold leading-light text-black text-left w-full max-w-md">
+            <h2 class="text-4xl font-bold leading-light text-black text-left w-full max-w-md">
                 {{ title }}
             </h2>
             <button>
@@ -36,7 +36,7 @@ defineProps({
 
         </div>
         <!-- right container -->
-        <div class="flex w-1/2 h-full bg-white">
+        <div class="flex md:w-1/2 h-full bg-white">
             <CommonsTheImages
                 v-for="(image, index) in image"
                 :key="index"

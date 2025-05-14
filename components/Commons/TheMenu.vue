@@ -12,8 +12,8 @@ const menuItems = [
 
 <template>
     <nav class="flex flex-col gap-4">
-        <ul class="list-none p-0 m-0 flex flex-raw gap-4">
-            <li class="flex items-center gap-2 text-white hover:text-gray-900 transition-colors"
+        <ul class="list-none p-0 m-0 flex flex-wrap justify-center gap-4">
+            <li class="flex items-center gap-2 text-white w-1/4 md:w-auto hover:text-gray-900 transition-colors"
                 v-for="(item, index) in menuItems" :key="index">
                 <component :is="item.icon" class="h-6 w-6" />
                 <span>{{ item.label }}</span>

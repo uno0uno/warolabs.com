@@ -21,7 +21,7 @@ defineProps({
             <p class="text-2xl font-light leading-relaxed text-stone-800">{{ description }}</p>
             <h2 v-if="title" class="text-5xl font-bold text-black">{{ title }}</h2>
         </div>
-        <div class="grid grid-cols-3 gap-6 w-full h-full place-items-center">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 w-full h-full place-items-center">
             <div v-for="(image, index) in itemsImages" :key="index" class="flex flex-col gap-2 w-full h-full bg-white rounded-lg py-2 px-2" >
                 <div class="flex gap-4 items-center">
                     <CommonsTheImages
