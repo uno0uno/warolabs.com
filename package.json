@@ -12,12 +12,13 @@
   "dependencies": {
     "@heroicons/vue": "^2.0.18",
     "@nuxtjs/google-fonts": "^3.0.2",
+    "@nuxtjs/robots": "^4.0.0",
     "@tailwindcss/forms": "^0.5.4",
     "@tailwindcss/typography": "^0.5.9",
     "markdown-it": "^13.0.1",
     "nuxt": "^3.17.1",
-    "@nuxtjs/robots": "^4.0.0",
     "nuxt-site-config": "^2.2.15",
+    "oxc-parser": "^0.72.0",
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {

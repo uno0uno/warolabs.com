@@ -26,7 +26,7 @@ defineProps({
 </script>
 
 <template>
-    <div :class="`relative ${className}`">
+    <div>
         <img 
             :src="src" 
             :alt="alt" 

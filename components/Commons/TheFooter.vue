@@ -4,7 +4,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-4 items-center justify-center p-4 bg-gray-800 text-white">
+    <div class="flex flex-col gap-4 items-center justify-center p-4 bg-black text-white">
         <div class="flex flex-col gap-2 items-center justify-center">
             <p class="text-sm font-light leading-relaxed text-stone-400 mb-2">© 2023 Your Company. All rights reserved.</p>
             <p class="text-sm font-light leading-relaxed text-stone-400 mb-2">Privacy Policy | Terms of Service</p>

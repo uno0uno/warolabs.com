@@ -127,13 +127,30 @@ const images4 = [
 </script>
 
 <template>
-  <div class="text-center flex flex-col items-center w-full h-full justify-center gap-8 bg-blue-100  lg:min-w-[48rem]">
-    <MarketingTheHeroSection :title="title" :description="description" />
-    <MarketingTheClusterSection :title="title2" :description="description2" :items-images="images" />
-    <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />
-    <MarketingTheClusterSectionLeft :description="description2" :items-images="images4" />
+  <div class="flex w-full items-center justify-center">
+  <div class="text-center flex flex-col items-center w-full h-full justify-center gap-8 bg-gray-100/80  lg:min-w-[48rem] max-w-6xl px-12">
+    <div class="section-size mt-8">
+      <MarketingTheHeroSection :title="title" :description="description" />
+    </div>
+    <div class="section-size">
+      <MarketingTheClusterSection :title="title2" :description="description2" :items-images="images" />
+    </div>
+    <div class="h-[24rem]">
+      <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />
+    </div>
+    <div class="h-[24rem] w-full">
+      <MarketingTheClusterSectionLeft :description="description2" :items-images="images4" />
+    </div>
+
     <MarketingTheHeroSectionLeftRight :title="title3" descriptionButton="Call to action" />
-    <MarketingTheHeroSectionLeftRight :title="title3" :description="description3" />
     <MarketingTheClusterSection :items-images="images" />
   </div>
+</div>
 </template>
+<style scoped>
+
+.section-size {
+  @apply h-[32rem] w-full;
+}
+
+</style>

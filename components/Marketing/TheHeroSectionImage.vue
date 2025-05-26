@@ -19,7 +19,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col md:flex-row bg-white w-full h-auto md:h-[20rem] max-w-5xl mx-auto py-4 md:px-8 justify-center items-center gap-8 global-style">
+    <div class="flex flex-col md:flex-row w-full h-full mx-auto py-4 md:px-8 justify-center items-center gap-8">
         <!-- left container -->
         <div class="flex flex-col gap-6 text-left md:w-1/2 h-full items-start justify-center">
             <p class="text-2xl font-light leading-relaxed w-full text-stone-600">
@@ -36,7 +36,7 @@ defineProps({
 
         </div>
         <!-- right container -->
-        <div class="flex md:w-1/2 h-full bg-white">
+        <div class="flex flex-col md:w-1/2 h-full justify-center items-center">
             <CommonsTheImages
                 v-for="(image, index) in image"
                 :key="index"

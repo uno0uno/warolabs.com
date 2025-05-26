@@ -2,11 +2,11 @@
 defineProps({
     title: {
         type: String,
-        required: true,
+        required: false,
     },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
     itemsImages: {
         type: Array,
@@ -16,7 +16,7 @@ defineProps({
 </script>
 
 <template>
-    <div :class="title && description ? 'md:min-h-[60vh]': 'min-h-[48vh]'" class="global-style w-full h-full bg-gray-100 gap-8 items-center justify-center flex flex-col py-4 max-w-5xl mx-auto ">
+    <div class="w-full h-full gap-8 items-center justify-center flex flex-col py-4 ">
         <div v-if="title && description" class="flex flex-col gap-2 items-left md:items-center justify-left md:justify-center text-left md:text-center">
             <p class="font-light leading-relaxed text-stone-600 mb-2">{{ description }}</p>
             <h2 class="text-4xl md:text-6xl font-bold text-black">{{ title }}</h2>

@@ -8,6 +8,9 @@ dist
 # Node dependencies
 node_modules
 
+#local config deocker
+docker-compose.override.yml
+
 # Logs
 logs
 *.log
