@@ -29,7 +29,7 @@ defineProps({
                 {{ title }}
             </h2>
             <button>
-                <span class="text-lg font-semibold text-white bg-blue-500 px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                <span class="text-lg font-semibold text-white bg-black px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
                     Call to Action
                 </span>
             </button>
