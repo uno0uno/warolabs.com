@@ -1,24 +1,24 @@
 <script setup>
-import { MarketingTheClusterSectionLeft } from '#components';
+import { HomeIcon, InformationCircleIcon, BriefcaseIcon, Squares2X2Icon, PhoneIcon } from '@heroicons/vue/24/outline';
 
 
 definePageMeta({
   layout: 'landing',
 });
 
-const title = 'Haga realidad su version de software';
-const description = 'Herramientas profesionales creadas pensando en los desarroladores, los equipos y las empresas';
-const title2 = 'Disfrute Creando Software';
-const description2 = 'Para Desarrolladores';
-const title3 = 'this is the description from tyhe hero here';
-const description3 = 'description from the hero here';
-const image3 =   [{
-    src: 'https://dummyimage.com/800x500',
-    alt: 'Image 1',
-    width: 500,
-    height: 800,
-    lazy: true,
-    className: 'image-class-1',
+const title = 'descubre el poder de la inteligencia artificial. fácil y para todos';
+const description = 'únete a nuestra comunidad y participa en discusiones mensuales sobre cómo la IA está transformando nuestro mundo. --sin tecnicismos, solo ideas claras';
+const title2 = 'en nuestros labs mensuales, exploramos temas como';
+const description2 = 'desentrañamos un tema clave de la IA en un lenguaje sencillo';
+const title3 = 'da el primer paso para entender la inteligencia artificial';
+const description3 = ' Aprende qué es y cómo funciona la IA en nuestros labs para principiantes';
+const image3 = [{
+  src: 'https://dummyimage.com/800x500',
+  alt: 'Image 1',
+  width: 500,
+  height: 800,
+  lazy: true,
+  className: 'image-class-1',
 }]
 
 const images = [
@@ -69,6 +69,45 @@ const images = [
     height: 200,
     lazy: true,
     className: 'image-class-3',
+  },
+];
+
+const itemsCluster = [
+  {
+    icon: HomeIcon,
+    title: '¿Te Parece Complicado?',
+    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    size: 14,
+  },
+  {
+    icon: HomeIcon,
+    title: '¿Te Parece Complicado?',
+    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    size: 14,
+  },
+  {
+    icon: HomeIcon,
+    title: '¿Te Parece Complicado?',
+    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    size: 14,
+  },
+  {
+    icon: HomeIcon,
+    title: '¿Te Parece Complicado?',
+    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    size: 14,
+  },
+  {
+    icon: HomeIcon,
+    title: '¿Te Parece Complicado?',
+    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    size: 14,
+  },
+  {
+    icon: HomeIcon,
+    title: '¿Te Parece Complicado?',
+    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    size: 14,
   },
 ];
 
@@ -135,15 +174,19 @@ const images4 = [
     <div class="section-size">
       <MarketingTheClusterSection :title="title2" :description="description2" :items-images="images" />
     </div>
-    <div class="h-[24rem]">
+    <div class="section-size">
+
       <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />
     </div>
-    <div class="h-[24rem] w-full">
-      <MarketingTheClusterSectionLeft :description="description2" :items-images="images4" />
+    <div class="section-size">
+      <MarketingTheClusterSectionLeft :description="description2" :items="itemsCluster" />
     </div>
-
-    <MarketingTheHeroSectionLeftRight :title="title3" descriptionButton="Call to action" />
-    <MarketingTheClusterSection :items-images="images" />
+    <div class="section-size">
+      <MarketingTheHeroSectionLeftRight :title="title3" descriptionButton="Call to action" />
+    </div>
+    <div class="section-size">
+      <MarketingTheClusterSection :items-images="images" />
+    </div>
   </div>
 </div>
 </template>
@@ -151,6 +194,36 @@ const images4 = [
 
 .section-size {
   @apply h-[32rem] w-full;
+}
+
+@media (min-width: 768px) {
+  .section-size {
+    @apply h-fit;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-size {
+    @apply h-fit;;
+  }
+}
+
+@media (min-width: 1280) {
+  .section-size {
+    @apply h-[32rem];
+  }
+}
+
+@media (min-width: 1440px) {
+  .section-size {
+    @apply h-[36rem];
+  }
+}
+
+@media (min-width: 2500px) {
+  .section-size {
+    @apply h-[40rem];
+  }
 }
 
 </style>
