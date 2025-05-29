@@ -167,7 +167,7 @@ const images4 = [
 
 <template>
   <div class="flex w-full items-center justify-center">
-  <div class="text-center flex flex-col items-center w-full h-full justify-center gap-8 bg-gray-100/80  lg:min-w-[48rem] max-w-6xl px-12">
+  <div class="text-center flex flex-col items-center w-full h-full justify-center gap-8 bg-gray-100/80  lg:min-w-[48rem] max-w-6xl lg:px-12">
     <div class="section-size mt-8">
       <MarketingTheHeroSection :title="title" :description="description" />
     </div>
@@ -194,6 +194,12 @@ const images4 = [
 
 .section-size {
   @apply h-[32rem] w-full;
+}
+
+@media (min-width: 375px) {
+  .section-size {
+    @apply h-fit;
+  }
 }
 
 @media (min-width: 768px) {
