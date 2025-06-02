@@ -21,9 +21,9 @@ defineProps({
 
 <template>
     <div
-        class="flex flex-col gap-8 lg:gap-16 items-start justify-left lg:items-center lg:justify-center w-full h-full mx-auto py-6 px-8 bg-white">
-        <h1 class="max-w-2xl w-full text-left lg:text-center w-auto h-auto">
-            <span  class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black">
+        class="flex flex-col gap-8 lg:gap-16 items-start justify-left lg:items-center lg:justify-center w-full h-full mx-auto py-6 px-8">
+        <h1 class="max-w-3xl w-full text-left lg:text-center h-auto">
+            <span  class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black italic">
                 {{ title }} 
             </span>
         </h1>

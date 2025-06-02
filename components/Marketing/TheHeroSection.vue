@@ -1,5 +1,6 @@
 <script setup>
-defineProps({
+
+const props =  defineProps({
     title: {
         type: String,
         required: true,
@@ -9,15 +10,27 @@ defineProps({
         required: true,
     },
 });
+
+const { title, description} = toRefs(props);
+
+const formattedTitle = computed(() => {
+  const titleText = title.value || '';
+  const phraseToItalicize = 'nteligencia artificial';
+  if (titleText.includes(phraseToItalicize)) {
+    return titleText.replace(phraseToItalicize, `<span class="italic">${phraseToItalicize}</span>`);
+  }
+  return titleText;
+});
+
 </script>
 
 <template>
     <div
-        class="flex flex-col gap-8 items-left lg:items-center justify-center md:h-full text-left lg:text-center bg-white mx-auto global-style pt-8 ">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl font-extrabold leading-none text-black">
-            {{ title }}
+        class="flex flex-col gap-8 items-left lg:items-center justify-center md:h-full text-left lg:text-center mx-auto global-style pt-8 ">
+        <h1 class="font-secondary font-bold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl leading-none text-stone-900"
+            v-html="formattedTitle">
         </h1>
-        <p class="text-lg sm:text-2xl font-light leading-relaxed max-w-xl text-stone-600">
+        <p class="font-principal text-lg sm:text-2xl font-base leading-relaxed max-w-xl text-stone-600">
             {{ description }}
         </p>
     </div>

@@ -96,19 +96,7 @@ const itemsCluster = [
     title: '¿Te Parece Complicado?',
     description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
     size: 14,
-  },
-  {
-    icon: HomeIcon,
-    title: '¿Te Parece Complicado?',
-    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
-    size: 14,
-  },
-  {
-    icon: HomeIcon,
-    title: '¿Te Parece Complicado?',
-    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
-    size: 14,
-  },
+  }
 ];
 
 const images4 = [
@@ -164,34 +152,39 @@ const images4 = [
 
 
 </script>
-
 <template>
-  <div class="flex w-full items-center justify-center">
-  <div class="text-center flex flex-col items-center w-full h-full justify-center gap-8 bg-gray-100/80  lg:min-w-[48rem] max-w-6xl lg:px-12">
-    <div class="section-size mt-8">
-      <MarketingTheHeroSection :title="title" :description="description" />
-    </div>
-    <div class="section-size">
-      <MarketingTheClusterSection :title="title2" :description="description2" :items-images="images" />
-    </div>
-    <div class="section-size">
-
-      <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />
-    </div>
-    <div class="section-size">
-      <MarketingTheClusterSectionLeft :description="description2" :items="itemsCluster" />
-    </div>
-    <div class="section-size">
-      <MarketingTheHeroSectionLeftRight :title="title3" descriptionButton="Call to action" />
-    </div>
-    <div class="section-size">
-      <MarketingTheClusterSection :items-images="images" />
+  <div class="w-full min-h-screen flex items-center justify-center">
+    <div class="text-center flex flex-col items-center w-full h-full justify-center gap-8 lg:min-w-[48rem] max-w-6xl lg:px-12 relative z-0">
+      <div class="relative section-size mt-8">
+        <div class="background-plus"></div>
+        <MarketingTheHeroSection :title="title" :description="description" />
+      </div>
+      <div class="relative section-size">
+        <div class="background-dots-white"></div>
+        <MarketingTheClusterSection :title="title2" :description="description2" :items-images="images" />
+      </div>
+      <div class="relative section-size">
+        <div class="background-plus"></div>
+        <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />
+      </div>
+      <div class="relative section-size">
+        <div class="background-dots-white"></div>
+        <MarketingTheClusterSectionLeft :description="description2" :items="itemsCluster" />
+      </div>
+      <div class="relative section-size">
+        <div class="background-plus"></div>
+        <MarketingTheHeroSectionLeftRight :title="title3" descriptionButton="Call to action" />
+      </div>
+      <div class="relative section-size">
+        <div class="background-dots-white"></div>
+        <MarketingTheClusterSection :items-images="images" />
+      </div>
     </div>
   </div>
-</div>
 </template>
-<style scoped>
 
+<style scoped>
+/* Tus estilos scoped permanecen aquí, ya que solo afectan a este componente/página */
 .section-size {
   @apply h-[32rem] w-full;
 }
@@ -214,7 +207,7 @@ const images4 = [
   }
 }
 
-@media (min-width: 1280) {
+@media (min-width: 1280px) { /* Corregido de 1280 a 1280px */
   .section-size {
     @apply h-[32rem];
   }
@@ -222,7 +215,7 @@ const images4 = [
 
 @media (min-width: 1440px) {
   .section-size {
-    @apply h-[36rem];
+    @apply h-[32rem];
   }
 }
 
@@ -231,5 +224,4 @@ const images4 = [
     @apply h-[40rem];
   }
 }
-
 </style>

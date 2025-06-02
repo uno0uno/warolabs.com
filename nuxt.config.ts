@@ -21,11 +21,6 @@ export default defineNuxtConfig({
     }
   },
   modules: [
-    ['@nuxtjs/google-fonts', {
-      families: {
-        Lato: true
-      }
-    }],
     '@nuxtjs/robots'
   ],
   site: {

@@ -10,7 +10,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      principal: ['Lato']
+      principal: ['Lato', 'sans-serif'],
+      secondary: ['Instrument Serif', 'serif'],
     },
   },
   plugins: [

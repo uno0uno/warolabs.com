@@ -19,13 +19,13 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col lg:flex-row bg-white w-full h-full mx-auto py-4 lg:px-8 justify-center items-center gap-8 global-style">
+    <div class="flex flex-col lg:flex-row w-full h-full mx-auto py-4 lg:px-8 justify-left items-left xl:items-center gap-8 global-style">
         <!-- left container -->
-        <div class="flex flex-col gap-6 text-left lg:w-1/2 h-fit items-start justify-between">
-            <p class="font-light leading-light w-full text-stone-600">
+        <div class="flex flex-col gap-4 xl:gap-6 text-left lg:w-1/2 h-fit items-start justify-between">
+            <p class="font-principal lg:text-sm xl:text-lg font-base leading-relaxed max-w-xl w-full text-stone-600">
                 {{ description }}
             </p>
-            <h2 class="text-3xl md:text-3xl lg:text-3xl xl:text-4xl font-bold leading-light text-black text-left w-full ">
+            <h2 class="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-light text-black text-left w-full ">
                 {{ title }}
             </h2>
             <button>
