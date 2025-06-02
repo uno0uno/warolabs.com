@@ -16,8 +16,8 @@ defineProps({
 </script>
 
 <template>
-    <div class="global-style w-full h-full gap-8 lg:gap-16 items-center lg:items-center justify-center lg:justify-center flex flex-col py-4 mx-auto">
-        <div v-if="title && description" class="flex flex-col lg:gap-2 items-left lg:items-center justify-left lg:justify-center text-left lg:text-center">
+    <div class="w-full h-full gap-8 lg:gap-16 items-center lg:items-center lg:justify-center flex flex-col mx-auto">
+        <div v-if="title && description" class="flex flex-col lg:gap-2 items-start lg:items-center justify-start lg:justify-center text-left lg:text-center w-full">
             <p class="font-principal text-lg sm:text-xl font-base leading-relaxed max-w-xl text-stone-600 lg:mb-2">{{ description }}</p>
             <h2 class="text-3xl leading-none md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black max-w-xl">{{ title }}</h2>
         </div>

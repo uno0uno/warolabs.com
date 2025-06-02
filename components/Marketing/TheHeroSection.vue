@@ -26,7 +26,7 @@ const formattedTitle = computed(() => {
 
 <template>
     <div
-        class="flex flex-col gap-8 items-left lg:items-center justify-center md:h-full text-left lg:text-center mx-auto global-style pt-8 ">
+        class="flex flex-col gap-8 items-left lg:items-center justify-center md:h-full text-left lg:text-center mx-auto  pt-8 ">
         <h1 class="font-secondary font-bold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-7xl leading-none text-stone-900"
             v-html="formattedTitle">
         </h1>

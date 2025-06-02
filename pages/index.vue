@@ -159,23 +159,23 @@ const images4 = [
         <div class="background-plus"></div>
         <MarketingTheHeroSection :title="title" :description="description" />
       </div>
-      <div class="relative section-size">
+      <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-dots-white"></div>
         <MarketingTheClusterSection :title="title2" :description="description2" :items-images="images" />
       </div>
-      <div class="relative section-size">
+      <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-plus"></div>
         <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />
       </div>
-      <div class="relative section-size">
+      <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-dots-white"></div>
         <MarketingTheClusterSectionLeft :description="description2" :items="itemsCluster" />
       </div>
-      <div class="relative section-size">
+      <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-plus"></div>
         <MarketingTheHeroSectionLeftRight :title="title3" descriptionButton="Call to action" />
       </div>
-      <div class="relative section-size">
+      <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-dots-white"></div>
         <MarketingTheClusterSection :items-images="images" />
       </div>
