@@ -21,10 +21,10 @@ defineProps({
 
 <template>
     <div
-        class="flex flex-col gap-8 lg:gap-16 items-start justify-left lg:items-center lg:justify-center w-full h-full mx-auto py-6 px-8">
+        class="flex flex-col gap-8 lg:gap-16 items-start justify-left lg:items-center lg:justify-center w-full h-full mx-auto lg:py-6 lg:px-8">
         <h1 class="max-w-3xl w-full text-left lg:text-center h-auto">
             <span  class="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black italic">
-                {{ title }} 
+                {{ title }}
             </span>
         </h1>
         <button v-if="descriptionButton" class="self-left lg:self-center">

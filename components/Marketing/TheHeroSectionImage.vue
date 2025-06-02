@@ -19,10 +19,10 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col lg:flex-row w-full h-full mx-auto py-4 lg:px-8 justify-left items-left xl:items-center gap-8 global-style">
+    <div class="flex flex-col lg:flex-row w-full h-full mx-auto py-4 lg:px-8 justify-left items-left xl:items-center gap-8">
         <!-- left container -->
-        <div class="flex flex-col gap-4 xl:gap-6 text-left lg:w-1/2 h-fit items-start justify-between">
-            <p class="font-principal lg:text-sm xl:text-lg font-base leading-relaxed max-w-xl w-full text-stone-600">
+        <div class="flex flex-col gap-4 xl:gap-6 text-left w-full lg:w-1/2 h-fit items-start justify-between">
+            <p class="font-principal lg:text-sm xl:text-lg font-base leading-tight max-w-xl w-full text-stone-600">
                 {{ description }}
             </p>
             <h2 class="text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold leading-light text-black text-left w-full ">
@@ -46,6 +46,7 @@ defineProps({
                 :width="image.width"
                 :height="image.height"
                 :lazy="image.lazy"
+                borderColor="border-slate-900"
                 :className="`${image.className} h-full object-cover`"
                 />
             </div>

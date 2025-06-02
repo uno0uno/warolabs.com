@@ -21,6 +21,10 @@ defineProps({
     className: {
         type: String,
         default: ''
+    },
+    borderColor: {
+        type: String,
+        default: 'bg-transparent'
     }
 });
 </script>
@@ -33,7 +37,7 @@ defineProps({
             :width="width" 
             :height="height" 
             :loading="lazy ? 'lazy' : 'eager'" 
-            :class="`object-cover rounded-lg ${width ? 'w-' + width : ''} ${height ? 'h-' + height : ''}`" 
+            :class="`object-cover border-2 ${width ? 'w-' + width : ''} ${height ? 'h-' + height : ''} ${borderColor ? borderColor : ''}`" 
         />
     </div>
 </template>
