@@ -6,11 +6,11 @@ definePageMeta({
   layout: 'landing',
 });
 
-const title = 'descubre el poder de la inteligencia artificial. fácil y para todos';
-const description = 'únete a nuestra comunidad y participa en discusiones mensuales sobre cómo la IA está transformando nuestro mundo. --sin tecnicismos, solo ideas claras';
-const title2 = 'en nuestros labs mensuales, exploramos temas como';
-const description2 = 'desentrañamos un tema clave de la IA en un lenguaje sencillo';
-const title3 = 'da el primer paso para entender la inteligencia artificial';
+const title = 'Descubre el poder de la inteligencia artificial. fácil y para todos';
+const description = 'Únete a nuestra comunidad y participa en discusiones mensuales sobre cómo la IA está transformando nuestro mundo. --sin tecnicismos, solo ideas claras';
+const title2 = 'En nuestros labs mensuales, exploramos temas como';
+const description2 = 'Desentrañamos un tema clave de la IA en un lenguaje sencillo';
+const title3 = 'Da el primer paso para entender la inteligencia artificial';
 const description3 = ' Aprende qué es y cómo funciona la IA en nuestros labs para principiantes';
 const image3 = [{
   src: 'https://dummyimage.com/800x500',
