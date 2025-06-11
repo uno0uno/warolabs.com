@@ -9,13 +9,24 @@ defineProps({
         type: String,
         required: true,
     },
-    image: {
-        type: Array,
-        required: true,
+    videoSrc: {
+        type: String,
+        required: false,
+        default: null
     },
+    videoAlt: {
+        type: String,
+        default: 'Video'
+    },
+    videoWidth: {
+        type: [String, Number],
+        default: '800'
+    },
+    videoHeight: {
+        type: [String, Number],
+        default: '500'
+    }
 });
-
-
 </script>
 
 <template>
@@ -30,25 +41,21 @@ defineProps({
             </h2>
             <button>
                 <span class="text-lg font-semibold text-white bg-black px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">
-                    Únete a Nuestro Próximo Lab 
+                    Únete a Nuestro Próximo Lab
                 </span>
             </button>
-
         </div>
         <!-- right container -->
         <div class="flex w-full lg:w-1/2 h-full items-left justify-start lg:items-center lg:justify-center">
             <div class="flex items-center justify-center">
-                <CommonsTheImages
-                v-for="(image, index) in image"
-                :key="index"
-                :src="image.src"
-                :alt="image.alt"
-                :width="image.width"
-                :height="image.height"
-                :lazy="image.lazy"
-                borderColor="border-slate-900"
-                :className="`${image.className} h-full object-cover`"
+                <CommonsTheVideos
+                    v-if="videoSrc"
+                    :src="videoSrc"
+                    :alt="videoAlt"
+                    :width="videoWidth"
+                    :height="videoHeight"
                 />
+                <p v-else>No video source provided.</p>
             </div>
         </div>
     </div>

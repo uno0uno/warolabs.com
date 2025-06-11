@@ -12,6 +12,7 @@ const title2 = 'En nuestros labs mensuales, exploramos temas como';
 const description2 = 'Desentrañamos un tema clave de la IA en un lenguaje sencillo';
 const title3 = 'Da el primer paso para entender la inteligencia artificial';
 const description3 = ' Aprende qué es y cómo funciona la IA en nuestros labs para principiantes';
+
 const image3 = [{
   src: 'https://dummyimage.com/800x500',
   alt: 'Image 1',
@@ -150,7 +151,6 @@ const images4 = [
   },
 ];
 
-
 </script>
 <template>
   <div class="w-full flex items-center justify-center">
@@ -165,7 +165,14 @@ const images4 = [
       </div>
       <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-plus"></div>
-        <MarketingTheHeroSectionImage :title="title3" :description="description3" :image="image3" />
+          <MarketingTheHeroSectionImage
+            :title="title3" 
+            :description="description3"
+            videoSrc="https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/Bogot%C3%A1_Caf%C3%A9_Programmer_s_Moment.mp4"
+            videoAlt="Alternative text for the video"
+            videoWidth="640"
+            videoHeight="360"
+          />
       </div>
       <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-dots-white"></div>
