@@ -3,9 +3,9 @@ import { HomeIcon, InformationCircleIcon, BriefcaseIcon, Squares2X2Icon, PhoneIc
 
 const menuItems = [
     { icon: HomeIcon, label: 'Home' },
-    { icon: InformationCircleIcon, label: 'About' },
-    { icon: BriefcaseIcon, label: 'Services' },
-    { icon: Squares2X2Icon, label: 'Portfolio' }, 
+    // { icon: InformationCircleIcon, label: 'About' },
+    // { icon: BriefcaseIcon, label: 'Services' },
+    // { icon: Squares2X2Icon, label: 'Portfolio' }, 
     { icon: PhoneIcon, label: 'Contact' },
 ];
 </script>

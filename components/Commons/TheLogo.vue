@@ -15,7 +15,11 @@ defineProps({
 </script>
 
 <template>
-    <div>
-        <img :src="`https://dummyimage.com/${width}x${height}`" :alt="'Logo'"  />
+    <div class="aspect-w-16 aspect-h-5">
+        <img 
+            class="object-contain w-24 h-full sm:w-40 "
+            :src="`https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/waro_labs_logo.png`" 
+            :alt="'Logo'"  
+        />
     </div>
 </template>
