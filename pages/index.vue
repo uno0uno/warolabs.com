@@ -73,6 +73,57 @@ const images = [
   },
 ];
 
+const images2 = [
+  {
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%207.png',
+    alt: 'Image 1',
+    width: 300,
+    height: 200,
+    lazy: true,
+    className: 'image-class-1',
+  },
+  {
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%208.png',
+    alt: 'Image 2',
+    width: 300,
+    height: 200,
+    lazy: false,
+    className: 'image-class-2',
+  },
+  {
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%209.png',
+    alt: 'Image 3',
+    width: 300,
+    height: 200,
+    lazy: true,
+    className: 'image-class-3',
+  },
+  {
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%2010.png',
+    alt: 'Image 1',
+    width: 300,
+    height: 200,
+    lazy: true,
+    className: 'image-class-1',
+  },
+  {
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%2011.png',
+    alt: 'Image 2',
+    width: 300,
+    height: 200,
+    lazy: false,
+    className: 'image-class-2',
+  },
+  {
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%2012.png',
+    alt: 'Image 3',
+    width: 300,
+    height: 200,
+    lazy: true,
+    className: 'image-class-3',
+  },
+];
+
 const itemsCluster = [
   {
     icon: HomeIcon,
@@ -149,7 +200,7 @@ const images4 = [
     lazy: true,
     className: 'image-class-3',
   },
-];
+]
 
 </script>
 <template>
@@ -184,7 +235,7 @@ const images4 = [
       </div>
       <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-dots-white"></div>
-        <MarketingTheClusterSection :items-images="images" />
+        <MarketingTheClusterSection :items-images="images2" />
       </div>
     </div>
   </div>
