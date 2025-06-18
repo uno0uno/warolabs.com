@@ -8,7 +8,7 @@ definePageMeta({
 
 const title = 'Descubre el poder de la inteligencia artificial. fácil y para todos';
 const description = 'Únete a nuestra comunidad y participa en discusiones mensuales sobre cómo la IA está transformando nuestro mundo. --sin tecnicismos, solo ideas claras';
-const title2 = 'En nuestros labs mensuales, exploramos temas como';
+const title2 = 'Vive la experiencia en nuestros eventos de IA';
 const description2 = 'Desentrañamos un tema clave de la IA en un lenguaje sencillo';
 const title3 = 'Da el primer paso para entender la inteligencia artificial';
 const description3 = ' Aprende qué es y cómo funciona la IA en nuestros labs para principiantes';
@@ -24,7 +24,7 @@ const image3 = [{
 
 const images = [
   {
-    src: 'https://dummyimage.com/400x200',
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%201.png',
     alt: 'Image 1',
     width: 300,
     height: 200,
@@ -32,7 +32,7 @@ const images = [
     className: 'image-class-1',
   },
   {
-    src: 'https://dummyimage.com/400x200',
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%202.png',
     alt: 'Image 2',
     width: 300,
     height: 200,
@@ -40,7 +40,7 @@ const images = [
     className: 'image-class-2',
   },
   {
-    src: 'https://dummyimage.com/400x200',
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%203.png',
     alt: 'Image 3',
     width: 300,
     height: 200,
@@ -48,7 +48,7 @@ const images = [
     className: 'image-class-3',
   },
   {
-    src: 'https://dummyimage.com/400x200',
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%204.png',
     alt: 'Image 1',
     width: 300,
     height: 200,
@@ -56,7 +56,7 @@ const images = [
     className: 'image-class-1',
   },
   {
-    src: 'https://dummyimage.com/400x200',
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%205.png',
     alt: 'Image 2',
     width: 300,
     height: 200,
@@ -64,7 +64,7 @@ const images = [
     className: 'image-class-2',
   },
   {
-    src: 'https://dummyimage.com/400x200',
+    src: 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/Image%206.png',
     alt: 'Image 3',
     width: 300,
     height: 200,
