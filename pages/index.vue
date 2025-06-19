@@ -206,7 +206,7 @@ const images4 = [
 <template>
   <div class="w-full flex items-center justify-center">
     <div class="text-center flex flex-col items-center w-full h-full justify-center gap-4 lg:min-w-[48rem] max-w-6xl lg:px-12 relative z-0">
-      <div class="relative section-size mt-8">
+      <div class="relative section-size mt-2 sm:pt-8">
         <div class="background-plus"></div>
         <MarketingTheHeroSection :title="title" :description="description" />
       </div>
