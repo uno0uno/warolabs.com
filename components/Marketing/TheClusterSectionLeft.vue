@@ -16,11 +16,11 @@ defineProps({
 </script>
 
 <template>
-    <div class="w-full h-full gap-8 lg:gap-16 flex flex-col mx-auto lg:px-8 justify-start lg:justify-center">
+    <div class="w-full h-full gap-4 lg:gap-16 flex flex-col mx-auto lg:px-8 justify-start lg:justify-center">
         <div class="flex flex-col gap-2 items-start lg:items-center lg:justify-center w-full">
             <h2 class="text-3xl md:text-3xl lg:text-4xl xl:text-5xl text-left lg:text-center font-bold text-black max-w-2xl">{{ description }}</h2>
         </div>
-        <div class="grid lg:grid-cols-2 gap-6 w-full h-fit place-items-center">
+        <div class="grid lg:grid-cols-2 gap-4 w-full h-fit place-items-center">
             <div v-for="(item, index) in items" :key="index"
                 class="flex flex-col gap-2 w-full h-fit border-2 border-slate-900 p-4 px-4 ">
                 <div class="flex flex-caol md:flex-row gap-4 items-left"> 

@@ -30,9 +30,9 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-col lg:flex-row w-full h-full mx-auto py-4 lg:px-8 justify-left items-left xl:items-center gap-8">
+    <div class="flex flex-col lg:flex-row w-full h-full mx-auto py-4 lg:px-8 justify-left items-left xl:items-center gap-6">
         <!-- left container -->
-        <div class="flex flex-col gap-4 xl:gap-6 text-left w-full lg:w-1/2 h-fit items-start justify-between">
+        <div class="flex flex-col gap-4 xl:gap-4 text-left w-full lg:w-1/2 h-fit items-start justify-between">
             <p class="font-principal lg:text-sm xl:text-lg font-base leading-tight max-w-xl w-full text-stone-600">
                 {{ description }}
             </p>
