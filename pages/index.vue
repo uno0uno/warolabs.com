@@ -1,5 +1,5 @@
 <script setup>
-import { HomeIcon, InformationCircleIcon, BriefcaseIcon, Squares2X2Icon, PhoneIcon } from '@heroicons/vue/24/outline';
+import { HomeIcon, InformationCircleIcon, BriefcaseIcon, Squares2X2Icon, PhoneIcon, ArrowPathRoundedSquareIcon, FireIcon, BoltIcon, BeakerIcon, GlobeAmericasIcon } from '@heroicons/vue/24/outline';
 
 
 definePageMeta({
@@ -126,27 +126,27 @@ const images2 = [
 
 const itemsCluster = [
   {
-    icon: HomeIcon,
-    title: '¿Te Parece Complicado?',
-    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    icon: BoltIcon,
+    title: '¿Quieres aplicar la IA a tu día a día?',
+    description: 'Nuestros Labs te enseñan a integrar la Inteligencia Artificial con ejemplos prácticos y soluciones reales',
     size: 14,
   },
   {
-    icon: HomeIcon,
-    title: '¿Te Parece Complicado?',
-    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    icon: GlobeAmericasIcon,
+    title: '¿Cómo impactará la IA tu futuro?',
+    description: 'Anticipa las tendencias que marcarán el 2025 y más allá, explicadas por líderes de la industria',
     size: 14,
   },
   {
-    icon: HomeIcon,
-    title: '¿Te Parece Complicado?',
-    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    icon: FireIcon,
+    title: '¿Sientes que la IA es "demasiado técnica"?',
+    description: 'Rompe esa barrera. Diseñamos nuestros encuentros para que cualquier persona entienda la IA sin complejidad',
     size: 14,
   },
   {
-    icon: HomeIcon,
-    title: '¿Te Parece Complicado?',
-    description: ' Aprender Inteligencia Artificial Fácil es Posible: Desmitificamos la IA para no técnicos, explicándola paso a paso',
+    icon: BeakerIcon,
+    title: '¿Buscas más allá de la teoría?',
+    description: 'Conecta con una red de mentes curiosas, comparte ideas y aprende en un entorno colaborativo',
     size: 14,
   }
 ];

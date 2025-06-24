@@ -14,6 +14,7 @@
             <a href="#" class="text-white hover:text-gray-400">Twitter</a>
             <a href="#" class="text-white hover:text-gray-400">LinkedIn</a>
             <a href="#" class="text-white hover:text-gray-400">Instagram</a>
+            <a href="#" class="text-white hover:text-gray-400">TikTok</a>
         </div>
     </div>
 </template>
