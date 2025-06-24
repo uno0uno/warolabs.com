@@ -7,11 +7,11 @@ definePageMeta({
 });
 
 const title = 'Descubre el poder de la inteligencia artificial. fácil y para todos';
-const description = 'Únete a nuestra comunidad y participa en discusiones mensuales sobre cómo la IA está transformando nuestro mundo. --sin tecnicismos, solo ideas claras';
-const title2 = 'Vive la experiencia en nuestros eventos de IA';
-const description2 = 'Desentrañamos un tema clave de la IA en un lenguaje sencillo';
-const title3 = 'Da el primer paso para entender la inteligencia artificial';
-const description3 = ' Aprende qué es y cómo funciona la IA en nuestros labs para principiantes';
+const description = 'Únete a nuestra comunidad: eventos de inteligencia artificial creados por nuestros ingenieros, para entender la IA de forma sencilla.';
+const title2 = 'Vive la experiencia en nuestros eventos de inteligencia artificial';
+const description2 = 'Tu espacio para entender la IA y conectar con la comunidad';
+const title3 = 'Entiende la inteligencia artificial, sin complicaciones';
+const description3 = 'Aprende IA esencial para 2025 en nuestros labs, ideal para principiantes';
 
 const image3 = [{
   src: 'https://dummyimage.com/800x500',
@@ -207,7 +207,7 @@ const images4 = [
   <div class="w-full flex items-center justify-center">
     <div class="text-center flex flex-col items-center w-full h-full justify-center gap-4 lg:min-w-[48rem] max-w-6xl lg:px-12 relative z-0">
       <div class="relative section-size mt-2 sm:pt-8">
-        <div class="background-plus"></div>
+        <div class="background-plus bg-red-200"></div>
         <MarketingTheHeroSection :title="title" :description="description" />
       </div>
       <div class="relative w-full h-fit py-4 lg:py-12">
@@ -245,6 +245,12 @@ const images4 = [
 /* Tus estilos scoped permanecen aquí, ya que solo afectan a este componente/página */
 .section-size {
   @apply h-[32rem] w-full;
+}
+
+@media (max-width: 374px) {
+  .section-size {
+    @apply h-fit;
+  }
 }
 
 @media (min-width: 375px) {
