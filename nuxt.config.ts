@@ -11,7 +11,9 @@ export default defineNuxtConfig({
     dbPassword: process.env.NUXT_PRIVATE_DB_PASSWORD || '',
     dbPort: process.env.NUXT_PRIVATE_DB_PORT ? Number(process.env.NUXT_PRIVATE_DB_PORT) : 5432,
     public: {
-      baseUrl: process.env.NUXT_BASE_URL || 'https://warolabs.com'
+      baseUrl: process.env.NUXT_BASE_URL || 'https://warolabs.com',
+      nameSite: process.env.NUXT_PRIVATE_NAME_SITE || '',
+      xNameUser: process.env.NUXT_PRIVATE_X_NAME || ''
     }
   },
   app: {

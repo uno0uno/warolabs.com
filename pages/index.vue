@@ -1,12 +1,16 @@
 <script setup>
 import { HomeIcon, InformationCircleIcon, BriefcaseIcon, Squares2X2Icon, PhoneIcon, ArrowPathRoundedSquareIcon, FireIcon, BoltIcon, BeakerIcon, GlobeAmericasIcon } from '@heroicons/vue/24/outline';
 
+const {
+    public: { siteUrl, nameSite, xNameUser },
+} = useRuntimeConfig()
+
 
 definePageMeta({
   layout: 'landing',
 });
 
-const title = 'Descubre el poder de la inteligencia artificial. fácil y para todos';
+const title = 'Descubre el poder de la inteligencia artificial. --fácil y para todos';
 const description = 'Únete a nuestra comunidad: eventos de inteligencia artificial creados por nuestros ingenieros, para entender la IA de forma sencilla.';
 const title2 = 'Vive la experiencia en nuestros eventos de inteligencia artificial';
 const description2 = 'Tu espacio para entender la IA y conectar con la comunidad';
@@ -239,6 +243,29 @@ const images4 = [
       </div>
     </div>
   </div>
+
+  <Head>
+      <Link rel="canonical" :href="`${siteUrl}`" />
+      <Title>▷ {{ title }}</Title>
+      <Meta name="description" :content="description" />
+
+      <Meta property="og:type" content="website" />
+      <Meta property="og:title" :content="`▷ ${title} | ${nameSite}`" />
+      <Meta property="og:description" :content="description" />
+      <!-- <Meta property="og:image"
+          content="Waro Labs" /> -->
+      <Meta property="og:image:width" content="828" />
+      <Meta property="og:image:height" content="450" />
+      <Meta property="og:url" :content="siteUrl"  />
+      <Meta property="og:site_name" :content="`${nameSite}`" />
+
+      <Meta name="twitter:card" content="summary_large_image" />
+      <Meta name="twitter:site" :content="xNameUser" />
+      <Meta name="twitter:title" :content="`▷ ${title}`" />
+      <Meta name="twitter:description" :content="description" />
+      <!-- <Meta name="twitter:image"
+          content="Waro Labs" /> -->
+  </Head>
 </template>
 
 <style scoped>
