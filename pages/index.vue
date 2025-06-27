@@ -2,7 +2,7 @@
 import { HomeIcon, InformationCircleIcon, BriefcaseIcon, Squares2X2Icon, PhoneIcon, ArrowPathRoundedSquareIcon, FireIcon, BoltIcon, BeakerIcon, GlobeAmericasIcon } from '@heroicons/vue/24/outline';
 
 const {
-    public: { siteUrl, nameSite, xNameUser },
+    public: { nameSite, xNameUser, baseUrl },
 } = useRuntimeConfig()
 
 
@@ -245,7 +245,7 @@ const images4 = [
   </div>
 
   <Head>
-      <Link rel="canonical" :href="`${siteUrl}`" />
+      <Link rel="canonical" :href="baseUrl" />
       <Title>▷ {{ title }}</Title>
       <Meta name="description" :content="description" />
 
@@ -256,7 +256,7 @@ const images4 = [
           content="Waro Labs" /> -->
       <Meta property="og:image:width" content="828" />
       <Meta property="og:image:height" content="450" />
-      <Meta property="og:url" :content="siteUrl"  />
+      <Meta property="og:url" :href="baseUrl"  />
       <Meta property="og:site_name" :content="`${nameSite}`" />
 
       <Meta name="twitter:card" content="summary_large_image" />
