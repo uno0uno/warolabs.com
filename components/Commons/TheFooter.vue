@@ -4,17 +4,6 @@ const pageAndOrganizationSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "WebPage",
-      "name": "Waro Labs - Comunidad y Cursos de Inteligencia Artificial",
-      "description": "Waro Labs es la comunidad donde la Inteligencia Artificial se vuelve comprensible y accesible para todos. Descubre nuestros eventos, labs y cursos para integrar la IA en tu vida y proyectos.", // Descripción concisa de esta página específica
-      "url": "https://www.warolabs.com/",
-      "isPartOf": {
-        "@type": "WebSite",
-        "url": "https://www.warolabs.com/",
-        "name": "Waro Labs"
-      }
-    },
-    {
       "@type": "Organization",
       "name": "Waro Labs",
       "url": "https://www.warolabs.com/",
