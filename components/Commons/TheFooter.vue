@@ -1,14 +1,25 @@
 <script setup>
 
-const pageAndOrganizationSchema = {
+const combinedSchema = {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "▷ Descubre el poder de la inteligencia artificial. --fácil y para todos",
+      "description": "Únete a nuestra comunidad: eventos de inteligencia artificial creados por nuestros ingenieros, para entender la IA de forma sencilla.", // La meta descripción de tu página
+      "url": "https://www.warolabs.com/",
+      "isPartOf": {
+        "@type": "WebSite",
+        "url": "https://www.warolabs.com/",
+        "name": "Waro Labs"
+      }
+    },
     {
       "@type": "Organization",
       "name": "Waro Labs",
       "url": "https://www.warolabs.com/",
       "logo": "https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/waro_labs_logo.png",
-      "description": "Comunidad y empresa tecnológica que hace la inteligencia artificial (IA) comprensible y accesible para todos a través de eventos, labs y formación práctica. Ideal para principiantes que buscan entender, conectar y aplicar la IA en su día a día.", // Descripción completa de tu organización
+      "description": "Comunidad y empresa tecnológica que hace la inteligencia artificial (IA) comprensible y accesible para todos a través de eventos, labs y formación práctica. Ideal para principiantes que buscan entender, conectar y aplicar la IA en su día a día.",
       "email": "contacto@warolabs.com",
       "telephone": "+573001234567",
       "sameAs": [
@@ -34,11 +45,10 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      children: JSON.stringify(pageAndOrganizationSchema)
+      children: JSON.stringify(combinedSchema)
     }
   ]
 });
-
 </script>
 
 <template>
