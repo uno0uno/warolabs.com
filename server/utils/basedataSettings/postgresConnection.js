@@ -1,3 +1,5 @@
+//  server\utils\basedataSettings\postgresConnection.js
+
 import pg from 'pg';
 const { Client } = pg;
 

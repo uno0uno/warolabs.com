@@ -1,5 +1,12 @@
 <script setup>
 // Obtener rutas desde /api/sitemap
+
+
+
+definePageMeta({
+  layout: 'noLayout',
+});
+
 let routes = [];
 try {
     routes = await $fetch('/api/sitemap');

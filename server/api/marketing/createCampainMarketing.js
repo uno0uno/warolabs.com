@@ -1,4 +1,4 @@
-// server/api/campaign/create.ts
+// server\api\marketing\createCampainMarketing.js
 
 import { createClient } from '../../utils/basedataSettings/postgresConnection';
 import { postgresErrorDictionary } from '../../utils/basedataSettings/postgresErrorMap'; // Import the error dictionary

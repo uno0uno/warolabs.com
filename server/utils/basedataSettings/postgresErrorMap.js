@@ -1,4 +1,4 @@
-// utils/basedataSettings/postgresErrorMap.js (or .ts)
+// server\utils\basedataSettings\postgresErrorMap.js
 
 export const postgresErrorDictionary = {
     // Common error classes and their SQLSTATE codes

@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     public: {
       baseUrl: process.env.NUXT_BASE_URL || 'https://warolabs.com',
       nameSite: process.env.NUXT_PRIVATE_NAME_SITE || '',
-      xNameUser: process.env.NUXT_PRIVATE_X_NAME || ''
+      xNameUser: process.env.NUXT_PRIVATE_X_NAME || '',
+      gtmContainerId: process.env.NUXT_PUBLIC_GTM_CONTAINER_ID || ''
     }
   },
   app: {

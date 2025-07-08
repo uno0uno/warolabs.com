@@ -1,0 +1,89 @@
+// server/utils/aws/sesClient.js
+
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
+
+/**
+ * Creates and configures an AWS SES client.
+ * Credentials and region are obtained from environment variables.
+ */
+
+const { 
+    awsAccessKeyId, 
+    awsSecretAccessKey, 
+    awsRegion, 
+} = useRuntimeConfig();
+
+export function createSESClient() {
+    const runtimeConfig = useRuntimeConfig();
+
+    if (!awsAccessKeyId || !awsSecretAccessKey || !awsRegion) {
+        throw new Error('Missing AWS SES configuration in runtimeConfig. Please check .env and nuxt.config.ts.');
+    }
+
+    return new SESClient({
+        region: awsRegion,
+        credentials: {
+            accessKeyId: awsAccessKeyId,
+            secretAccessKey: awsSecretAccessKey,
+        },
+    });
+}
+
+/**
+ * Sends an email using Amazon SES.
+ * @param {object} params - Email parameters.
+ * @param {string} params.fromEmailAddress - Sender email address (must be verified in SES).
+ * @param {string[]} params.toEmailAddresses - Array of recipient email addresses.
+ * @param {string} params.subject - Email subject.
+ * @param {string} params.bodyHtml - HTML content of the email.
+ * @param {string} [params.bodyText] - Plain text content of the email (optional).
+ * @returns {Promise<object>} The result of the email sending operation.
+ */
+export async function sendEmail(params) {
+    const sesClient = createSESClient();
+
+    const {
+        fromEmailAddress,
+        toEmailAddresses,
+        subject,
+        bodyHtml,
+        bodyText
+    } = params;
+
+    const input = {
+        Source: fromEmailAddress,
+        Destination: {
+            ToAddresses: toEmailAddresses,
+        },
+        Message: {
+            Subject: {
+                Charset: "UTF-8",
+                Data: subject,
+            },
+            Body: {
+                Html: {
+                    Charset: "UTF-8",
+                    Data: bodyHtml,
+                },
+            },
+        },
+    };
+
+    if (bodyText) {
+        input.Message.Body.Text = {
+            Charset: "UTF-8",
+            Data: bodyText,
+        };
+    }
+
+    const command = new SendEmailCommand(input);
+
+    try {
+        const response = await sesClient.send(command);
+        console.log("Email sent successfully:", response.MessageId);
+        return response;
+    } catch (error) {
+        console.error("Error sending email:", error);
+        throw error;
+    }
+}
