@@ -7,14 +7,15 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
  * Credentials and region are obtained from environment variables.
  */
 
-const { 
-    awsAccessKeyId, 
-    awsSecretAccessKey, 
-    awsRegion, 
-} = useRuntimeConfig();
+
 
 export function createSESClient() {
-    const runtimeConfig = useRuntimeConfig();
+
+    const { 
+        awsAccessKeyId, 
+        awsSecretAccessKey, 
+        awsRegion, 
+    } = useRuntimeConfig();
 
     if (!awsAccessKeyId || !awsSecretAccessKey || !awsRegion) {
         throw new Error('Missing AWS SES configuration in runtimeConfig. Please check .env and nuxt.config.ts.');

@@ -10,6 +10,7 @@
     "start": "nuxt start"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.840.0",
     "@heroicons/vue": "^2.0.18",
     "@nuxtjs/google-fonts": "^3.0.2",
     "@nuxtjs/robots": "^4.0.0",
