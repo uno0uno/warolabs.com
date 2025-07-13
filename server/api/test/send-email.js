@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         const { emailFrom, public: { baseUrl } } = useRuntimeConfig();
 
         // 1. Define los datos para la prueba
-        const testRecipient = 'anderson.arevalo@fastmoda.com.co'; 
+        const testRecipient = 'warocol@gmail.com'; 
         const testName = 'Usuario de Prueba';
 
         // 2. Genera el cuerpo del correo usando una de tus plantillas
