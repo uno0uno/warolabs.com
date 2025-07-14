@@ -2,7 +2,10 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package.json ./
-RUN npm install
+COPY package-lock.json ./ 
+
+RUN npm cache clean --force && npm install --force
+
 COPY . .
 RUN npm run build
 

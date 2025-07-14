@@ -12,7 +12,7 @@ export default defineNuxtConfig({
     dbPort: process.env.NUXT_PRIVATE_DB_PORT ? Number(process.env.NUXT_PRIVATE_DB_PORT) : 5432,
     awsAccessKeyId: process.env.NUXT_PRIVATE_AWS_ACCES_KEY_ID || '',
     awsSecretAccessKey: process.env.NUXT_PRIVATE_AWS_SECRET_ACCESS_KEY|| '',
-    awsRegion: process.env.NUXT_PRIVATE_AWS_REGION || 'us-east-1',
+    awsRegion: process.env.NUXT_PRIVATE_AWS_REGION || '',
     emailFrom: process.env.NUXT_PRIVATE_EMAIL_FROM || '',
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
