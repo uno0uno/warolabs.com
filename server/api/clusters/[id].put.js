@@ -1,19 +1,16 @@
 // server/api/clusters/[id].put.js
 
-import { createClient } from '../../utils/basedataSettings/postgresConnection'; // Importa la función para crear el cliente de PostgreSQL
-import { postgresErrorDictionary } from '../../utils/basedataSettings/postgresErrorMap'; // Importa el mapa de errores de PostgreSQL
+import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { verifyAuthToken } from '../../utils/security/jwtVerifier';
 
 export default defineEventHandler(async (event) => {
-  const client = createClient(); // Crea una instancia del cliente de PostgreSQL
+    if (event.method !== 'PUT') {
+        throw createError({ statusCode: 405, statusMessage: 'Method Not Allowed', message: 'This endpoint only accepts PUT requests.' });
+    }
 
-  try {
-    await client.connect(); // Establece la conexión con la base de datos
+    const clusterId = parseInt(event.context.params.id); //.put.js]
+    const body = await readBody(event);
 
-    // --- 1. Leer y Validar el ID del Cluster y el Cuerpo de la Solicitud ---
-    const clusterId = parseInt(event.context.params.id); // Extrae el ID del cluster de los parámetros de la URL
-    const body = await readBody(event); // Lee el cuerpo de la solicitud (contiene los campos a actualizar)
-
-    // Validar que el ID sea un número entero válido y positivo
     if (isNaN(clusterId) || clusterId <= 0) {
       throw createError({
         statusCode: 400,
@@ -22,7 +19,6 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Validar que el cuerpo de la solicitud (p_updates) no esté vacío
     if (!body || typeof body !== 'object' || Object.keys(body).length === 0) {
       throw createError({
         statusCode: 400,
@@ -31,69 +27,52 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    // Puedes añadir validaciones más específicas aquí para los campos en 'body'
-    // Por ejemplo, validar formatos de fecha, tipos de datos, etc.
-
     console.log(`PUT /api/clusters/${clusterId} - ID recibido:`, clusterId);
     console.log('PUT /api/clusters/[id] - Datos de actualización:', body);
 
-    // --- 2. Llamada a la Función de PostgreSQL ---
-    // La función update_cluster_data retorna updated_cluster_id y status_message
-    const pgQuery = `SELECT updated_cluster_id, status_message FROM public.update_cluster_data($1, $2);`;
-    
-    // El 'body' completo se pasa como el parámetro jsonb p_updates
-    const pgValues = [
-      clusterId,
-      JSON.stringify(body) // Convertir el objeto de actualizaciones a string JSON
-    ];
+    return await withPostgresClient(async (client) => {
 
-    console.log('PUT /api/clusters/[id] - Ejecutando consulta SQL:', pgQuery);
-    console.log('PUT /api/clusters/[id] - Valores de la consulta:', pgValues);
+        try {
+            await verifyAuthToken(event);
+        } catch (error) {
+            throw error;
+        }
 
-    const result = await client.query(pgQuery, pgValues);
-    console.log('PUT /api/clusters/[id] - Resultado de la consulta a la DB (filas):', result.rows);
+        const pgQuery = `SELECT updated_cluster_id, status_message FROM public.update_cluster_data($1, $2);`; //.put.js]
+        
+        const pgValues = [
+            clusterId,
+            JSON.stringify(body) 
+        ];
 
-    // --- 3. Manejo de Respuesta ---
-    // La función de PG ya maneja si el cluster no existe.
-    if (result.rows.length === 0 || result.rows[0].updated_cluster_id === null) {
-      setResponseStatus(event, 404); // Not Found (si la función devuelve NULL para el ID actualizado)
-      return {
-        message: result.rows[0] ? result.rows[0].status_message : `Cluster con ID ${clusterId} no encontrado o no actualizable.`
-      };
-    }
+        console.log('PUT /api/clusters/[id] - Ejecutando consulta SQL:', pgQuery);
+        console.log('PUT /api/clusters/[id] - Valores de la consulta:', pgValues);
 
-    // Si la función de PG retorna un mensaje de error explícito (aunque debería ser atrapado en el catch)
-    if (result.rows[0].status_message && result.rows[0].status_message.startsWith('Error')) {
-      throw createError({
-          statusCode: 500,
-          statusMessage: 'Internal Server Error (DB Function Error)',
-          message: result.rows[0].status_message
-      });
-    }
+        const result = await client.query(pgQuery, pgValues);
+        console.log('PUT /api/clusters/[id] - Resultado de la consulta a la DB (filas):', result.rows);
 
-    // Si se actualiza con éxito
-    setResponseStatus(event, 200); // OK
-    return {
-      message: result.rows[0].status_message || 'Cluster actualizado exitosamente.',
-      clusterId: result.rows[0].updated_cluster_id
-    };
+        if (result.rows.length === 0 || result.rows[0].updated_cluster_id === null) {
+          throw createError({
+            statusCode: 404,
+            statusMessage: 'Not Found',
+            message: result.rows[0] ? result.rows[0].status_message : `Cluster con ID ${clusterId} no encontrado o no actualizable.`
+          });
+        }
 
-  } catch (error) {
-    // --- 4. Manejo de Errores ---
-    console.error(`Error al actualizar cluster con ID ${event.context.params.id} en el endpoint:`, error);
+        if (result.rows[0].status_message && result.rows[0].status_message.startsWith('Error')) {
+          throw createError({
+              statusCode: 400,
+              statusMessage: 'Bad Request',
+              message: result.rows[0].status_message,
+              data: { pgFunctionMessage: result.rows[0].status_message }
+          });
+        }
 
-    const mappedError = postgresErrorDictionary[error.code] || postgresErrorDictionary.default;
-    const isAlreadyHttpError = error.statusCode && error.statusMessage;
+        setResponseStatus(event, 200);
+        return {
+          message: result.rows[0].status_message || 'Cluster actualizado exitosamente.',
+          clusterId: result.rows[0].updated_cluster_id
+        }; 
 
-    throw createError({
-      statusCode: isAlreadyHttpError ? error.statusCode : mappedError.httpStatus,
-      statusMessage: isAlreadyHttpError ? error.statusMessage : mappedError.statusMessage,
-      message: isAlreadyHttpError ? error.message : mappedError.friendlyMessage,
-      data: error.detail || error.message || error.data
-    });
-
-  } finally {
-    // Asegúrate de cerrar la conexión del cliente
-    if (client) await client.end();
-  }
+    }, event);
 });

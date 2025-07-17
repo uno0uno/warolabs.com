@@ -1,84 +1,67 @@
 // server/api/clusters/[id].delete.js
 
-import { createClient } from '../../utils/basedataSettings/postgresConnection'; // Importa la función para crear el cliente de PostgreSQL
-import { postgresErrorDictionary } from '../../utils/basedataSettings/postgresErrorMap'; // Importa el mapa de errores de PostgreSQL
+import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { verifyAuthToken } from '../../utils/security/jwtVerifier';
 
 export default defineEventHandler(async (event) => {
-  const client = createClient(); // Crea una instancia del cliente de PostgreSQL
 
-  try {
-    await client.connect(); // Establece la conexión con la base de datos
+    if (event.method !== 'DELETE') {
+        throw createError({ statusCode: 405, statusMessage: 'Method Not Allowed', message: 'This endpoint only accepts DELETE requests.' });
+    }
 
-    // --- 1. Leer y Validar el ID del Cluster de la URL ---
-    const clusterId = parseInt(event.context.params.id); // Extrae el ID del cluster de los parámetros de la URL
+    const clusterId = parseInt(event.context.params.id);
 
-    // Validar que el ID sea un número entero válido y positivo
     if (isNaN(clusterId) || clusterId <= 0) {
       throw createError({
         statusCode: 400,
         statusMessage: 'Bad Request',
         message: 'El ID del cluster debe ser un número entero positivo.'
-      });
+      }); 
     }
 
-    // Log del ID recibido para depuración en el servidor Nuxt.js
     console.log(`DELETE /api/clusters/${clusterId} - ID recibido para soft delete:`, clusterId);
 
-    // --- 2. Llamada a la Función de PostgreSQL ---
-    // La función soft_delete_cluster retorna deleted_cluster_id y status_message
-    const pgQuery = `SELECT deleted_cluster_id, status_message FROM public.soft_delete_cluster($1);`;
-    
-    const pgValues = [clusterId]; // Pasar el ID del cluster como parámetro
+    return await withPostgresClient(async (client) => {
 
-    console.log('DELETE /api/clusters/[id] - Ejecutando consulta SQL:', pgQuery);
-    console.log('DELETE /api/clusters/[id] - Valores de la consulta:', pgValues);
+        try {
+            await verifyAuthToken(event);
+        } catch (error) {
+            throw error;
+        }
 
-    const result = await client.query(pgQuery, pgValues);
-    console.log('DELETE /api/clusters/[id] - Resultado de la consulta a la DB (filas):', result.rows);
+        const pgQuery = `SELECT deleted_cluster_id, status_message FROM public.soft_delete_cluster($1);`;
+        
+        const pgValues = [clusterId];
 
-    // --- 3. Manejo de Respuesta ---
-    // La función de PG ya maneja los casos de no encontrado o restricciones.
-    if (result.rows.length === 0 || result.rows[0].deleted_cluster_id === null) {
-      // Si la función devuelve NULL para el ID, significa que no se encontró, no estaba activo, o falló por restricción.
-      const statusMessage = result.rows[0] ? result.rows[0].status_message : `Cluster con ID ${clusterId} no encontrado o no pudo ser soft-eliminado.`;
-      
-      // Mapear mensajes específicos a estados HTTP
-      let statusCode = 500;
-      if (statusMessage.includes('no encontrado')) {
-          statusCode = 404; // Not Found
-      } else if (statusMessage.includes('no esta activo o esta baneado') || statusMessage.includes('No se puede desactivar el cluster')) {
-          statusCode = 403; // Forbidden
-      }
+        console.log('DELETE /api/clusters/[id] - Ejecutando consulta SQL:', pgQuery);
+        console.log('DELETE /api/clusters/[id] - Valores de la consulta:', pgValues);
 
-      throw createError({
-        statusCode: statusCode,
-        statusMessage: statusMessage,
-        message: statusMessage
-      });
-    }
+        const result = await client.query(pgQuery, pgValues);
+        console.log('DELETE /api/clusters/[id] - Resultado de la consulta a la DB (filas):', result.rows);
 
-    // Si se soft-elimina con éxito
-    setResponseStatus(event, 200); // OK (o 204 No Content si no quieres cuerpo de respuesta)
-    return {
-      message: result.rows[0].status_message || 'Cluster soft-eliminado exitosamente.',
-      clusterId: result.rows[0].deleted_cluster_id
-    };
+        if (result.rows.length === 0 || result.rows[0].deleted_cluster_id === null) {
+            const statusMessage = result.rows[0] ? result.rows[0].status_message : `Cluster con ID ${clusterId} no encontrado o no pudo ser soft-eliminado.`;
+            
+            let statusCode = 500; 
+            if (statusMessage.includes('no encontrado')) {
+                statusCode = 404; 
+            } else if (statusMessage.includes('no esta activo o esta baneado') || statusMessage.includes('No se puede desactivar el cluster')) {
+                statusCode = 403;
+            }
 
-  } catch (error) {
-    // --- 4. Manejo de Errores ---
-    console.error(`Error al soft-eliminar cluster con ID ${event.context.params.id} en el endpoint:`, error);
+            throw createError({
+              statusCode: statusCode,
+              statusMessage: statusMessage,
+              message: statusMessage,
+              data: { pgFunctionMessage: statusMessage }
+            });
+        }
 
-    const mappedError = postgresErrorDictionary[error.code] || postgresErrorDictionary.default;
-    const isAlreadyHttpError = error.statusCode && error.statusMessage;
+        setResponseStatus(event, 200);
+        return {
+          message: result.rows[0].status_message || 'Cluster soft-eliminado exitosamente.',
+          clusterId: result.rows[0].deleted_cluster_id
+        }; 
 
-    throw createError({
-      statusCode: isAlreadyHttpError ? error.statusCode : mappedError.httpStatus,
-      statusMessage: isAlreadyHttpError ? error.statusMessage : mappedError.statusMessage,
-      message: isAlreadyHttpError ? error.message : mappedError.friendlyMessage,
-      data: error.detail || error.message || error.data
-    });
-
-  } finally {
-    if (client) await client.end();
-  }
+    }, event); 
 });
