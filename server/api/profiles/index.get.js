@@ -11,11 +11,11 @@ export default defineEventHandler(async (event) => {
 
     return await withPostgresClient(async (client) => {
 
-        try {
-            await verifyAuthToken(event);
-        } catch (error) {
-            throw error;
-        }
+        // try {
+        //     await verifyAuthToken(event);
+        // } catch (error) {
+        //     throw error;
+        // }
 
         const query = `
             SELECT id, name, email, phone_number, nationality_id, enterprise, user_name,

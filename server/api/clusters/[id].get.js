@@ -23,11 +23,11 @@ export default defineEventHandler(async (event) => {
 
     return await withPostgresClient(async (client) => {
 
-        try {
-            await verifyAuthToken(event);
-        } catch (error) {
-            throw error;
-        }
+        // try {
+        //     await verifyAuthToken(event);
+        // } catch (error) {
+        //     throw error;
+        // }
 
         const pgQuery = `SELECT cluster_id, profile_id, cluster_name, description, start_date, end_date,
                           cluster_type, slug_cluster, is_active, shadowban, legal_info_id,
