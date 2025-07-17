@@ -2,6 +2,8 @@
 
 import { createClient } from '../../utils/basedataSettings/postgresConnection';
 import { postgresErrorDictionary } from '../../utils/basedataSettings/postgresErrorMap';
+import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+
 
 export default defineEventHandler(async (event) => {
     if (event.method !== 'GET') {
@@ -13,9 +15,12 @@ export default defineEventHandler(async (event) => {
     try {
         await client.connect();
 
-        // Consulta para seleccionar todos los perfiles
-        // Se excluyen campos sensibles como la contraseña si existiera
-        // Puedes ajustar los campos que deseas retornar
+        await verifyAuthToken(event);
+        authorize(event, ['admin', 'system-service']);
+
+        // Si el código llega aquí, el token es válido y `event.context.user` contiene la información decodificada.
+        console.log('User authenticated:', event.context.user); 
+
         const query = `
             SELECT
                 id,

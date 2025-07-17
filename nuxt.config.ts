@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     awsSecretAccessKey: process.env.NUXT_PRIVATE_AWS_SECRET_ACCESS_KEY|| '',
     awsRegion: process.env.NUXT_PRIVATE_AWS_REGION || '',
     emailFrom: process.env.NUXT_PRIVATE_EMAIL_FROM || '',
+    jwtSecret: process.env.NUXT_PRIVATE_JWT_SECRET || '',
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL,
       nameSite: process.env.NUXT_PRIVATE_NAME_SITE || '',
