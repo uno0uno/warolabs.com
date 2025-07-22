@@ -1,58 +1,57 @@
-// server/api/test/send-email.js
+// server/api/test/encrypt-text.post.js
 
-import { sendEmail } from '../../utils/aws/sesClient';
-import { getWelcomeTemplate } from '../../utils/emailTemplates/welcome.js'; // Reutilizamos la plantilla de bienvenida para la prueba
+import crypto from 'crypto';
+import { createError, defineEventHandler } from 'h3'; 
+import { verifyAuthToken } from '../../utils/security/jwtVerifier';
 
 export default defineEventHandler(async (event) => {
 
+    if (event.method !== 'POST') {
+        throw createError({ statusCode: 405, statusMessage: 'Method Not Allowed', message: 'This endpoint only accepts POST requests.' });
+    }
+
+    const body = await readBody(event);
+    const { textToEncrypt } = body;
+
     try {
-        const { emailFrom, public: { baseUrl } } = useRuntimeConfig();
+        await verifyAuthToken(event);
+    } catch (error) {
+        throw error;
+    }
 
-        // 1. Define los datos para la prueba
-        const testRecipient = 'warocol@gmail.com'; 
-        const testName = 'Usuario de Prueba';
+    if (!textToEncrypt) {
+        throw createError({ statusCode: 400, statusMessage: 'Bad Request', message: 'Missing required parameter: textToEncrypt.' });
+    }
 
-        // 2. Genera el cuerpo del correo usando una de tus plantillas
-        const emailHtml = getWelcomeTemplate({
-            name: testName,
-            // Podemos usar un token falso, ya que solo estamos probando el envío
-            verificationToken: 'dummy-test-token-12345', 
-            baseUrl: baseUrl
-        });
+    try {
+        const { public: { publicKeyEncrypter } } = useRuntimeConfig();
 
-        // 3. Llama a la utilidad sendEmail
-        console.log(`Intentando enviar un correo de prueba a ${testRecipient}...`);
+        if (!publicKeyEncrypter) {
+            throw createError({ statusCode: 500, statusMessage: 'Server Configuration Error', message: 'RSA Public Key is not configured on the server.' });
+        }
 
-        const result = await sendEmail({
-            fromEmailAddress: emailFrom, // Asegúrate de que este remitente esté verificado en AWS SES
-            toEmailAddresses: [testRecipient],
-            subject: 'Correo de Prueba desde la Utilidad SES de Waro Labs',
-            bodyHtml: emailHtml,
-        });
+        const encryptedBuffer = crypto.publicEncrypt(
+            {
+                key: publicKeyEncrypter,
+                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+            },
+            Buffer.from(textToEncrypt, 'utf8')
+        );
 
-        console.log('Correo de prueba enviado con éxito:', result);
+        const encryptedBase64 = encryptedBuffer.toString('base64');
 
-        // 4. Devuelve una respuesta de éxito
         return {
-            success: true,
-            message: `Correo de prueba enviado exitosamente a ${testRecipient}.`,
-            awsMessageId: result.MessageId,
+            encryptedText: encryptedBase64,
+            message: 'Text encrypted successfully using server-side public key.'
         };
 
     } catch (error) {
-        console.error('Error al enviar el correo de prueba:', error);
-
-        // Devuelve una respuesta de error detallada para facilitar la depuración
-        setResponseStatus(event, 500);
-        return {
-            success: false,
-            message: 'Falló el envío del correo de prueba.',
-            error: {
-                name: error.name,
-                message: error.message,
-                // Ten cuidado al enviar el stack completo en un entorno de producción
-                stack: error.stack 
-            }
-        };
+        console.error('Error during server-side encryption:', error);
+        throw createError({
+            statusCode: 500,
+            statusMessage: 'Internal Server Error',
+            message: 'Failed to encrypt text using server-side public key.',
+            data: { details: error.message }
+        });
     }
 });
