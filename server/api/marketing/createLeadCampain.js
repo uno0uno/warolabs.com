@@ -1,9 +1,7 @@
-// server/api/marketing/createLeadCampain.js
-
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
 import { verifyAuthToken } from '../../utils/security/jwtVerifier';
 import { sendEmail } from '../../utils/aws/sesClient';
-import { getWelcomeTemplate } from '../../utils/emailTemplates/welcome.js';
+import { getWelcomeTemplate } from '../../utils/emailTemplates/welcome.js'; // Asegúrate de que la ruta sea correcta
 import crypto from 'crypto';
 import { createError } from 'h3';
 import { parsePemKey } from '../../utils/commons/keyParser.js';
@@ -21,7 +19,7 @@ export default defineEventHandler(async (event) => {
         profileName,
         profilePhoneNumber,
         profileNationalityId,
-        encryptedEmailFrom 
+        encryptedEmailFrom
     } = body;
 
     if (!campaignId || !leadEmail || !encryptedEmailFrom) {
@@ -39,18 +37,18 @@ export default defineEventHandler(async (event) => {
 
     let actualEmailFrom;
     try {
-        const { privateKeyEncrypter } = useRuntimeConfig(); 
+        const { privateKeyEncrypter } = useRuntimeConfig();
 
         if (!privateKeyEncrypter) {
             throw createError({ statusCode: 500, statusMessage: 'Server Configuration Error', message: 'RSA Private Key is not configured on the server.' });
         }
 
-        const parsedPrivateKey = parsePemKey(privateKeyEncrypter); 
+        const parsedPrivateKey = parsePemKey(privateKeyEncrypter);
 
         actualEmailFrom = crypto.privateDecrypt(
             {
-                key: parsedPrivateKey, 
-                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING, 
+                key: parsedPrivateKey,
+                padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
             },
             Buffer.from(encryptedEmailFrom, 'base64')
         ).toString('utf8');
@@ -150,19 +148,26 @@ export default defineEventHandler(async (event) => {
             try {
                 const { public: { baseUrl } } = useRuntimeConfig();
 
-                const emailHtml = getWelcomeTemplate({
+                // ***** MODIFICACIÓN AQUÍ: Llamar a getWelcomeTemplate con await y campaignUuid *****
+                const emailHtml = await getWelcomeTemplate({
+                    campaignUuid: campaignId, // Pasa el ID de la campaña
                     name: profileName || 'new member',
                     verificationToken: verificationToken,
                     baseUrl: baseUrl
                 });
 
-                await sendEmail({
-                    fromEmailAddress: actualEmailFrom,
-                    toEmailAddresses: [leadEmail],
-                    subject: 'Welcome to Waro Labs! Please verify your email',
-                    bodyHtml: emailHtml
-                });
-                console.log(`Verification email sent to ${leadEmail} from ${actualEmailFrom}`);
+                // Solo enviar el email si se obtuvo el contenido del template
+                if (emailHtml) {
+                    await sendEmail({
+                        fromEmailAddress: actualEmailFrom,
+                        toEmailAddresses: [leadEmail],
+                        subject: 'Welcome to Waro Labs! Please verify your email',
+                        bodyHtml: emailHtml
+                    });
+                    console.log(`Verification email sent to ${leadEmail} from ${actualEmailFrom}`);
+                } else {
+                    console.warn(`No se pudo enviar el email de bienvenida a ${leadEmail} porque el template no se generó.`);
+                }
             } catch (emailError) {
                 console.error('Failed to send welcome email:', emailError);
             }

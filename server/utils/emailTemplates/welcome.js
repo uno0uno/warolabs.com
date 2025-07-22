@@ -1,56 +1,74 @@
-// server/utils/emailTemplates/welcome.js
+import { withPostgresClient } from '../basedataSettings/withPostgresClient'; // Asegúrate de que la ruta sea correcta
 
 /**
- * Generates the HTML for the welcome email.
+ * Fetches and generates the HTML for an email template based on campaign UUID.
  * @param {object} params - Parameters for the template.
+ * @param {string} params.campaignUuid - The UUID of the campaign to fetch the template from.
  * @param {string} params.name - The name of the new lead.
  * @param {string} params.verificationToken - The unique token for verification.
  * @param {string} params.baseUrl - The base URL of the site from runtime config.
- * @returns {string} - The email's HTML.
+ * @returns {Promise<string|null>} - The email's HTML or null if template not found or an error occurs.
  */
-export const getWelcomeTemplate = ({ name, verificationToken, baseUrl }) => {
-  // Construye el enlace de verificación completo
+export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken, baseUrl }) => {
+
   const verificationLink = `${baseUrl}api/marketing/verify-lead?token=${verificationToken}`;
+
   console.log(`Generated verification link: ${verificationLink}`);
 
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Welcome to Waro Labs!</title>
-      <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; margin: 0; padding: 0; }
-        .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header { background-color: #000; color: #fff; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-        .content { padding: 30px; text-align: left; line-height: 1.6; }
-        .button-container { text-align: center; margin: 30px 0; }
-        .button { background-color: #007bff; color: white !important; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold; }
-        .footer { font-size: 12px; text-align: center; color: #777; margin-top: 20px; padding: 0 20px; }
-        h1, h2 { color: #000; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>Waro Labs</h1>
-        </div>
-        <div class="content">
-          <h2>Hi, ${name}!</h2>
-          <p>We welcome you to the Waro Labs community. We are excited to have you with us.</p>
-          <p><strong>Please verify your email address by clicking the button below:</strong></p>
-          <div class="button-container">
-            <a href="${verificationLink}" class="button">Verify Email</a>
-          </div>
-          <p>Our mission is to make technology and artificial intelligence accessible to everyone. Get ready to receive news about our upcoming events, courses, and exclusive content.</p>
-          <p>Life is a party! 🚀</p>
-        </div>
-        <div class="footer">
-          <p>&copy; 2025 Waro Labs. All rights reserved.</p>
-        </div>
-      </div>
-    </body>
-    </html>
-  `;
+  let templateContent = null;
+
+  try {
+    await withPostgresClient(async (client) => {
+      // 1. Obtener el template_version_id de la campaña 'campaign'
+      const campaignQueryResult = await client.query(
+        'SELECT template_version_id FROM public.campaign WHERE id = $1',
+        [campaignUuid]
+      );
+
+      if (campaignQueryResult.rows.length === 0) {
+        console.warn(`Campaña con UUID ${campaignUuid} no encontrada.`);
+        return; // Retorna sin contenido si la campaña no existe
+      }
+
+      const templateVersionId = campaignQueryResult.rows[0].template_version_id;
+
+      if (!templateVersionId) {
+        console.warn(`No se encontró template_version_id para la campaña ${campaignUuid}.`);
+        return; // Retorna sin contenido si no hay template_version_id asociado
+      }
+
+      // 2. Obtener el contenido del template usando el template_version_id de la tabla 'template_versions'
+      const templateVersionResult = await client.query(
+        'SELECT content FROM public.template_versions WHERE id = $1',
+        [templateVersionId]
+      );
+
+
+      if (templateVersionResult.rows.length === 0) {
+        console.warn(`Versión del template con ID ${templateVersionId} no encontrada.`);
+        return; // Retorna sin contenido si la versión del template no existe
+      }
+
+      templateContent = templateVersionResult.rows[0].content;
+    });
+  } catch (error) {
+    console.error('Error al obtener el template de la base de datos:', error);
+    // En un entorno de producción, podrías querer registrar este error y/o notificarlo.
+    return null; // Retorna null en caso de error en la base de datos
+  }
+
+  if (!templateContent) {
+    console.warn(`No se pudo recuperar el contenido del template para la campaña ${campaignUuid}.`);
+    // Opcional: podrías retornar un template estático por defecto aquí si prefieres un fallback.
+    return null;
+  }
+
+  // Reemplazar los marcadores de posición en el contenido del template obtenido de la base de datos.
+  // Es crucial que los marcadores de posición en tu HTML guardado en la DB coincidan (ej. ${name}, ${verificationLink})
+  let finalHtml = templateContent.replace(/\${name}/g, name);
+  finalHtml = finalHtml.replace(/\${verificationLink}/g, verificationLink);
+  // Añade aquí más reemplazos si tu template dinámico tiene otros parámetros
+  // Por ejemplo: finalHtml = finalHtml.replace(/\${otroParametro}/g, otroParametro);
+
+  return finalHtml;
 };
