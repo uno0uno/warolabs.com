@@ -2,7 +2,7 @@
 import { HomeIcon, InformationCircleIcon, BriefcaseIcon, Squares2X2Icon, PhoneIcon, ArrowPathRoundedSquareIcon, FireIcon, BoltIcon, BeakerIcon, GlobeAmericasIcon } from '@heroicons/vue/24/outline';
 
 const {
-    public: { nameSite, xNameUser, baseUrl },
+  public: { nameSite, xNameUser, baseUrl },
 } = useRuntimeConfig()
 
 
@@ -16,6 +16,7 @@ const title2 = 'Vive la experiencia en nuestros eventos de inteligencia artifici
 const description2 = 'Tu espacio para entender la IA y conectar con la comunidad';
 const title3 = 'Entiende la inteligencia artificial, sin complicaciones';
 const description3 = 'Aprende IA esencial para 2025 en nuestros labs, ideal para principiantes';
+const OG_image = 'https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/landing/waro_labs_OG_image.png'
 
 const image3 = [{
   src: 'https://dummyimage.com/800x500',
@@ -209,7 +210,8 @@ const images4 = [
 </script>
 <template>
   <div class="w-full flex items-center justify-center">
-    <div class="text-center flex flex-col items-center w-full h-full justify-center gap-4 lg:min-w-[48rem] max-w-6xl lg:px-12 relative z-0">
+    <div
+      class="text-center flex flex-col items-center w-full h-full justify-center gap-4 lg:min-w-[48rem] max-w-6xl lg:px-12 relative z-0">
       <div class="relative section-size mt-2 sm:pt-8">
         <div class="background-plus bg-red-200"></div>
         <MarketingTheHeroSection :title="title" :description="description" />
@@ -220,14 +222,9 @@ const images4 = [
       </div>
       <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-plus"></div>
-          <MarketingTheHeroSectionImage
-            :title="title3" 
-            :description="description3"
-            videoSrc="https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/Bogot%C3%A1_Caf%C3%A9_Programmer_s_Moment.mp4"
-            videoAlt="Alternative text for the video"
-            videoWidth="640"
-            videoHeight="360"
-          />
+        <MarketingTheHeroSectionImage :title="title3" :description="description3"
+          videoSrc="https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/Bogot%C3%A1_Caf%C3%A9_Programmer_s_Moment.mp4"
+          videoAlt="Alternative text for the video" videoWidth="640" videoHeight="360" />
       </div>
       <div class="relative w-full h-fit py-4 lg:py-12">
         <div class="background-dots-white"></div>
@@ -245,26 +242,24 @@ const images4 = [
   </div>
 
   <Head>
-      <Link rel="canonical" :href="baseUrl" />
-      <Title>▷ {{ title }}</Title>
-      <Meta name="description" :content="description" />
+    <Link rel="canonical" :href="baseUrl" />
+    <Title>▷ {{ title }}</Title>
+    <Meta name="description" :content="description" />
 
-      <Meta property="og:type" content="website" />
-      <Meta property="og:title" :content="`▷ ${title} | ${nameSite}`" />
-      <Meta property="og:description" :content="description" />
-      <!-- <Meta property="og:image"
-          content="Waro Labs" /> -->
-      <Meta property="og:image:width" content="828" />
-      <Meta property="og:image:height" content="450" />
-      <Meta property="og:url" :href="baseUrl"  />
-      <Meta property="og:site_name" :content="`${nameSite}`" />
+    <Meta property="og:type" content="website" />
+    <Meta property="og:title" :content="`▷ ${title} | ${nameSite}`" />
+    <Meta property="og:description" :content="description" />
+    <Meta property="og:image" :content="OG_image" />
+    <Meta property="og:image:width" content="828" />
+    <Meta property="og:image:height" content="450" />
+    <Meta property="og:url" :href="baseUrl" />
+    <Meta property="og:site_name" :content="`${nameSite}`" />
 
-      <Meta name="twitter:card" content="summary_large_image" />
-      <Meta name="twitter:site" :content="xNameUser" />
-      <Meta name="twitter:title" :content="`▷ ${title}`" />
-      <Meta name="twitter:description" :content="description" />
-      <!-- <Meta name="twitter:image"
-          content="Waro Labs" /> -->
+    <Meta name="twitter:card" content="summary_large_image" />
+    <Meta name="twitter:site" :content="xNameUser" />
+    <Meta name="twitter:title" :content="`▷ ${title}`" />
+    <Meta name="twitter:description" :content="description" />
+    <Meta name="twitter:image" :content="OG_image" />
   </Head>
 </template>
 
@@ -294,11 +289,14 @@ const images4 = [
 
 @media (min-width: 1024px) {
   .section-size {
-    @apply h-fit;;
+    @apply h-fit;
+    ;
   }
 }
 
-@media (min-width: 1280px) { /* Corregido de 1280 a 1280px */
+@media (min-width: 1280px) {
+
+  /* Corregido de 1280 a 1280px */
   .section-size {
     @apply h-[32rem];
   }

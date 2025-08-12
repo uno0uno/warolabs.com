@@ -1,16 +1,10 @@
-// server/utils/aws/sesClient.js
-
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 /**
  * Creates and configures an AWS SES client.
  * Credentials and region are obtained from environment variables.
  */
-
-
-
 export function createSESClient() {
-
     const { 
         awsAccessKeyId, 
         awsSecretAccessKey, 
@@ -34,6 +28,7 @@ export function createSESClient() {
  * Sends an email using Amazon SES.
  * @param {object} params - Email parameters.
  * @param {string} params.fromEmailAddress - Sender email address (must be verified in SES).
+ * @param {string} [params.fromName] - (Opcional) El nombre para mostrar del remitente (ej. 'Equipo de Soporte').
  * @param {string[]} params.toEmailAddresses - Array of recipient email addresses.
  * @param {string} params.subject - Email subject.
  * @param {string} params.bodyHtml - HTML content of the email.
@@ -45,14 +40,17 @@ export async function sendEmail(params) {
 
     const {
         fromEmailAddress,
+        fromName,
         toEmailAddresses,
         subject,
         bodyHtml,
         bodyText
     } = params;
 
+    const source = fromName ? `${fromName} <${fromEmailAddress}>` : fromEmailAddress;
+
     const input = {
-        Source: fromEmailAddress,
+        Source: source,
         Destination: {
             ToAddresses: toEmailAddresses,
         },
