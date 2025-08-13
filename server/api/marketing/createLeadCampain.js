@@ -6,6 +6,7 @@ import { sendEmail } from '../../utils/aws/sesClient';
 import { getWelcomeTemplate } from '../../utils/emailTemplates/welcome.js';
 import crypto from 'crypto';
 import { createError } from 'h3';
+import { decryptWithPrivateKey } from '../../utils/security/rsaEncryptor.js';
 
 export default defineEventHandler(async (event) => {
     if (event.method !== 'POST') {
@@ -14,16 +15,24 @@ export default defineEventHandler(async (event) => {
 
     const body = await readBody(event);
     const {
-        campaignId,
-        leadEmail,
+        encryptedCampaignId,
+        encryptedLeadEmail,
         leadSource,
         profileName,
         profilePhoneNumber,
         profileNationalityId
     } = body;
 
+    let campaignId, leadEmail;
+    try {
+        campaignId = decryptWithPrivateKey(encryptedCampaignId);
+        leadEmail = decryptWithPrivateKey(encryptedLeadEmail);
+    } catch (error) {
+        throw error;
+    }
+
     if (!campaignId || !leadEmail) {
-        throw createError({ statusCode: 400, statusMessage: 'Bad Request', message: 'Missing required parameters: campaignId and leadEmail.' });
+        throw createError({ statusCode: 400, statusMessage: 'Bad Request', message: 'Missing required parameters after decryption.' });
     }
 
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

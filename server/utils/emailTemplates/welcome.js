@@ -1,3 +1,5 @@
+// server/utils/emailTemplates/welcome.js
+
 import { withPostgresClient } from '../basedataSettings/withPostgresClient';
 
 /**
@@ -16,24 +18,26 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
   try {
     let emailAndProfileData = null;
 
-    // Consulta única que obtiene todo lo necesario: plantilla y datos del perfil.
     const query = `
       SELECT
           tv.content,
           t.subject_template,
           t.sender_email,
-          p.user_name AS profile_user_name, -- Cambiado de name a user_name
+          p.user_name AS profile_user_name,
           p.enterprise
       FROM
           public.campaign AS c
       JOIN
-          public.template_versions AS tv ON c.template_version_id = tv.id
+          public.campaign_template_versions AS ctv ON c.id = ctv.campaign_id
+      JOIN
+          public.template_versions AS tv ON ctv.template_version_id = tv.id
       JOIN
           public.templates AS t ON tv.template_id = t.id
       JOIN
           public.profile AS p ON c.profile_id = p.id
       WHERE
           c.id = $1
+          AND t.template_type = 'email'
       ORDER BY
           tv.version_number DESC
       LIMIT 1;
@@ -51,21 +55,19 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
       return null;
     }
 
-    // Reemplaza los marcadores de posición
     let finalHtml = emailAndProfileData.content.replace(/\${name}/g, name);
     finalHtml = finalHtml.replace(/\${verificationLink}/g, verificationLink);
 
-    // Retorna un objeto con todos los datos necesarios
     return {
       html: finalHtml,
       subject: emailAndProfileData.subject_template,
       sender: emailAndProfileData.sender_email,
-      profileUserName: emailAndProfileData.profile_user_name, // Usando el nuevo alias
+      profileUserName: emailAndProfileData.profile_user_name,
       enterprise: emailAndProfileData.enterprise
     };
 
   } catch (error) {
-    console.error('Error fetching welcome template and profile data from database:', error);
+        console.error('Error fetching welcome template and profile data from database:', error);
     return null;
   }
 };
