@@ -75,7 +75,6 @@ export default defineEventHandler(async (event) => {
                 message: `No landing page template found for slug: '${slug}'.`
             });
         }
-        console.log('Landing page data:', landingPageData);
 
         return landingPageData;
     } catch (error) {
