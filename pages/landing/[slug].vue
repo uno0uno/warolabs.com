@@ -20,6 +20,8 @@ const route = useRoute();
 const slug = route.params.slug;
 const authToken = useCookie('auth_token');
 
+console.log('Current slug:', slug);
+
 // 💡 Activa el loader globalmente
 globalLoading.value = false;
 
