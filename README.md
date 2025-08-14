@@ -1,5 +1,3 @@
----
-
 # Manifiesto de Warolabs.com: ¡Tecnología y IA para Todos, Sin Rollo! ✨🚀
 
 ## Mi Parche: Que el Conocimiento Vuele Libre, ¡A lo Bien! 💡📚
@@ -54,45 +52,44 @@ Pa' que este rollo siga creciendo y sea sostenible, voy a buscar apoyo económic
 
 ---
 
-## **Hoja de Ruta: Warolabs.com - Ecommerce y Eventos**
+## **Hoja de Ruta: Warolabs.com - 21 Días de Validación y Crecimiento**
 
-Esta hoja de ruta detalla los pasos clave para el desarrollo y lanzamiento de las principales iniciativas de Warolabs.com, enfocadas en la democratización de la tecnología y la IA a través de productos y experiencias.
+**Última Modificación:** 14 de agosto de 2025
 
----
-
-### **Fase 1: Lanzamiento del Ecommerce con Pagos (14 de julio de 2025 al 28 de julio de 2025)**
-
-El objetivo principal es tener la **tienda online completamente funcional** y lista para transacciones.
-
-* **Creación del Ecommerce:** Desarrollo y configuración de la plataforma de comercio electrónico.
-* **Integración de Pagos:** Habilitar pasarelas de pago como **Mercado Pago, PayU y Wompi** para procesar transacciones de forma segura y eficiente.
+Esta hoja de ruta detalla un proceso acelerado de 21 días para validar la idea y lanzar un producto digital, enfocado en la democratización de la tecnología y la IA a través de cursos y una comunidad.
 
 ---
 
-### **Fase 2: Lanzamiento de la Marca de Ropa (28 de julio de 2025 al 12 de agosto de 2025)**
+### **Fase 1: Validación y Captación (Semana 1)**
 
-El objetivo de esta fase es la presentación oficial de la **línea de ropa de Warolabs.com**.
+El objetivo principal es **validar la idea** y empezar a construir una audiencia interesada.
 
-* **Diseño y Producción:** Finalización de diseños y producción inicial de la colección de ropa.
-* **Estrategia de Marketing:** Planificación y ejecución de la campaña de lanzamiento para generar expectativa y ventas.
-
----
-
-### **Fase 3: Lanzamiento de Cursos Presenciales (12 de agosto de 2025 al 27 de agosto de 2025)**
-
-Esta fase se centra en la **oferta educativa presencial** de Warolabs.com.
-
-* **Desarrollo de Contenido:** Creación de los programas y materiales para los cursos presenciales.
-* **Logística y Promoción:** Organización de los espacios, horarios y difusión de los cursos para atraer participantes.
+* **Acciones Clave:**
+    * Lanzar un **curso gratuito** de automatización o temas tecnológicos para atraer a la audiencia.
+    * Implementar el flujo de **captación de leads** que crea usuarios y los asocia a una campaña de marketing con correos de doble opt-in.
+    * Recopilar activamente el **feedback** de los participantes para obtener insights sobre sus necesidades y problemas.
 
 ---
 
-### **Fase 4: Lanzamiento de Conferencia o Feria (27 de agosto de 2025 al 27 de septiembre de 2025)**
+### **Fase 2: Creación y Oferta del Producto Pago (Semana 2)**
 
-El objetivo es culminar con un **gran evento presencial** que reúna a la comunidad tech.
+En esta fase, se utilizan los insights obtenidos para crear un producto pago que resuelva los problemas de tu audiencia.
 
-* **Planificación del Evento:** Definición de la temática, oradores, expositores y logística general de la conferencia o feria.
-* **Marketing y Ventas:** Promoción intensiva del evento y gestión de la venta de entradas o inscripciones.
+* **Acciones Clave:**
+    * Mejorar la **interfaz de usuario (UI)** del sistema y crear una herramienta simple de **envío de correos tipo CRM**.
+    * Desarrollar el contenido del **curso pago virtual** basado en el feedback de la Fase 1.
+    * Crear la página de ventas y lanzar el curso, ofreciendo una **oferta de lanzamiento** a la audiencia cautiva.
+
+---
+
+### **Fase 3: Optimización y Escalamiento (Semana 3)**
+
+El enfoque es maximizar las ventas, seguir mejorando el producto y preparar el camino para un crecimiento sostenido.
+
+* **Acciones Clave:**
+    * Lanzar el curso pago al público general y **optimizar la página de ventas** con base en el comportamiento de los usuarios.
+    * Implementar un **sistema de gestión de usuarios** para los clientes que compraron el curso.
+    * Definir una estrategia para **escalar el negocio** a largo plazo.
 
 ---
 
