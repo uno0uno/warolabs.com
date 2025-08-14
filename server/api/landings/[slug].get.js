@@ -55,8 +55,6 @@ export default defineEventHandler(async (event) => {
             if (result.rows.length > 0) {
                 const row = result.rows[0];
                 const contentJson = JSON.parse(row.template_content);
-                
-                console.log('Landing page content:', contentJson);
 
                 const encryptedCampaignId = encryptWithPublicKey(row.campaign_id);
 
@@ -78,7 +76,7 @@ export default defineEventHandler(async (event) => {
             });
         }
         console.log('Landing page data:', landingPageData);
-        
+
         return landingPageData;
     } catch (error) {
         console.error('Error in dynamic landing page endpoint:', error);

@@ -52,8 +52,6 @@ const submitLead = async () => {
             profileNationalityId: 1
         };
 
-        console.log('Body Payload:', bodyPayload);
-
         await $fetch('/api/marketing/createLeadCampain', {
             method: 'POST',
             body: bodyPayload,
@@ -66,9 +64,9 @@ const submitLead = async () => {
         leadEmail.value = '';
         leadPhone.value = '';
 
-        globalLoading.value = false;
-
         await navigateTo(`/thankyou/${slug}`, { replace: true });
+
+        globalLoading.value = false;
 
     } catch (error) {
         globalLoading.value = false;

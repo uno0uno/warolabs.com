@@ -39,19 +39,16 @@ export async function verifyAuthToken(event) {
     event.context.user = { ...decoded };
 
     if (tokenBackend && decoded.backendId === tokenBackend) {
-      console.log('Request authenticated as backend service via JWT payload:', decoded.backendId);
       event.context.user.type = 'backend-service';
       if (!event.context.user.role) {
         event.context.user.role = 'system-service';
       }
     } else if (decoded.userId) {
-      console.log('Request authenticated as regular user:', decoded.userId);
       event.context.user.type = 'regular-user';
       if (!event.context.user.role) {
         event.context.user.role = 'user';
       }
     } else {
-      console.warn('JWT valid but unknown user/service type:', decoded);
       throw createError({
         statusCode: 403,
         statusMessage: 'Forbidden',
