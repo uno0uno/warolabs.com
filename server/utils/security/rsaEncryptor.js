@@ -2,9 +2,12 @@ import crypto from 'crypto';
 import { createError } from 'h3';
 import { parsePemKey } from '../commons/keyParser.js';
 
-const { public: { publicKeyEncrypter }, privateKeyEncrypter } = useRuntimeConfig();
+
 
 export function encryptWithPublicKey(text) {
+
+    const { public: { publicKeyEncrypter } } = useRuntimeConfig();
+
     if (!text) return null;
     if (!publicKeyEncrypter) {
         throw createError({ statusCode: 500, statusMessage: 'Server Configuration Error', message: 'RSA Public Key is not configured.' });
@@ -25,6 +28,9 @@ export function encryptWithPublicKey(text) {
 }
 
 export function decryptWithPrivateKey(encryptedBase64Text) {
+
+    const { privateKeyEncrypter } = useRuntimeConfig();
+
     if (!encryptedBase64Text) return null;
     if (!privateKeyEncrypter) {
         throw createError({ statusCode: 500, statusMessage: 'Server Configuration Error', message: 'RSA Private Key is not configured.' });
