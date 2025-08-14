@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     emailFrom: process.env.NUXT_PRIVATE_EMAIL_FROM || '',
     jwtSecret: process.env.NUXT_PRIVATE_JWT_SECRET || '',
     privateKeyEncrypter: process.env.NUXT_PRIVATE_PRIVATE_KEY_ENCRYPTER || '',
+    tokenBackend: process.env.NUXT_PRIVATE_TOKEN_BACKEND || '',
     public: {
       baseUrl: process.env.NUXT_PUBLIC_BASE_URL || '',
       nameSite: process.env.NUXT_PRIVATE_NAME_SITE || '',
