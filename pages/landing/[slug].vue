@@ -12,20 +12,13 @@ const globalData = useGlobalData();
 const { globalLoading } = storeToRefs(globalData);
 
 definePageMeta({
-    middleware: 'auth',
     layout: 'landing'
 });
 
 const route = useRoute();
 const slug = route.params.slug;
-const authToken = useCookie('auth_token');
 
-
-// 💡 Activa el loader globalmente
 globalLoading.value = false;
-
-console.log('Fetching landing page for slug:', slug);
-console.log('Auth token:', authToken.value);
 
 const {
     data: landingData,
@@ -33,10 +26,19 @@ const {
     error: fetchError
 } = await useAsyncData(
     `landing-page-${slug}`,
-    () => {
-        if (!authToken.value) {
-            throw new Error('Authentication token is not available.');
-        }
+    async () => {
+        const authToken = useCookie('auth_token');
+        
+            const response = await $fetch('/api/auth/get-token', {
+                method: 'POST'
+            });
+
+            if (response.token) {
+                authToken.value = response.token;
+            } else {
+                throw new Error('Failed to retrieve authentication token.');
+            }
+
         return $fetch(`/api/landings/${slug}`, {
             method: 'GET',
             headers: {

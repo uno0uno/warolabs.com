@@ -17,12 +17,12 @@ export default defineEventHandler(async (event) => {
     try {
         await verifyAuthToken(event);
     } catch (error) {
+        console.error('Authentication error in landing page endpoint:', error);
         throw error;
     }
 
     try {
         let landingPageData = null;
-
 
         await withPostgresClient(async (client) => {
             const query = `
@@ -50,7 +50,6 @@ export default defineEventHandler(async (event) => {
             `;
 
             const result = await client.query(query, [slug]);
-
 
             if (result.rows.length > 0) {
                 const row = result.rows[0];

@@ -4,10 +4,9 @@ import { storeToRefs } from "pinia";
 import { navigateTo } from '#app';
 import { useCookie, useRoute, toRefs } from '#imports';
 
-// Importa la tienda de Pinia de forma nombrada
+
 import { useGlobalData } from '../../store/useGlobalData';
 
-// 🍍 Accede a la tienda de Pinia en el ámbito principal
 const globalData = useGlobalData();
 const { globalLoading } = storeToRefs(globalData);
 
@@ -27,9 +26,7 @@ const leadEmail = ref('');
 const leadPhone = ref('');
 
 const submitLead = async () => {
-    // 💡 Activa el loader global antes de la petición
     globalLoading.value = true;
-
     const authToken = useCookie('auth_token');
 
     try {
