@@ -1,9 +1,11 @@
 <script setup>
 // No hay lógica en el script, ya que es un componente de presentación.
 </script>
-
 <template>
-  <div class="loader"></div>
+  <div class="flex flex-col items-center gap-4 justify-center h-full">
+    <div class="loader"></div>
+    <div class="text-4xl font-medium text-left font-principal italic">Momentico..</div>
+  </div>
 </template>
 
 <style scoped>

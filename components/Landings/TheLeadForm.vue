@@ -76,32 +76,33 @@ const submitLead = async () => {
 </script>
 
 <template>
-    <form @submit.prevent="submitLead" class="bg-gray-100 p-6 rounded-lg shadow-md">
-        <h2 class="text-2xl font-semibold mb-4">Regístrate y recibe más información</h2>
+    <form @submit.prevent="submitLead" class="bg-gray-100 p-6 border-2 border-slate-900 text-left flex flex-col gap-4">
+        <h2 class="text-2xl font-semibold text-left">Regístrate y recibe más información</h2>
+        <div class="flex flex-col gap-2">
+            <div class="text-left">
+                <label for="name" class="block text-gray-700 text-sm font-bold mb-2 text-left">Nombre</label>
+                <input id="name" v-model="leadName" type="text"
+                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
+                    required />
+            </div>
 
-        <div class="mb-4">
-            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nombre</label>
-            <input id="name" v-model="leadName" type="text"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required />
-        </div>
+            <div class="text-left">
+                <label for="email" class="block text-gray-700 text-sm font-bold mb-2 text-left">Correo electrónico</label>
+                <input id="email" v-model="leadEmail" type="email"
+                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
+                    required />
+            </div>
 
-        <div class="mb-4">
-            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Correo electrónico</label>
-            <input id="email" v-model="leadEmail" type="email"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required />
-        </div>
-
-        <div class="mb-6">
-            <label for="phone" class="block text-gray-700 text-sm font-bold mb-2">Número de teléfono</label>
-            <input id="phone" v-model="leadPhone" type="tel"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required />
+            <div class="text-left">
+                <label for="phone" class="block text-gray-700 text-sm font-bold mb-2 text-left">Número de teléfono</label>
+                <input id="phone" v-model="leadPhone" type="tel"
+                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
+                    required />
+            </div>
         </div>
 
         <button type="submit"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full">
+            class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 px-4 focus:outline-none focus:shadow-outline w-full text-left">
             Enviar
         </button>
     </form>

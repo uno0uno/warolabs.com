@@ -44,10 +44,10 @@ const { mediaType, mediaSrc, title, description, campaignId } = toRefs(props);
       </div>
     </div>
     
-    <div class="flex flex-col h-full">
-      <div class="">
-        <h1 class="text-4xl font-bold mb-4">{{ title }}</h1>
-        <p class="text-lg text-gray-600 mb-6">{{ description }}</p>
+    <div class="flex flex-col h-full w-full">
+      <div class="flex flex-col items-start px-6 py-2 border-x-2 border-t-2 border-slate-900">
+        <h1 class="text-4xl font-bold text-left">{{ title }}</h1>
+        <p class="text-md text-gray-600 text-left">{{ description }}</p>
       </div>
         <LandingsTheLeadForm :campaignId="campaignId"/>
     </div>

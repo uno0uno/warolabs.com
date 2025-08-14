@@ -15,7 +15,7 @@ const { title, description} = toRefs(props);
 
 const formattedTitle = computed(() => {
   const titleText = title.value || '';
-  const phraseToItalicize = 'nteligencia artificial';
+  const phraseToItalicize = 'inteligencia artificial';
   if (titleText.includes(phraseToItalicize)) {
     return titleText.replace(phraseToItalicize, `<span class="italic">${phraseToItalicize}</span>`);
   }
