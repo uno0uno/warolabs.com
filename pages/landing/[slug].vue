@@ -20,10 +20,12 @@ const route = useRoute();
 const slug = route.params.slug;
 const authToken = useCookie('auth_token');
 
-console.log('Current slug:', slug);
 
 // 💡 Activa el loader globalmente
 globalLoading.value = false;
+
+console.log('Fetching landing page for slug:', slug);
+console.log('Auth token:', authToken.value);
 
 const {
     data: landingData,
