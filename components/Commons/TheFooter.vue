@@ -58,10 +58,8 @@ useHead({
             <p class="text-sm font-light leading-relaxed text-stone-400 mb-2">Política de privacidad | Términos de servicio</p>
         </div>
         <div class="flex gap-4">
-            <a href="https://www.facebook.com/WaroLabs" class="text-white hover:text-gray-400" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="https://twitter.com/WaroLabs" class="text-white hover:text-gray-400" target="_blank" rel="noopener noreferrer">Twitter</a>
-            <a href="https://www.linkedin.com/company/WaroLabs" class="text-white hover:text-gray-400" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="https://www.instagram.com/WaroLabs" class="text-white hover:text-gray-400" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="www.linkedin.com/in/anderson-eduardo-arévalo-ramírez-2b5768bb" class="text-white hover:text-gray-400" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="https://www.tiktok.com/@waro.labs" class="text-white hover:text-gray-400" target="_blank" rel="noopener noreferrer">Instagram</a>
             <a href="https://www.tiktok.com/@WaroLabs" class="text-white hover:text-gray-400" target="_blank" rel="noopener noreferrer">TikTok</a>
         </div>
     </div>
