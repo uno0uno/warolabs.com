@@ -2,7 +2,7 @@
 
 ## Mi Parche: Que el Conocimiento Vuele Libre, ¡A lo Bien! 💡📚
 
-¡Holanda! Safier101 por aquí. Mi idea es sencilla pero bacana el conocimiento de la tecnología y la inteligencia artificial no es pa' unos poquitos, ¡es pa' todo el mundo! 🌍 Vivimos en un mundo que va a mil por hora gracias a lo digital, así que es clave que cualquiera, desde el que no sabe ni prender un computador hasta el que ya le coge el tiro, tenga las herramientas y la actitud pa' entenderle y sacarle el jugo. 💻
+¡Holanda! Safier101 por aquí. Mi idea es sencilla pero bacana, el conocimiento de la tecnología y la inteligencia artificial no es pa' unos poquitos, ¡es pa' todo el mundo! 🌍 Vivimos en un mundo que va a mil por hora gracias a lo digital, así que es clave que cualquiera, desde el que no sabe ni prender un computador hasta el que ya le coge el tiro, tenga las herramientas y la actitud pa' entenderle y sacarle el jugo. 💻
 
 Mi meta es quitarle lo complicado a la tecnología y la IA, hacerla fácil de digerir pa' todos. Estoy convencido de que si democratizamos este saber, la gente va a poder darle un empujón a su carrera, mejorar su vida y aportar un montón al mundo. 💪
 
@@ -22,7 +22,7 @@ Según el mapa que tengo en la cabeza (y que les muestro aquí abajito), aquí l
 **Nuestras Soluciones, ¡Con Toda la Actitud!**
 
 * **Solución #1: ¡Eventos en Vivo, Pura Sabrosura! 🎤🎉** Vamos a armar conferencias, ferias y congresos bien chéveres. La idea es que la gente aprenda un montón, haga contactos brutales y crezca dentro de todo este ecosistema tecnológico. ¡Que se sienta la energía!
-* **Solución #2: ¡Cursos por Fin de Semana, Pa' Que Aprenda el Que Sea! 🧑‍💻🎓** También vamos a crear capacitaciones los fines de semana, bien enfocadas en temas específicos y nichos de la tecnología. Así, el que quiera aprender algo puntual, ¡lo va a poder hacer sin complicaciones!
+* **Solución #2: ¡Eventos Virtuales en Vivo, Pa' Que Aprenda el Que Sea! 🧑‍💻🎓** Vamos a crear capacitaciones y talleres virtuales en vivo, bien enfocados en temas específicos y nichos de la tecnología. Así, el que quiera aprender algo puntual, ¡lo va a poder hacer sin complicaciones desde donde esté!
 
 ---
 
@@ -52,44 +52,44 @@ Pa' que este rollo siga creciendo y sea sostenible, voy a buscar apoyo económic
 
 ---
 
-## **Hoja de Ruta: Warolabs.com - 21 Días de Validación y Crecimiento**
+## **Hoja de Ruta: Warolabs.com - 21 Días de Validación y Crecimiento (Eventos Virtuales)**
 
 **Última Modificación:** 14 de agosto de 2025
 
-Esta hoja de ruta detalla un proceso acelerado de 21 días para validar la idea y lanzar un producto digital, enfocado en la democratización de la tecnología y la IA a través de cursos y una comunidad.
+Esta hoja de ruta detalla un proceso acelerado de 21 días para validar la idea y lanzar un producto digital, enfocado en la democratización de la tecnología y la IA a través de **eventos virtuales en vivo**.
 
 ---
 
-### **Fase 1: Validación y Captación (Semana 1)**
+### **Fase 1: Lanzamiento de Evento Virtual Gratuito (Semana 1)**
 
-El objetivo principal es **validar la idea** y empezar a construir una audiencia interesada.
+El objetivo principal es **validar la idea y generar una audiencia inicial** a través de un evento virtual gratuito.
 
 * **Acciones Clave:**
-    * Lanzar un **curso gratuito** de automatización o temas tecnológicos para atraer a la audiencia.
+    * Lanzar un **evento virtual en vivo (webinar, taller, etc.)** sobre automatización o temas tecnológicos para captar interés.
     * Implementar el flujo de **captación de leads** que crea usuarios y los asocia a una campaña de marketing con correos de doble opt-in.
-    * Recopilar activamente el **feedback** de los participantes para obtener insights sobre sus necesidades y problemas.
+    * Recopilar activamente el **feedback** de los participantes durante y después del evento para obtener insights sobre sus necesidades y problemas.
 
 ---
 
-### **Fase 2: Creación y Oferta del Producto Pago (Semana 2)**
+### **Fase 2: Creación y Oferta de Evento Virtual Pago (Semana 2)**
 
-En esta fase, se utilizan los insights obtenidos para crear un producto pago que resuelva los problemas de tu audiencia.
+En esta fase, se utilizan los insights obtenidos para crear un evento virtual pago que resuelva un problema específico de la audiencia.
 
 * **Acciones Clave:**
-    * Mejorar la **interfaz de usuario (UI)** del sistema y crear una herramienta simple de **envío de correos tipo CRM**.
-    * Desarrollar el contenido del **curso pago virtual** basado en el feedback de la Fase 1.
-    * Crear la página de ventas y lanzar el curso, ofreciendo una **oferta de lanzamiento** a la audiencia cautiva.
+    * Mejorar la **interfaz de usuario (UI)** del sistema y crear una herramienta simple de **envío de correos tipo CRM** para gestionar la comunicación.
+    * Desarrollar el contenido del **evento virtual pago** (curso, workshop) basado en el feedback de la Fase 1.
+    * Crear una página de ventas y anunciar el evento pago, ofreciendo un **descuento de lanzamiento** a los asistentes del evento gratuito.
 
 ---
 
 ### **Fase 3: Optimización y Escalamiento (Semana 3)**
 
-El enfoque es maximizar las ventas, seguir mejorando el producto y preparar el camino para un crecimiento sostenido.
+El enfoque es maximizar las inscripciones al evento pago, seguir mejorando la oferta y preparar el camino para un crecimiento sostenido.
 
 * **Acciones Clave:**
-    * Lanzar el curso pago al público general y **optimizar la página de ventas** con base en el comportamiento de los usuarios.
-    * Implementar un **sistema de gestión de usuarios** para los clientes que compraron el curso.
-    * Definir una estrategia para **escalar el negocio** a largo plazo.
+    * Abrir las inscripciones al evento pago al público general y **optimizar la página de ventas** con base en el comportamiento de los usuarios.
+    * Implementar un **sistema de gestión de usuarios** para los asistentes del evento pago.
+    * Definir una estrategia para **escalar el negocio** a largo plazo, creando más eventos virtuales o productos digitales.
 
 ---
 
