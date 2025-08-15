@@ -27,16 +27,22 @@ const leadPhone = ref('');
 
 const submitLead = async () => {
     globalLoading.value = true;
-    const authToken = useCookie('auth_token');
 
     try {
+        
+        const tokenResponse = await $fetch('/api/auth/get-token', {
+            method: 'POST',
+        });
+
+        const authToken = tokenResponse.token;
+
         const encryptedData = await $fetch('/api/utils/encrypt-data', {
             method: 'POST',
             body: {
                 leadEmail: leadEmail.value
             },
             headers: {
-                'Authorization': `Bearer ${authToken.value}`
+                'Authorization': `Bearer ${authToken}`
             }
         });
 
@@ -53,7 +59,7 @@ const submitLead = async () => {
             method: 'POST',
             body: bodyPayload,
             headers: {
-                'Authorization': `Bearer ${authToken.value}`
+                'Authorization': `Bearer ${authToken}`
             }
         });
 
@@ -87,14 +93,16 @@ const submitLead = async () => {
             </div>
 
             <div class="text-left">
-                <label for="email" class="block text-gray-700 text-sm font-bold mb-2 text-left">Correo electrónico</label>
+                <label for="email" class="block text-gray-700 text-sm font-bold mb-2 text-left">Correo
+                    electrónico</label>
                 <input id="email" v-model="leadEmail" type="email"
                     class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
                     required />
             </div>
 
             <div class="text-left">
-                <label for="phone" class="block text-gray-700 text-sm font-bold mb-2 text-left">Número de teléfono</label>
+                <label for="phone" class="block text-gray-700 text-sm font-bold mb-2 text-left">Número de
+                    teléfono</label>
                 <input id="phone" v-model="leadPhone" type="tel"
                     class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
                     required />
