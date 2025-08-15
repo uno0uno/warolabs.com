@@ -17,7 +17,7 @@ useHead({
       <CheckCircleIcon class="h-24 w-24 text-green-500 mx-auto" />
       <h1 class="text-4xl font-bold mt-4">¡Verificación Exitosa!</h1>
       <p class="text-lg text-gray-600 mt-2">
-        Gracias por confirmar tu dirección de correo. Ya eres parte de la comunidad de Waro Labs.
+        Gracias por confirmar tu dirección de correo. Ya eres parte de la comunidad de Waro Labs. Si no ves nuestros correos, revisa también tu carpeta de spam.
       </p>
       <NuxtLink 
         to="/" 
