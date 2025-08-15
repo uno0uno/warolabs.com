@@ -67,7 +67,7 @@ const showFullDescription = ref(false);
           </p>
           
           <button v-if="description.length > 150" @click="showFullDescription = !showFullDescription" class="text-slate-900 hover:text-slate-900 focus:outline-none flex items-center gap-2">
-            {{ showFullDescription ? 'Ver mas' : 'Ver menos' }}
+            {{ showFullDescription ? 'Ver menos' : 'Ver mas' }}
             <span v-if="showFullDescription">▲</span>
             <span v-else class="text-xs">▼</span>
           </button>
