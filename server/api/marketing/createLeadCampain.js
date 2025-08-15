@@ -63,6 +63,7 @@ export default defineEventHandler(async (event) => {
             `;
             const values = [campaignId, leadEmail, leadSource, profileName, profilePhoneNumber, profileNationalityId, verificationToken];
             const result = await client.query(query, values);
+
             return {
                 leadId: result.rows[0].lead_return_id,
                 profileId: result.rows[0].profile_return_id,
@@ -99,8 +100,12 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 201);
         responsePayload.message = 'Lead successfully associated with campaign.';
 
-        if (associationStatus.includes('lead_created')) {
+        if (
+            associationStatus.includes('lead_created') ||
+            associationStatus.includes('profile_existing_lead_existing_association_created')
+        ) {
             try {
+
                 const { public: { baseUrl } } = useRuntimeConfig();
 
                 const emailDetails = await getWelcomeTemplate({
