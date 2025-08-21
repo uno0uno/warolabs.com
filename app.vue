@@ -1,3 +1,16 @@
+<script setup>
+
+useHead({
+  meta: [
+    { 
+      name: 'facebook-domain-verification', 
+      content: 'nokqch60603ztrpo955af87wulpoun' 
+    }
+  ]
+});
+
+</script>
+
 <template>
     <div>
       <NuxtLayout>
@@ -6,8 +19,6 @@
     </div>
 </template>
 
-<script setup>
-</script>
 
 <style lang="scss" scoped>
 
