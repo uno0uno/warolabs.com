@@ -1,6 +1,5 @@
 <script setup>
 import { storeToRefs } from "pinia";
-
 import { useGlobalData } from '../../store/useGlobalData';
 import { useFormValidation } from '../../composables/useFormValidation';
 import AlertLine from '../Commons/AlertLine.vue';
@@ -25,15 +24,29 @@ const formData = ref({
     phone: '',
 });
 
+const serverError = ref(null);
+
 const { errors, validate, validateField } = useFormValidation(formData);
 
 const isFormValid = computed(() => {
     return Object.values(errors.value).every(error => error === null);
 });
 
+const alertMessage = computed(() => {
+    if (serverError.value) {
+        return serverError.value;
+    }
+    if (!isFormValid.value) {
+        return 'Por favor, corrige los errores en el formulario para poder continuar.';
+    }
+    return null;
+});
+
 const submitLead = async () => {
+    serverError.value = null;
+    errors.value = {}; 
+
     if (!validate()) {
-        console.log('Errores de validación:', errors.value);
         return;
     }
     
@@ -71,8 +84,12 @@ const submitLead = async () => {
         await navigateTo(`/thankyou/${slug}`, { replace: true });
         
     } catch (error) {
-        console.error('Error al crear el lead:', error);
-        alert('Hubo un error al enviar el formulario.');
+  
+        if (error.response && error.response._data) {
+            serverError.value = error.response._data.message || 'Hubo un error en el servidor. Por favor, inténtalo de nuevo.';
+        } else {
+            serverError.value = 'Hubo un error de red. Revisa tu conexión a internet.';
+        }
     } finally {
         globalLoading.value = false;
     }
@@ -83,8 +100,8 @@ const submitLead = async () => {
     <form @submit.prevent="submitLead" class="bg-gray-100 p-6 border-2 border-slate-900 text-left flex flex-col gap-4">
         <h2 class="text-2xl font-semibold text-left">Regístrate y recibe más información</h2>
         
-        <AlertLine v-if="!isFormValid" type="error">
-            Por favor, corrige los errores en el formulario para poder continuar.
+        <AlertLine v-if="alertMessage" type="error">
+            {{ alertMessage }}
         </AlertLine>
 
         <div class="flex flex-col gap-2">

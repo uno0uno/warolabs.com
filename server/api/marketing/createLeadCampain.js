@@ -139,13 +139,13 @@ export default defineEventHandler(async (event) => {
 
     } else if (associationStatus.includes('_association_existing')) {
         setResponseStatus(event, 409);
-        responsePayload.message = 'Lead already associated with this campaign.';
+        responsePayload.message = 'Ya estás inscrito con este correo electrónico.';
         return responsePayload;
     } else {
         throw createError({
             statusCode: 500,
             statusMessage: 'Unexpected Status',
-            message: 'An unexpected status was returned by the database function.',
+            message: 'Tenemos problemas en este momento, intenta más tarde.',
             data: associationStatus
         });
     }

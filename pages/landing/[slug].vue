@@ -76,14 +76,15 @@ const components = {
 </script>
 
 <template>
-    <div v-if="!globalLoading" class="w-full flex items-center justify-center h-full">
+    <div v-show="!globalLoading" class="w-full flex items-center justify-center h-full">
         <div class="text-center flex flex-col items-center w-full h-full justify-center gap-4 px-0 lg:min-w-[48rem] max-w-6xl lg:px-12 relative z-0 bg-slate-50">
             <div v-for="(section, index) in processedSections" :key="index">
                 <component :is="components[section.component]" v-bind="section.props" />
             </div>
         </div>
     </div>
-    <div v-else="globalLoading" class="w-full flex items-center justify-center h-full">
+    
+    <div v-show="globalLoading" class="w-full flex items-center justify-center h-full">
         <CommonsTheLoading />
     </div>
 </template>

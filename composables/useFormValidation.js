@@ -4,14 +4,19 @@ export function useFormValidation(formData) {
     const errors = ref({});
     const rules = {
         name: [
-            (value) => (value && value.trim() ? null : 'El nombre es obligatorio.'),
-            (value) => (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/.test(value) ? null : 'El nombre debe contener solo letras y espacios.'),
-            (value) => (value && value.trim().length >= 2 ? null : 'El nombre debe tener al menos 2 caracteres.'),
-            (value) => (!/^\d+$/.test(value) ? null : 'El nombre no puede ser solo números.'),
+            (value) => (value && value.trim() ? null : 'Este campo es obligatorio.'),
+            (value) => (/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s'-]+$/.test(value) ? null : 'Solo se permiten letras y espacios.'),
+            (value) => (value && value.trim().length >= 2 ? null : 'Debe tener al menos 2 caracteres.'),
+            (value) => (!/^\d+$/.test(value) ? null : 'No puede contener solo números.'),
         ],
         email: [
-            (value) => (value && value.trim() ? null : 'El correo electrónico es obligatorio.'),
-            (value) => (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? null : 'Formato de correo electrónico inválido.'),
+            (value) => (value && value.trim() ? null : 'Este campo es obligatorio.'),
+            (value) => {
+                if (!value) return null;
+                if (!value.includes('@')) return 'Falta el símbolo @.';
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Formato inválido.';
+                return null;
+            },
             (value) => {
                 if (!value) return null;
                 const forbiddenDomains = [
@@ -19,24 +24,24 @@ export function useFormValidation(formData) {
                 ];
                 const domain = value.split('@')[1]?.toLowerCase();
                 return forbiddenDomains.includes(domain)
-                    ? 'Por favor, ingresa un correo electrónico válido.'
+                    ? 'El dominio no está permitido.'
                     : null;
             },
             (value) => {
                 if (!value) return null;
                 const username = value.split('@')[0];
                 if (/^\d+$/.test(username) || username.length < 3) {
-                    return 'El correo electrónico no es válido.';
+                    return 'El nombre antes de la arroba no es válido.';
                 }
                 if (/^(.)\1+$/.test(username)) {
-                    return 'El correo electrónico no es válido.';
+                    return 'No se permiten caracteres repetidos en el nombre antes de la arroba.';
                 }
                 return null;
             }
         ],
         phone: [
-            (value) => (value && value.trim() ? null : 'El número de teléfono es obligatorio.'),
-            (value) => (/^\d+$/.test(value) ? null : 'El número de teléfono debe contener solo números.'),
+            (value) => (value && value.trim() ? null : 'Este campo es obligatorio.'),
+            (value) => (/^\d+$/.test(value) ? null : 'Solo se permiten números.'),
         ],
     };
 
