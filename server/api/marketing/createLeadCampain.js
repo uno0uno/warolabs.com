@@ -1,5 +1,3 @@
-// server/api/marketing/createLeadCampain.js
-
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
 import { verifyAuthToken } from '../../utils/security/jwtVerifier';
 import { sendEmail } from '../../utils/aws/sesClient'; 
@@ -20,7 +18,8 @@ export default defineEventHandler(async (event) => {
         leadSource,
         profileName,
         profilePhoneNumber,
-        profileNationalityId
+        profileNationalityId,
+        profilePhoneCountryCode
     } = body;
 
     let campaignId, leadEmail;
@@ -52,16 +51,16 @@ export default defineEventHandler(async (event) => {
         } catch (error) {
             throw error;
         }
-
         try {
+
             const query = `
                 SELECT
                     t.lead_return_id,
                     t.profile_return_id,
                     t.association_status
-                FROM public.manage_lead_and_campaign_association($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::INTEGER, $7::TEXT) AS t;
-            `;
-            const values = [campaignId, leadEmail, leadSource, profileName, profilePhoneNumber, profileNationalityId, verificationToken];
+                FROM public.manage_lead_and_campaign_association($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR, $7::INTEGER, $8::TEXT) AS t;
+            `; 
+            const values = [campaignId, leadEmail, leadSource, profileName, profilePhoneNumber, profilePhoneCountryCode, profileNationalityId, verificationToken]; // MODIFICACIÓN: Se añadió profilePhoneCountryCode
             const result = await client.query(query, values);
 
             return {
@@ -74,10 +73,10 @@ export default defineEventHandler(async (event) => {
                 let statusCode = 400;
                 let friendlyMessage = pgError.message;
 
-                if (pgError.message.includes('La campaña con ID') && pgError.message.includes('no existe')) {
+                if (pgError.message.includes('The specified campaign does not exist.')) {
                     statusCode = 404;
                     friendlyMessage = 'The specified campaign does not exist.';
-                } else if (pgError.message.includes('Para crear un nuevo perfil') || pgError.message.includes('Missing or invalid profile data')) {
+                } else if (pgError.message.includes('To create a new profile') || pgError.message.includes('Missing or invalid profile data')) {
                     statusCode = 400;
                     friendlyMessage = 'Incomplete or invalid profile data for a new lead/profile.';
                 }

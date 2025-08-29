@@ -1,11 +1,21 @@
 <script setup>
+import { ref, computed, watch, onMounted, toRefs } from "vue";
 import { storeToRefs } from "pinia";
 import { useGlobalData } from '../../store/useGlobalData';
 import { useFormValidation } from '../../composables/useFormValidation';
-import AlertLine from '../Commons/AlertLine.vue';
 
 const globalData = useGlobalData();
-const { globalLoading } = storeToRefs(globalData);
+const { 
+    globalLoading, 
+    countries, 
+    selectedCountry, 
+    countrySearchQuery,
+    filteredCountries 
+} = storeToRefs(globalData);
+const { 
+    setGlobalLoading, 
+    selectCountry 
+} = globalData;
 
 const props = defineProps({
     campaignId: {
@@ -22,31 +32,53 @@ const formData = ref({
     name: '',
     email: '',
     phone: '',
+    phoneCountryCode: ''
 });
 
 const serverError = ref(null);
 
-const { errors, validate, validateField } = useFormValidation(formData);
+const { errors, validate, validateField } = useFormValidation(formData, countries);
 
 const isFormValid = computed(() => {
-    return Object.values(errors.value).every(error => error === null);
+    return Object.values(errors.value).every(error => error === null) && formData.value.phoneCountryCode.length > 0;
 });
 
-const alertMessage = computed(() => {
+const allErrorsList = computed(() => {
+    let combinedErrors = Object.values(errors.value).filter(error => error !== null);
     if (serverError.value) {
-        return serverError.value;
+        combinedErrors.unshift(serverError.value);
     }
-    if (!isFormValid.value) {
-        return 'Por favor, corrige los errores en el formulario para poder continuar.';
-    }
-    return null;
+    return combinedErrors;
 });
+
+const showCountryDropdown = ref(false);
+const countryDropdownRef = ref(null);
+
+const countryInputDisplay = computed({
+    get() {
+        return selectedCountry.value ? selectedCountry.value.name : countrySearchQuery.value;
+    },
+    set(value) {
+        selectCountry(null); 
+        countrySearchQuery.value = value;
+        validateField('phoneCountryCode');
+    }
+});
+
+const validateAll = () => {
+    validateField('name');
+    validateField('email');
+    validateField('phone');
+    validateField('phoneCountryCode');
+};
 
 const submitLead = async () => {
     serverError.value = null;
     errors.value = {}; 
 
-    if (!validate()) {
+    validateAll();
+    
+    if (!isFormValid.value) {
         return;
     }
     
@@ -68,7 +100,8 @@ const submitLead = async () => {
             profileName: formData.value.name,
             profilePhoneNumber: formData.value.phone,
             leadSource: 'Landing Page Form',
-            profileNationalityId: 1
+            profileNationalityId: 1,
+            profilePhoneCountryCode: formData.value.phoneCountryCode
         };
 
         await $fetch('/api/marketing/createLeadCampain', {
@@ -80,6 +113,8 @@ const submitLead = async () => {
         formData.value.name = '';
         formData.value.email = '';
         formData.value.phone = '';
+        formData.value.phoneCountryCode = '';
+        selectCountry(countries.value[0]);
 
         await navigateTo(`/thankyou/${slug}`, { replace: true });
         
@@ -94,50 +129,99 @@ const submitLead = async () => {
         globalLoading.value = false;
     }
 };
+
+const handleCountrySelection = (country) => {
+    selectCountry(country);
+    formData.value.phoneCountryCode = country.phone_code;
+    validateField('phoneCountryCode');
+    showCountryDropdown.value = false;
+};
+const hideDropdownOnFocusOut = (event) => {
+    if (countryDropdownRef.value && !countryDropdownRef.value.contains(document.activeElement)) {
+        showCountryDropdown.value = false;
+    }
+};
+
+onMounted(() => {
+  if (selectedCountry.value) {
+    formData.value.phoneCountryCode = selectedCountry.value.phone_code;
+  }
+});
+
+watch(selectedCountry, (newCountry) => {
+    if (newCountry) {
+        formData.value.phoneCountryCode = newCountry.phone_code;
+    } else {
+        formData.value.phoneCountryCode = '';
+    }
+    validateField('phoneCountryCode');
+});
 </script>
 
 <template>
     <form @submit.prevent="submitLead" class="bg-gray-100 p-6 border-2 border-slate-900 text-left flex flex-col gap-4">
         <h2 class="text-2xl font-semibold text-left">Regístrate y recibe más información</h2>
         
-        <AlertLine v-if="alertMessage" type="error">
-            {{ alertMessage }}
-        </AlertLine>
-
+        <div v-if="allErrorsList.length > 0" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <ul class="list-disc list-inside">
+                <li v-for="error in allErrorsList" :key="error">{{ error }}</li>
+            </ul>
+        </div>
+        
         <div class="flex flex-col gap-2">
             <div class="text-left">
                 <label for="name" class="block text-gray-700 text-sm font-bold mb-2 text-left">Nombre</label>
-                <p v-if="errors.name" class="text-red-500 text-xs italic mb-1">{{ errors.name }}</p>
                 <input id="name" v-model="formData.name" type="text"
                     :class="{'border-red-500': errors.name}"
                     class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left
                            bg-white autofill:bg-white
                            focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
-                    @blur="validateField('name')" />
+                    @input="validateField('name')" />
             </div>
 
             <div class="text-left">
                 <label for="email" class="block text-gray-700 text-sm font-bold mb-2 text-left">Correo
                     electrónico</label>
-                <p v-if="errors.email" class="text-red-500 text-xs italic mb-1">{{ errors.email }}</p>
                 <input id="email" v-model="formData.email" type="email"
                     :class="{'border-red-500': errors.email}"
                     class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left
                            bg-white autofill:bg-white
                            focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
-                    @blur="validateField('email')" />
+                    @input="validateField('email'); serverError = null" />
             </div>
 
-            <div class="text-left">
-                <label for="phone" class="block text-gray-700 text-sm font-bold mb-2 text-left">Número de
-                    teléfono</label>
-                <p v-if="errors.phone" class="text-red-500 text-xs italic mb-1">{{ errors.phone }}</p>
-                <input id="phone" v-model="formData.phone" type="tel"
-                    :class="{'border-red-500': errors.phone}"
-                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left
-                           bg-white autofill:bg-white
-                           focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
-                    @blur="validateField('phone')" />
+            <div class="flex gap-2 w-full">
+                <div class="text-left w-1/3 flex flex-col">
+                    <label for="phone" class=" text-gray-700 text-sm font-bold mb-2 text-left">País</label>
+                    <div class="flex flex-row gap-2 relative w-full" ref="countryDropdownRef" @focusin="showCountryDropdown = true" @focusout="hideDropdownOnFocusOut">
+                        <div class="relative w-full">
+                            <input v-model="countryInputDisplay"
+                                    :class="{'border-red-500': errors.phoneCountryCode}"
+                                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left bg-white focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                                    placeholder="País" />
+
+                            <div v-if="showCountryDropdown || countrySearchQuery.length > 0" class="absolute z-10 w-full bg-white border border-gray-300 mt-1 rounded shadow-lg max-h-48 overflow-y-auto">
+                                <ul>
+                                    <p v-for="country in filteredCountries" 
+                                        :key="country.code" 
+                                        @mousedown.prevent="handleCountrySelection(country)" 
+                                        class="cursor-pointer px-3 pt-0.5 hover:bg-gray-100 text-sm">
+                                        {{ country.name }}
+                                    </p>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-left w-full flex flex-col">
+                    <label for="phone" class="block text-gray-700 text-sm font-bold mb-2 text-left">Número de teléfono</label>
+                    <input id="phone" v-model="formData.phone" type="tel"
+                        :class="{'border-red-500': errors.phone}"
+                        class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left
+                               bg-white autofill:bg-white
+                               focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
+                        @input="validateField('phone')" />
+                </div>
             </div>
         </div>
 
@@ -149,7 +233,3 @@ const submitLead = async () => {
         </button>
     </form>
 </template>
-
-<style scoped>
-
-</style>

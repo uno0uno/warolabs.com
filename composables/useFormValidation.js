@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 
-export function useFormValidation(formData) {
+export function useFormValidation(formData, countries) { 
     const errors = ref({});
     const rules = {
         name: [
@@ -43,11 +43,19 @@ export function useFormValidation(formData) {
             (value) => (value && value.trim() ? null : 'Este campo es obligatorio.'),
             (value) => (/^\d+$/.test(value) ? null : 'Solo se permiten números.'),
         ],
+
+        phoneCountryCode: [
+            (value) => {
+                const isValidCountry = countries.value.some(country => country.phone_code === value);
+                return isValidCountry ? null : 'Selecciona algún país.';
+            }
+        ],
     };
 
     const validateField = (fieldName) => {
         errors.value[fieldName] = null; 
         const value = formData.value[fieldName];
+        console.log(`Validating field: ${fieldName} with value: ${value}`);
 
         if (rules[fieldName]) {
             for (const rule of rules[fieldName]) {
