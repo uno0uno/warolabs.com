@@ -179,3 +179,31 @@ h1, h2, h3, h4, h5, h6 {
   z-index: -1; 
 }
 
+/* ==================================== */
+/* Form Styles                          */
+/* ==================================== */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    -webkit-text-fill-color: #333;
+}
+
+input:-moz-autofill,
+input:-moz-autofill:hover, 
+input:-moz-autofill:focus {
+    background-color: #fff;
+    color: #333;
+}
+
+input:focus {
+    outline: 2px solid transparent; 
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #374151;
+}
+
+input:-webkit-autofill:focus {
+    box-shadow: 0 0 0 2px #374151, inset 0 0 0px 1000px #fff;
+    -webkit-text-fill-color: #333;
+}

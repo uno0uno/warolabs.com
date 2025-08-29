@@ -110,7 +110,9 @@ const submitLead = async () => {
                 <p v-if="errors.name" class="text-red-500 text-xs italic mb-1">{{ errors.name }}</p>
                 <input id="name" v-model="formData.name" type="text"
                     :class="{'border-red-500': errors.name}"
-                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
+                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left
+                           bg-white autofill:bg-white
+                           focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
                     @blur="validateField('name')" />
             </div>
 
@@ -120,7 +122,9 @@ const submitLead = async () => {
                 <p v-if="errors.email" class="text-red-500 text-xs italic mb-1">{{ errors.email }}</p>
                 <input id="email" v-model="formData.email" type="email"
                     :class="{'border-red-500': errors.email}"
-                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
+                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left
+                           bg-white autofill:bg-white
+                           focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
                     @blur="validateField('email')" />
             </div>
 
@@ -130,7 +134,9 @@ const submitLead = async () => {
                 <p v-if="errors.phone" class="text-red-500 text-xs italic mb-1">{{ errors.phone }}</p>
                 <input id="phone" v-model="formData.phone" type="tel"
                     :class="{'border-red-500': errors.phone}"
-                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline text-left"
+                    class="shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight text-left
+                           bg-white autofill:bg-white
+                           focus:outline-none focus:ring-2 focus:ring-gray-700 focus:border-transparent"
                     @blur="validateField('phone')" />
             </div>
         </div>
@@ -143,3 +149,7 @@ const submitLead = async () => {
         </button>
     </form>
 </template>
+
+<style scoped>
+
+</style>
