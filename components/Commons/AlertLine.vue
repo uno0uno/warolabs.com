@@ -42,7 +42,7 @@ const alertIcon = computed(() => {
 
 <template>
     <div :class="alertClasses" class="p-2 font-medium text-sm rounded flex items-center gap-2">
-        <component :is="alertIcon" class="h-8 w-8" aria-hidden="true" />
+        <component :is="alertIcon" class="h-5 w-5" aria-hidden="true" />
         <slot></slot>
     </div>
 </template>
