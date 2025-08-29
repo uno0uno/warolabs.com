@@ -19,6 +19,14 @@ export default defineEventHandler(async (event) => {
   const failedEmails = [];
 
   try {
+
+
+    try {
+        await verifyAuthToken(event);
+    } catch (error) {
+        throw error;
+    }
+
     const { campaignId, subject, bodyHtml, fromAddress, fromName, emails } = await readBody(event);
     
     if (!subject || !bodyHtml || !fromAddress || !fromName) {
