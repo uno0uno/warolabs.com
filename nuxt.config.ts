@@ -1,6 +1,9 @@
 
 export default defineNuxtConfig({
   ssr: true,
+  devServer: {
+    port: 4000
+  },
   nitro: {
     preset: 'node-server'
   },
@@ -12,7 +15,7 @@ export default defineNuxtConfig({
     dbPassword: process.env.NUXT_PRIVATE_DB_PASSWORD || '',
     dbPort: process.env.NUXT_PRIVATE_DB_PORT ? Number(process.env.NUXT_PRIVATE_DB_PORT) : 5432,
     awsAccessKeyId: process.env.NUXT_PRIVATE_AWS_ACCES_KEY_ID || '',
-    awsSecretAccessKey: process.env.NUXT_PRIVATE_AWS_SECRET_ACCESS_KEY|| '',
+    awsSecretAccessKey: process.env.NUXT_PRIVATE_AWS_SECRET_ACCESS_KEY || '',
     awsRegion: process.env.NUXT_PRIVATE_AWS_REGION || '',
     emailFrom: process.env.NUXT_PRIVATE_EMAIL_FROM || '',
     jwtSecret: process.env.NUXT_PRIVATE_JWT_SECRET || '',

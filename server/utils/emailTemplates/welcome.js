@@ -9,13 +9,11 @@ import { withPostgresClient } from '../basedataSettings/withPostgresClient';
  * @param {string} params.campaignUuid - The UUID of the campaign to fetch the template from.
  * @param {string} params.name - The name of the new lead to insert into the template.
  * @param {string} params.verificationToken - The unique token for verification.
- * @param {string} params.baseUrl - The base URL of the site.
  * @returns {Promise<{html: string, subject: string, sender: string, profileUserName: string, enterprise: string}|null>} - An object with the email and profile details, or null on error.
  */
-export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken, baseUrl }) => {
-  const verificationLink = `${baseUrl}api/marketing/verify-lead?token=${verificationToken}`;
-
+export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken, host }) => {
   try {
+
     let emailAndProfileData = null;
 
     const query = `
@@ -24,7 +22,8 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
           t.subject_template,
           t.sender_email,
           p.user_name AS profile_user_name,
-          p.enterprise
+          p.enterprise,
+          p.website
       FROM
           public.campaign AS c
       JOIN
@@ -55,6 +54,11 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
       return null;
     }
 
+    const baseUrl = emailAndProfileData.website;
+    const verificationLink = `${baseUrl}/api/marketing/verify-lead?token=${verificationToken}`;
+
+    console.log('Generated verification link:', verificationLink);
+
     let finalHtml = emailAndProfileData.content.replace(/\${name}/g, name);
     finalHtml = finalHtml.replace(/\${verificationLink}/g, verificationLink);
 
@@ -63,11 +67,11 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
       subject: emailAndProfileData.subject_template,
       sender: emailAndProfileData.sender_email,
       profileUserName: emailAndProfileData.profile_user_name,
-      enterprise: emailAndProfileData.enterprise
+      enterprise: emailAndProfileData.enterprise,
     };
 
   } catch (error) {
-        console.error('Error fetching welcome template and profile data from database:', error);
+    console.error('Error fetching welcome template and profile data from database:', error);
     return null;
   }
 };

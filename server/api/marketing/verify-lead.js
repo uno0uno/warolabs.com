@@ -1,47 +1,54 @@
-// server/api/marketing/verify-lead.js
-
 import { createClient } from '../../utils/basedataSettings/postgresConnection';
 import { postgresErrorDictionary } from '../../utils/basedataSettings/postgresErrorMap';
 
 export default defineEventHandler(async (event) => {
     
-    const {  public: { baseUrl } } = useRuntimeConfig();
-    
     const query = getQuery(event);
     const token = query.token;
 
     if (!token || typeof token !== 'string') {
-        // Redirige a una página de error si no hay token
-        await sendRedirect(event, `${baseUrl}verification-failed?error=invalid_token`, 302);
+        await sendRedirect(event, `/verification-failed?error=invalid_token`, 302);
         return;
     }
 
     const client = createClient();
+    let baseUrl = '';
+
     try {
         await client.connect();
-
-        // Actualiza el lead, lo marca como verificado y elimina el token para que no se pueda volver a usar.
         const result = await client.query(
-            `UPDATE public.leads 
+            `UPDATE public.leads l
              SET is_verified = true, verification_token = NULL 
-             WHERE verification_token = $1 AND is_verified = false
-             RETURNING id`,
+             FROM public.profile p
+             WHERE l.verification_token = $1 AND l.is_verified = false AND l.profile_id = p.id
+             RETURNING p.website`,
             [token]
         );
         
-        // Si una fila fue afectada, la verificación fue exitosa.
         if (result.rowCount > 0) {
-            // Redirige al usuario a una página de éxito
-            await sendRedirect(event, `${baseUrl}verification-success`, 302);
+            baseUrl = result.rows[0].website;
+            await sendRedirect(event, `${baseUrl}/verification-success`, 302);
         } else {
-            // El token no es válido o ya fue usado.
-            await sendRedirect(event, `${baseUrl}verification-failed?error=expired_link`, 302);
+            const websiteResult = await client.query(
+                `SELECT p.website
+                 FROM public.leads l
+                 JOIN public.profile p ON l.profile_id = p.id
+                 WHERE l.verification_token = $1`,
+                [token]
+            );
+
+            if (websiteResult.rowCount > 0) {
+                baseUrl = websiteResult.rows[0].website;
+                await sendRedirect(event, `${baseUrl}/verification-failed?error=expired_link`, 302);
+            } else {
+                await sendRedirect(event, `/verification-failed?error=expired_link`, 302);
+            }
         }
 
     } catch (error) {
         console.error('Error during email verification:', error);
-        // En caso de error de servidor, redirige a una página de error genérica.
-        await sendRedirect(event, `${baseUrl}verification-failed?error=server_error`, 302);
+        const fallbackUrl = baseUrl ? `${baseUrl}/verification-failed?error=server_error` : `/verification-failed?error=server_error`;
+        await sendRedirect(event, fallbackUrl, 302);
     } finally {
         if (client) {
             await client.end();

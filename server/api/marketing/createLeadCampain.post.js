@@ -1,3 +1,5 @@
+// server/api/marketing/createLeadCampain.js
+
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
 import { verifyAuthToken } from '../../utils/security/jwtVerifier';
 import { sendEmail } from '../../utils/aws/sesClient'; 
@@ -107,11 +109,13 @@ export default defineEventHandler(async (event) => {
 
                 const { public: { baseUrl } } = useRuntimeConfig();
 
+                const host = event.node?.req?.headers?.host || event.req?.headers?.host;
+                
                 const emailDetails = await getWelcomeTemplate({
                     campaignUuid: campaignId,
                     name: profileName || 'new member',
                     verificationToken,
-                    baseUrl
+                    host
                 });
 
                 if (emailDetails) {
