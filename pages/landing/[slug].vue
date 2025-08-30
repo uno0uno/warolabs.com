@@ -1,11 +1,5 @@
 <script setup>
 import { storeToRefs } from "pinia";
-import { computed, watch, ref } from 'vue';
-import { useRoute, useCookie, useAsyncData } from '#imports';
-
-import LandingsTheHeroSectionLeftRight from '~/components/Landings/TheHeroSectionLeftRight.vue';
-import LandingsTheLeadForm from '~/components/Landings/TheLeadForm.vue';
-
 import { useGlobalData } from '../../store/useGlobalData';
 
 const globalData = useGlobalData();
@@ -53,34 +47,19 @@ watch(pending, (newPending) => {
         globalLoading.value = true;
     }
 });
-
-const processedSections = computed(() => {
-    if (!landingData.value || !landingData.value.sections) {
-        return [];
-    }
-    return landingData.value.sections.map(section => {
-        return {
-            ...section,
-            props: {
-                ...section.props,
-                campaignId: landingData.value.campaignId
-            }
-        };
-    });
-});
-
-const components = {
-    LandingsTheHeroSectionLeftRight,
-    LandingsTheLeadForm
-};
 </script>
 
 <template>
     <div v-show="!globalLoading" class="w-full flex items-center justify-center h-full">
         <div class="text-center flex flex-col items-center w-full h-full justify-center gap-4 px-0 lg:min-w-[48rem] max-w-6xl lg:px-12 relative z-0 bg-slate-50">
-            <div v-for="(section, index) in processedSections" :key="index">
-                <component :is="components[section.component]" v-bind="section.props" />
-            </div>
+            <LandingsTheHeroSectionLeftRight 
+                v-if="landingData"
+                :title="landingData.title"
+                :description="landingData.description"
+                :media-type="landingData.image.type"
+                :media-src="landingData.image.content"
+                :campaign-id="landingData.campaignId"
+            />
         </div>
     </div>
     

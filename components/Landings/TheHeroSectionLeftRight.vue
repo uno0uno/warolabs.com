@@ -1,4 +1,4 @@
-
+<!-- // components/Landings/TheHeroSectionLeftRight.vue -->
 <script setup>
 import { ref, toRefs } from 'vue';
 

@@ -1,3 +1,5 @@
+
+<!-- // components/Landings/TheLeadForm.vue -->
 <script setup>
 import { ref, computed, watch, onMounted, toRefs } from "vue";
 import { storeToRefs } from "pinia";
