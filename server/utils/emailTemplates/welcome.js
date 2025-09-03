@@ -42,7 +42,6 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
 
     await withPostgresClient(async (client) => {
       const result = await client.query(query, [campaignUuid]);
-      console.log('Welcome template query result:', result.rows);
       if (result.rows.length > 0) {
         emailAndProfileData = result.rows[0];
       }
