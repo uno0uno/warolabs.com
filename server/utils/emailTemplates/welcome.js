@@ -1,5 +1,3 @@
-// server/utils/emailTemplates/welcome.js
-
 import { withPostgresClient } from '../basedataSettings/withPostgresClient';
 
 /**
@@ -44,6 +42,7 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
 
     await withPostgresClient(async (client) => {
       const result = await client.query(query, [campaignUuid]);
+      console.log('Welcome template query result:', result.rows);
       if (result.rows.length > 0) {
         emailAndProfileData = result.rows[0];
       }
@@ -55,9 +54,7 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
     }
 
     const baseUrl = emailAndProfileData.website;
-    const verificationLink = `${baseUrl}/api/marketing/verify-lead?token=${verificationToken}`;
-
-    console.log('Generated verification link:', verificationLink);
+    const verificationLink = `${baseUrl}/api/marketing/verify-lead?token=${verificationToken}&campaignId=${campaignUuid}`;
 
     let finalHtml = emailAndProfileData.content.replace(/\${name}/g, name);
     finalHtml = finalHtml.replace(/\${verificationLink}/g, verificationLink);

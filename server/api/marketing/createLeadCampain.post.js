@@ -28,6 +28,7 @@ export default defineEventHandler(async (event) => {
     try {
         campaignId = decryptWithPrivateKey(encryptedCampaignId);
         leadEmail = decryptWithPrivateKey(encryptedLeadEmail);
+
     } catch (error) {
         throw error;
     }
@@ -62,7 +63,7 @@ export default defineEventHandler(async (event) => {
                     t.association_status
                 FROM public.manage_lead_and_campaign_association($1::UUID, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::VARCHAR, $6::VARCHAR, $7::INTEGER, $8::TEXT) AS t;
             `; 
-            const values = [campaignId, leadEmail, leadSource, profileName, profilePhoneNumber, profilePhoneCountryCode, profileNationalityId, verificationToken]; // MODIFICACIÓN: Se añadió profilePhoneCountryCode
+            const values = [campaignId, leadEmail, leadSource, profileName, profilePhoneNumber, profilePhoneCountryCode, profileNationalityId, verificationToken];
             const result = await client.query(query, values);
 
             return {
@@ -101,42 +102,35 @@ export default defineEventHandler(async (event) => {
         setResponseStatus(event, 201);
         responsePayload.message = 'Lead successfully associated with campaign.';
 
-        if (
-            associationStatus.includes('lead_created') ||
-            associationStatus.includes('profile_existing_lead_existing_association_created')
-        ) {
-            try {
+        try {
+            const { public: { baseUrl } } = useRuntimeConfig();
+            const host = event.node?.req?.headers?.host || event.req?.headers?.host;
+            
+            const emailDetails = await getWelcomeTemplate({
+                campaignUuid: campaignId,
+                name: profileName || 'new member',
+                verificationToken,
+                host
+            });
 
-                const { public: { baseUrl } } = useRuntimeConfig();
+            if (emailDetails) {
+                const fromName = `${emailDetails.profileUserName} de ${emailDetails.enterprise}`;
 
-                const host = event.node?.req?.headers?.host || event.req?.headers?.host;
-                
-                const emailDetails = await getWelcomeTemplate({
-                    campaignUuid: campaignId,
-                    name: profileName || 'new member',
-                    verificationToken,
-                    host
+                await sendEmail({
+                    fromName: fromName,
+                    fromEmailAddress: emailDetails.sender,
+                    toEmailAddresses: [leadEmail],
+                    subject: emailDetails.subject,
+                    bodyHtml: emailDetails.html
                 });
 
-                if (emailDetails) {
-                    const fromName = `${emailDetails.profileUserName} de ${emailDetails.enterprise}`;
+                console.log(`Verification email sent to ${leadEmail} from "${fromName} <${emailDetails.sender}>"`);
 
-                    await sendEmail({
-                        fromName: fromName,
-                        fromEmailAddress: emailDetails.sender,
-                        toEmailAddresses: [leadEmail],
-                        subject: emailDetails.subject,
-                        bodyHtml: emailDetails.html
-                    });
-
-                    console.log(`Verification email sent to ${leadEmail} from "${fromName} <${emailDetails.sender}>"`);
-
-                } else {
-                    console.warn(`Could not send welcome email to ${leadEmail} because the template details could not be generated.`);
-                }
-            } catch (emailError) {
-                console.error('Failed to send welcome email:', emailError);
+            } else {
+                console.warn(`Could not send welcome email to ${leadEmail} because the template details could not be generated.`);
             }
+        } catch (emailError) {
+            console.error('Failed to send welcome email:', emailError);
         }
         return responsePayload;
 

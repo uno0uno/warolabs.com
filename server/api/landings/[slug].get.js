@@ -24,6 +24,8 @@ export default defineEventHandler(async (event) => {
     try {
         let landingPageData = null;
 
+        console.log(`Fetching landing page for slug: ${slug}`);
+
         await withPostgresClient(async (client) => {
             const query = `
                 SELECT
@@ -50,7 +52,7 @@ export default defineEventHandler(async (event) => {
             `;
 
             const result = await client.query(query, [slug]);
-
+            
             if (result.rows.length > 0) {
                 const row = result.rows[0];
                 const contentJson = JSON.parse(row.template_content);
