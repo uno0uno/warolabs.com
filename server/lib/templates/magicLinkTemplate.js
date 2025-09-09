@@ -1,3 +1,10 @@
+/**
+ * Generates the magic link email template
+ * @param {string} url - The magic link URL
+ * @returns {string} - HTML template
+ */
+export function getMagicLinkTemplate(url) {
+  return `
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,13 +14,13 @@
 </head>
 <body style="font-family: Arial, sans-serif; color: black; margin: 0; padding: 0; text-align: left;">
     <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-        <p>¡Hola {{name}}!</p>
+        <p>¡Hola!</p>
         
-        <p>Has solicitado acceso a tu cuenta en Warolabs. Haz clic en el siguiente enlace para ingresar:</p>
+        <p>Has solicitado acceso a tu cuenta en Warolabs. Haz clic en el siguiente enlace para ingresar de forma segura:</p>
         
-        <p><a href="{{magicLink}}" style="color: black;">{{magicLink}}</a></p>
+        <p><a href="${url}" style="color: black; background-color: #f0f0f0; padding: 10px; border-radius: 4px; text-decoration: none; display: inline-block;">🔑 Acceder a mi cuenta</a></p>
         
-        <p>Este enlace es válido por 1 hora y solo puede ser usado una vez.</p>
+        <p>Este enlace es válido por 10 minutos y solo puede ser usado una vez.</p>
         
         <p>Si no solicitaste este enlace, puedes ignorar este correo de forma segura.</p>
         
@@ -31,3 +38,5 @@
     </div>
 </body>
 </html>
+  `.trim();
+}
