@@ -1,3 +1,5 @@
+// server/utils/aws/sesClient.js
+
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 
 /**

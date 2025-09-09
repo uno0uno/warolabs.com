@@ -1,120 +1,113 @@
-import { defineEventHandler, readBody } from 'h3';
-import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { sendEmail } from '../../utils/aws/sesClient';
-
-// Función de renderizado genérica
-const renderTemplate = (template, data) => {
-  if (!template) {
-    return '';
-  }
-  return template.replace(/\{\{([a-zA-Z0-9\p{L}_ ]+)\}\}/gu, (match, key) => {
-    const trimmedKey = key.trim();
-    const value = data[trimmedKey];
-    return value !== null && value !== undefined ? value : '';
-  });
-};
+import { withPostgresClient } from '~/server/utils/basedataSettings/withPostgresClient';
+import { injectTracking } from '~/server/utils/tracking';
+import { sendEmail } from '~/server/utils/aws/sesClient';
+import { verifyAuthToken } from '../../utils/security/jwtVerifier';
 
 export default defineEventHandler(async (event) => {
-  const sentEmails = [];
-  const failedEmails = [];
+  console.log('API de envío de campaña llamada.');
+  const { campaignId, emails, subject, bodyHtml } = await readBody(event);
+  const config = useRuntimeConfig();
+  const { baseUrl } = config.public;
+
+  if (!campaignId) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'El ID de la campaña es inválido.',
+    });
+  }
+
+  try {
+      await verifyAuthToken(event);
+  } catch (error) {
+      throw error;
+  }
 
   try {
 
+    let leadsToSend;
+    let campaignExists = false;
 
-    try {
-        await verifyAuthToken(event);
-    } catch (error) {
-        throw error;
-    }
-
-    const { campaignId, subject, bodyHtml, fromAddress, fromName, emails } = await readBody(event);
-    
-    if (!subject || !bodyHtml || !fromAddress || !fromName) {
-      throw new Error('Subject, bodyHtml, fromAddress, and fromName are required in the request body.');
-    }
-
-    const result = await withPostgresClient(async (client) => {
-      let params = [];
-      let whereClauses = ["p.phone_number != '0'"];
-      
-      let query = `
-        SELECT 
-            p.email, 
-            split_part(p.name, ' ', 1) as first_name,
-            COALESCE(c.name, 'Emails seleccionados') as campaign_name
-        FROM public.profile p
-        JOIN public.leads l ON p.id = l.profile_id
-        LEFT JOIN public.campaign_leads cl ON cl.lead_id = l.id
-        LEFT JOIN public.campaign c ON cl.campaign_id = c.id
-      `;
-
-      if (campaignId) {
-        params.push(campaignId);
-        whereClauses.push(`cl.campaign_id = $${params.length}::uuid`);
-      }
-      
-      if (emails && emails.length > 0) {
-        params.push(emails);
-        whereClauses.push(`p.email = ANY($${params.length}::text[])`);
-      }
-
-      // Si no hay filtros, no se agrega la cláusula WHERE.
-      if (whereClauses.length > 0) {
-        query += ` WHERE ${whereClauses.join(' AND ')}`;
-      }
-
-      query += ` ORDER BY p.created_at DESC;`;
-
-      return await client.query(query, params);
+    // Verificar si la campaña existe en la base de datos
+    console.log(`Verificando la existencia de la campaña con ID: ${campaignId}`);
+    await withPostgresClient(async (client) => {
+      const result = await client.query('SELECT 1 FROM campaign WHERE id = $1', [campaignId]);
+      campaignExists = result.rows.length > 0;
     });
 
-    const leads = result.rows;
-    if (leads.length === 0) {
-      return { success: true, message: 'No leads found.' };
+    if (!campaignExists) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Campaña no encontrada.',
+      });
     }
 
-    for (const lead of leads) {
-      const data = {
-        'nombre': lead.first_name,
-        'correo': lead.email,
-        'nombre_campana': lead.campaign_name,
-      };
+    // Determinar a qué leads enviar el correo electrónico
+    if (emails && Array.isArray(emails) && emails.length > 0) {
+      console.log(`Se encontraron emails en la solicitud. Buscando leads con los emails proporcionados: ${emails.join(', ')}`);
+      leadsToSend = await withPostgresClient(async (client) => {
+        // Consulta para obtener leads con id y email para los correos electrónicos proporcionados
+        const result = await client.query(`
+          SELECT 
+            l.id, 
+            p.email 
+          FROM leads l
+          JOIN profile p ON l.profile_id = p.id
+          WHERE p.email = ANY($1::text[])
+        `, [emails]);
+        return result.rows;
+      });
+    } else {
+      console.log('No se encontraron emails en la solicitud. Obteniendo todos los leads de la campaña.');
+      // Si no se proporcionan correos, obtener todos los leads asociados con la campaña
+      leadsToSend = await withPostgresClient(async (client) => {
+        // La tabla 'campaign_leads' relaciona leads con campañas.
+        const result = await client.query(`
+          SELECT 
+            l.id, 
+            p.email
+          FROM leads l
+          JOIN campaign_leads cl ON l.id = cl.lead_id
+          JOIN profile p ON l.profile_id = p.id
+          WHERE cl.campaign_id = $1
+        `, [campaignId]);
+        return result.rows;
+      });
+    }
 
-      const finalSubject = renderTemplate(subject, data);
-      const finalBodyHtml = renderTemplate(bodyHtml, data);
+    if (!leadsToSend || leadsToSend.length === 0) {
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'No se encontraron leads para esta campaña o los emails proporcionados no existen.',
+      });
+    }
+    
+    console.log(`Se encontraron ${leadsToSend.length} leads para enviar la campaña.`);
 
-      const emailParams = {
-        fromEmailAddress: fromAddress,
-        fromName: fromName,
+    // Utilizar el subject y bodyHtml del cuerpo de la solicitud
+    const emailSubject = subject || 'Asunto no disponible';
+    const emailBody = bodyHtml || '<p>Este es el cuerpo de tu campaña.</p>';
+
+    for (const lead of leadsToSend) {
+      const trackedHtmlBody = injectTracking(emailBody, lead.id, campaignId, baseUrl);
+
+      console.log(trackedHtmlBody)
+      
+      console.log(`Enviando correo a ${lead.email} para el lead ID: ${lead.id}`);
+      await sendEmail({
+        fromEmailAddress: config.emailFrom,
         toEmailAddresses: [lead.email],
-        subject: finalSubject,
-        bodyHtml: finalBodyHtml,
-      };
-
-      console.log(`Sending email to: ${lead.email}`);
-
-      try {
-        await sendEmail(emailParams);
-        sentEmails.push(lead.email);
-      } catch (emailError) {
-        console.error(`Error sending email to ${lead.email}:`, emailError);
-        failedEmails.push({ email: lead.email, error: emailError.message });
-      }
+        subject: emailSubject,
+        bodyHtml: trackedHtmlBody,
+      });
     }
 
-    return {
-      success: true,
-      message: `Emails sent successfully: ${sentEmails.length}. Emails failed: ${failedEmails.length}.`,
-      sent: sentEmails,
-      failed: failedEmails
-    };
-
+    console.log('Proceso de envío de campaña finalizado exitosamente.');
+    return { success: true, message: 'Campaña enviada exitosamente.' };
   } catch (error) {
-    return {
-      success: false,
-      message: error.message,
-      sent: sentEmails,
-      failed: failedEmails
-    };
+    console.error('Error al enviar la campaña:', error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Error interno del servidor al enviar la campaña.',
+    });
   }
 });

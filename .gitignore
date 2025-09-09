@@ -15,6 +15,10 @@ docker-compose.override.yml
 logs
 *.log
 
+#base data
+BASE_DATA_WAROLABS.txt
+check-tables.js
+
 # Misc
 .DS_Store
 .fleet
