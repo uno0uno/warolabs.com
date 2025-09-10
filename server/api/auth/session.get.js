@@ -15,13 +15,14 @@ export default defineEventHandler(async (event) => {
     console.log(`🔍 Checking session: ${sessionToken.substring(0, 8)}...`);
     
     const result = await withPostgresClient(async (client) => {
-      // Find valid session
+      // Find valid session with analytics tracking
       const sessionQuery = `
         SELECT s.*, p.id as user_id, p.email, p.name, p.created_at as user_created_at
         FROM sessions s
         JOIN profile p ON s.user_id = p.id
         WHERE s.id = $1 
           AND s.expires_at > NOW()
+          AND s.is_active = true
         LIMIT 1
       `;
       const sessionResult = await client.query(sessionQuery, [sessionToken]);
@@ -39,6 +40,13 @@ export default defineEventHandler(async (event) => {
       const session = sessionResult.rows[0];
       console.log(`✅ Valid session found for user: ${session.user_id}`);
       
+      // Update last activity for analytics tracking
+      await client.query(
+        'UPDATE sessions SET last_activity_at = NOW() WHERE id = $1',
+        [sessionToken]
+      );
+      console.log(`📊 Session activity updated for analytics`);
+      
       return {
         user: {
           id: session.user_id,
@@ -47,7 +55,11 @@ export default defineEventHandler(async (event) => {
           createdAt: session.user_created_at
         },
         session: {
-          expiresAt: session.expires_at
+          expiresAt: session.expires_at,
+          createdAt: session.created_at,
+          lastActivity: session.last_activity_at,
+          ipAddress: session.ip_address,
+          loginMethod: session.login_method
         }
       };
     }, event);

@@ -49,13 +49,16 @@ export default defineEventHandler(async (event) => {
         console.log(`👤 User found with ID: ${userId}`);
       }
       
-      // Clean old magic tokens for this user
-      await client.query('DELETE FROM magic_tokens WHERE user_id = $1', [userId]);
+      // Mark old unused magic tokens as expired for this user (analytics preserved)
+      await client.query(
+        'UPDATE magic_tokens SET used = true, used_at = NOW() WHERE user_id = $1 AND used = false', 
+        [userId]
+      );
       
-      // Save magic token to database
+      // Save new magic token to database with analytics fields
       const insertTokenQuery = `
-        INSERT INTO magic_tokens (user_id, token, expires_at) 
-        VALUES ($1, $2, $3)
+        INSERT INTO magic_tokens (user_id, token, expires_at, used, created_at, used_at) 
+        VALUES ($1, $2, $3, false, NOW(), NULL)
       `;
       await client.query(insertTokenQuery, [userId, token, expiresAt]);
       console.log(`🔑 Magic token saved for user: ${userId}`);

@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     console.log(`🔍 Verifying magic link - Email: ${email}, Token: ${token.substring(0, 8)}...`);
     
     const result = await withPostgresClient(async (client) => {
-      // Find valid magic token
+      // Find valid unused magic token (with analytics support)
       const tokenQuery = `
         SELECT mt.*, p.id as user_id, p.email, p.name
         FROM magic_tokens mt
@@ -25,6 +25,7 @@ export default defineEventHandler(async (event) => {
         WHERE mt.token = $1 
           AND p.email = $2 
           AND mt.expires_at > NOW()
+          AND mt.used = false
         LIMIT 1
       `;
       const tokenResult = await client.query(tokenQuery, [token, email]);
@@ -40,21 +41,34 @@ export default defineEventHandler(async (event) => {
       const user = tokenResult.rows[0];
       console.log(`✅ Valid token found for user: ${user.user_id}`);
       
-      // Delete used magic token
-      await client.query('DELETE FROM magic_tokens WHERE token = $1', [token]);
-      console.log(`🗑️ Magic token deleted`);
+      // Mark magic token as used (preserves for analytics)
+      await client.query(
+        'UPDATE magic_tokens SET used = true, used_at = NOW() WHERE token = $1', 
+        [token]
+      );
+      console.log(`✅ Magic token marked as used`);
       
-      // Create session
+      // Create session with analytics tracking
       const sessionId = crypto.randomBytes(16).toString('hex');
       const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
       
+      // Get client info for analytics
+      const clientIP = getClientIP(event) || null;
+      const userAgent = getHeader(event, 'user-agent') || null;
+      
       const sessionQuery = `
-        INSERT INTO sessions (id, user_id, expires_at)
-        VALUES ($1, $2, $3)
+        INSERT INTO sessions (
+          id, user_id, expires_at, 
+          created_at, last_activity_at, 
+          ip_address, user_agent, login_method, is_active
+        )
+        VALUES ($1, $2, $3, NOW(), NOW(), $4, $5, 'magic_link', true)
         RETURNING id
       `;
-      const sessionResult = await client.query(sessionQuery, [sessionId, user.user_id, expiresAt]);
-      console.log(`🎫 Session created with ID: ${sessionResult.rows[0].id}`);
+      const sessionResult = await client.query(sessionQuery, [
+        sessionId, user.user_id, expiresAt, clientIP, userAgent
+      ]);
+      console.log(`🎫 Session created with ID: ${sessionResult.rows[0].id}, IP: ${clientIP}`);
       
       return {
         sessionToken: sessionId,

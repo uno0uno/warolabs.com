@@ -16,9 +16,12 @@ export default defineEventHandler(async (event) => {
     console.log(`🚪 Signing out session: ${sessionToken.substring(0, 8)}...`);
     
     await withPostgresClient(async (client) => {
-      // Delete session from database
-      await client.query('DELETE FROM sessions WHERE id = $1', [sessionToken]);
-      console.log(`🗑️ Session deleted from database`);
+      // Mark session as ended for analytics (don't delete)
+      await client.query(
+        'UPDATE sessions SET is_active = false, ended_at = NOW(), end_reason = $1 WHERE id = $2',
+        ['logout', sessionToken]
+      );
+      console.log(`📊 Session marked as ended with logout reason for analytics`);
     }, event);
     
     // Clear session cookie
