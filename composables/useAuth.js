@@ -1,5 +1,3 @@
-import { authClient } from '~/lib/auth-client'
-
 export const useAuth = () => {
   const user = ref(null)
   const isAuthenticated = computed(() => !!user.value)
@@ -9,10 +7,15 @@ export const useAuth = () => {
   const getSession = async () => {
     try {
       loading.value = true
-      const session = await authClient.getSession()
+      const session = await $fetch('/api/auth/session')
       user.value = session?.user || null
       return session
     } catch (error) {
+      // Si hay error 401, significa que no hay sesión válida
+      if (error.statusCode === 401) {
+        user.value = null
+        return null
+      }
       console.error('Error getting session:', error)
       user.value = null
       return null
@@ -24,8 +27,11 @@ export const useAuth = () => {
   // Login con magic link
   const login = async (email) => {
     try {
-      await authClient.signIn.magicLink({ email })
-      return { success: true }
+      const response = await $fetch('/api/auth/sign-in-magic-link', {
+        method: 'POST',
+        body: { email }
+      })
+      return { success: true, message: response.message }
     } catch (error) {
       console.error('Login error:', error)
       return { 
@@ -38,7 +44,7 @@ export const useAuth = () => {
   // Logout
   const logout = async () => {
     try {
-      await authClient.signOut()
+      await $fetch('/api/auth/signout', { method: 'POST' })
       user.value = null
       await navigateTo('/auth/logout')
       return { success: true }

@@ -77,7 +77,6 @@
 </template>
 
 <script setup>
-import { authClient } from '~/lib/auth-client'
 
 const email = ref('')
 const loading = ref(false)
