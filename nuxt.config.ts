@@ -41,8 +41,15 @@ export default defineNuxtConfig({
     }
   },
   modules: [
+    '@pinia/nuxt',
+    '@nuxtjs/color-mode',
     '@nuxtjs/robots'
   ],
+  colorMode: {
+    preference: 'dark',
+    fallback: 'dark',
+    classSuffix: ''
+  },
   site: {
     url: 'https://warolabs.com'
   },

@@ -12,8 +12,13 @@
     </DropdownMenuTrigger>
     
     <DropdownMenuContent
-      class="z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
-      :side-offset="4"
+      class="z-[9999] min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md"
+      :side="side"
+      :side-offset="sideOffset"
+      :align="align"
+      :align-offset="alignOffset"
+      :avoid-collisions="false"
+      :collision-padding="0"
     >
       <slot>
         <DropdownMenuItem class="relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
@@ -41,6 +46,25 @@ import {
   DropdownMenuSeparator
 } from 'radix-vue'
 import { ChevronDownIcon } from 'lucide-vue-next'
+
+const props = defineProps({
+  side: {
+    type: String,
+    default: 'bottom'
+  },
+  sideOffset: {
+    type: Number,
+    default: 4
+  },
+  align: {
+    type: String,
+    default: 'center'
+  },
+  alignOffset: {
+    type: Number,
+    default: 0
+  }
+})
 
 const open = ref(false)
 </script>
