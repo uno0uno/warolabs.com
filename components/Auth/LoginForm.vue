@@ -1,13 +1,21 @@
 <template>
   <div class="mx-auto max-w-sm space-y-6">
-    <div class="space-y-2 text-center">
-      <h1 class="text-3xl font-bold">Iniciar Sesión</h1>
-      <p class="text-muted-foreground">
-        Ingresa tu email para acceder a Warolabs
-      </p>
+    <!-- Verificando sesión existente -->
+    <div v-if="checkingSession" class="text-center space-y-4">
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+      <p class="text-muted-foreground">Verificando sesión...</p>
     </div>
 
-    <form @submit.prevent="handleSubmit" class="space-y-4">
+    <!-- Formulario de login -->
+    <template v-else>
+      <div class="space-y-2 text-center">
+        <h1 class="text-3xl font-bold">Iniciar Sesión</h1>
+        <p class="text-muted-foreground">
+          Ingresa tu email para acceder a Warolabs
+        </p>
+      </div>
+
+      <form @submit.prevent="handleSubmit" class="space-y-4">
       <div class="space-y-2">
         <label for="email" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
           Email
@@ -70,9 +78,10 @@
       </div>
     </div>
 
-    <div class="text-center text-sm text-muted-foreground">
-      ¿No tienes cuenta? Se creará automáticamente al iniciar sesión.
-    </div>
+      <div class="text-center text-sm text-muted-foreground">
+        ¿No tienes cuenta? Se creará automáticamente al iniciar sesión.
+      </div>
+    </template>
   </div>
 </template>
 
@@ -82,6 +91,28 @@ const email = ref('')
 const loading = ref(false)
 const success = ref(false)
 const error = ref('')
+const checkingSession = ref(true)
+
+// Verificar si ya hay sesión al cargar el componente
+onMounted(async () => {
+  try {
+    const session = await $fetch('/api/auth/session')
+    if (session?.success && session?.user) {
+      console.log('✅ User already authenticated, redirecting...')
+      
+      // Redirigir a la URL original si existe, sino al dashboard
+      const route = useRoute()
+      const redirectUrl = route.query.redirect || '/dashboard'
+      await navigateTo(redirectUrl)
+      return
+    }
+  } catch (error) {
+    // No hay sesión válida, mostrar formulario
+    console.log('ℹ️ No active session found, showing login form')
+  } finally {
+    checkingSession.value = false
+  }
+})
 
 async function handleSubmit() {
   if (!email.value) return

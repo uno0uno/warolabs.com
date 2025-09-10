@@ -50,8 +50,6 @@
 </template>
 
 <script setup>
-import { authClient } from '~/lib/auth-client'
-
 definePageMeta({
   layout: 'landingv2'
 });
@@ -68,17 +66,30 @@ async function verifyMagicLink() {
     verifying.value = true
     error.value = ''
     
-    // Better Auth maneja automáticamente los query parameters del magic link
-    const session = await authClient.getSession()
+    const token = route.query.token
+    const email = route.query.email
     
-    if (session) {
+    if (!token || !email) {
+      throw new Error('Magic link inválido - faltan parámetros requeridos.')
+    }
+    
+    // Verificar el magic link usando el endpoint directo
+    const response = await $fetch('/api/auth/verify', {
+      method: 'POST',
+      body: { token, email }
+    })
+    
+    if (response.success) {
       success.value = true
-      // Redirigir al dashboard después de 2 segundos
+      console.log('✅ Magic link verified successfully, user:', response.user)
+      
+      // Esperar un poco más para asegurar que la cookie se establezca
       setTimeout(() => {
+        console.log('🚀 Redirecting to dashboard...')
         router.push('/dashboard')
-      }, 2000)
+      }, 2500)
     } else {
-      throw new Error('No se pudo establecer la sesión')
+      throw new Error(response.message || 'No se pudo verificar el magic link')
     }
     
   } catch (err) {

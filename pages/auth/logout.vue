@@ -37,8 +37,6 @@
 </template>
 
 <script setup>
-import { authClient } from '~/lib/auth-client'
-
 definePageMeta({
   layout: 'landingv2'
 });
@@ -48,10 +46,10 @@ const loggingOut = ref(true)
 
 async function handleLogout() {
   try {
-    await authClient.signOut()
-    console.log('Logout successful')
+    await $fetch('/api/auth/signout', { method: 'POST' })
+    console.log('✅ Logout successful')
   } catch (err) {
-    console.error('Logout error:', err)
+    console.error('❌ Logout error:', err)
     // Continuar con logout local aunque falle el servidor
   } finally {
     loggingOut.value = false

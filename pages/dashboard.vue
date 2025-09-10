@@ -65,9 +65,10 @@
 </template>
 
 <script setup>
-definePageMeta({
-  layout: 'landingv2',
-});
+
+ definePageMeta({
+    layout: 'dashboard'
+  });
 
 const { user, logout, getSession, loading } = useAuth()
 
