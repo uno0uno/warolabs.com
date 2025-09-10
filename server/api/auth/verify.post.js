@@ -1,4 +1,4 @@
-import { createError } from 'h3';
+import { createError, getHeader } from 'h3';
 import { withPostgresClient } from '~/server/utils/basedataSettings/withPostgresClient';
 import crypto from 'crypto';
 
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
       const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
       
       // Get client info for analytics
-      const clientIP = getClientIP(event) || null;
+      const clientIP = getHeader(event, 'x-forwarded-for') || event.node.req.socket.remoteAddress || null;
       const userAgent = getHeader(event, 'user-agent') || null;
       
       const sessionQuery = `
