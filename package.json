@@ -2,8 +2,8 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "db:migrate": "dotenv -e .env -- npx drizzle-kit migrate",
-    "db:generate": "dotenv -e .env -- npx drizzle-kit generate",
+    "db:migrate-scripts": "dotenv -e .env -- node scripts/run-migrations.js",
+    "db:update-docs": "dotenv -e .env -- node scripts/update-schema-docs.js",
     "check-db-url": "node_modules/.bin/dotenv -e .env -- node -e 'console.log(process.env.DATABASE_URL)'",
     "build": "nuxt build",
     "dev": "nuxt dev",
