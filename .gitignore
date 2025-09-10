@@ -17,12 +17,18 @@ logs
 
 #base data
 BASE_DATA_WAROLABS.txt
-check-tables.js
+
+# Database schema files (for development use)
+temp-db-schema.js
+server/api/temp/
 
 # Misc
 .DS_Store
 .fleet
 .idea
+
+# Test pages (development only)
+pages/test-auth.vue
 
 # Local env files
 .env
