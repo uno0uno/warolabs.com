@@ -6,16 +6,20 @@
  * @param {string} leadId - The ID of the lead.
  * @param {string} campaignId - The ID of the campaign.
  * @param {string} baseUrl - The base URL of the site (e.g., https://warolabs.com).
+ * @param {string} emailSendId - The ID of the email send record.
  * @returns {string} The modified HTML.
  */
-export function injectTracking(htmlContent, leadId, campaignId, baseUrl) {
+export function injectTracking(htmlContent, leadId, campaignId, baseUrl, emailSendId = null) {
   // Ensure that the content is a string
   if (typeof htmlContent !== 'string') {
     htmlContent = '';
   }
 
   // 1. Inject the open tracking pixel
-  const pixelUrl = `${baseUrl}api/tracking/open?leadId=${leadId}&campaignId=${campaignId}`;
+  let pixelUrl = `${baseUrl}api/tracking/open?leadId=${leadId}&campaignId=${campaignId}`;
+  if (emailSendId) {
+    pixelUrl += `&emailSendId=${emailSendId}`;
+  }
   const pixelImg = `<img src="${pixelUrl}" width="1" height="1" alt="" style="display:none;"/>`;
   
   let modifiedHtml;
@@ -36,7 +40,10 @@ export function injectTracking(htmlContent, leadId, campaignId, baseUrl) {
     }
 
     const encodedUrl = encodeURIComponent(originalUrl);
-    const trackingUrl = `${baseUrl}api/tracking/click?leadId=${leadId}&campaignId=${campaignId}&redirectTo=${encodedUrl}`;
+    let trackingUrl = `${baseUrl}api/tracking/click?leadId=${leadId}&campaignId=${campaignId}&redirectTo=${encodedUrl}`;
+    if (emailSendId) {
+      trackingUrl += `&emailSendId=${emailSendId}`;
+    }
     
     return match.replace(`"${originalUrl}"`, `"${trackingUrl}"`);
   });
