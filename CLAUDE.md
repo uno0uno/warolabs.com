@@ -191,3 +191,54 @@ Includes Docker configuration with:
 - `Dockerfile` for containerization
 - `docker-compose.yml` for local development
 - `docker-compose.override.yml` for environment-specific overrides
+
+# Important Instruction Reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
+
+## UI/UX Guidelines
+
+### Icons
+**ALWAYS use Heroicons for all UI icons.** NEVER use inline SVG icons, emojis as icons, or other icon libraries unless explicitly requested by the user. 
+When you need an icon, use Heroicons components or classes, not inline SVG code.
+
+Examples:
+- GOOD: `<Icon name="heroicons:home" />` or appropriate Heroicons component
+- BAD: `<svg class="w-6 h-6" fill="none" stroke="currentColor">...</svg>`
+- BAD: `📧` or other emoji as functional icons
+
+### Component Architecture
+**ALWAYS componentize reusable UI elements.** Never duplicate code between pages or components.
+
+Rules:
+- Create reusable components for any UI element that appears in multiple places
+- Components should be placed in appropriate directories (`/components/Commons/`, `/components/Marketing/`, etc.)
+- Use proper component naming with PascalCase (e.g., `CampaignCard.vue`, `StatCard.vue`)
+- Components should be self-contained with their own props, emits, and styles
+
+### Loading States
+**ALWAYS use Teleport for loading states.** Never use inline loading spinners.
+
+Rules:
+- Use `<Teleport to="body">` for all loading overlays
+- Create a reusable `LoadingOverlay.vue` component
+- Loading should cover the entire viewport, not just individual components
+- Use consistent loading animations across the application
+
+### Data Management and API Calls
+**ALWAYS prioritize Nuxt's built-in composables over manual implementations.** Never duplicate API calls or data fetching logic.
+
+Rules:
+- Use `useFetch()` instead of `$fetch()` for automatic SSR, caching, and loading states
+- Use `useLazyFetch()` for client-side only data fetching
+- Create composables for shared data logic (e.g., `useTemplates()`, `useCampaigns()`)
+- Use Pinia stores for global state that needs to persist across components
+- Eliminate duplicate API calls - centralize data fetching
+- Data should load immediately on component mount, not after loading screens
+- Use Nuxt's reactive data to eliminate blank screens between loading and content
+
+Examples:
+- GOOD: `<Teleport to="body"><LoadingOverlay v-if="loading" /></Teleport>`
+- BAD: `<div v-if="loading" class="spinner">Loading...</div>`

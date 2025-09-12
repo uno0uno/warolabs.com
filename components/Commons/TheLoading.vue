@@ -1,8 +1,16 @@
 <script setup>
-// No hay lógica en el script, ya que es un componente de presentación.
+const props = defineProps({
+  overlay: {
+    type: Boolean,
+    default: false
+  }
+});
 </script>
 <template>
-  <div class="flex flex-col items-center gap-4 justify-center h-full">
+  <div :class="[
+    'flex flex-col items-center gap-4 justify-center',
+    overlay ? 'h-screen' : 'h-full'
+  ]">
     <div class="loader"></div>
     <div class="text-4xl font-medium text-left font-principal italic">Momentico..</div>
   </div>
