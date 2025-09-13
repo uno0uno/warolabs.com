@@ -8,17 +8,22 @@ import {
   EyeIcon,
   CalendarIcon,
   TagIcon,
-  UsersIcon
+  UsersIcon,
+  TrashIcon
 } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   campaigns: {
     type: Array,
     required: true
+  },
+  deletingCampaign: {
+    type: String,
+    default: null
   }
 })
 
-const emit = defineEmits(['create', 'edit', 'view'])
+const emit = defineEmits(['create', 'edit', 'view', 'delete'])
 
 // Define table columns
 const columns = [
@@ -100,6 +105,21 @@ const columns = [
           title: 'Editar campaña'
         }, [
           h(PencilIcon, { class: 'w-4 h-4 text-muted-foreground hover:text-foreground' })
+        ]),
+        // Botón de eliminar
+        h('button', {
+          class: `p-1 rounded transition-colors ${
+            props.deletingCampaign === campaign.id
+              ? 'bg-destructive text-destructive-foreground cursor-not-allowed' 
+              : 'hover:bg-destructive hover:text-destructive-foreground'
+          }`,
+          onClick: () => props.deletingCampaign !== campaign.id && emit('delete', campaign),
+          title: props.deletingCampaign === campaign.id ? 'Eliminando...' : 'Eliminar campaña',
+          disabled: props.deletingCampaign === campaign.id
+        }, [
+          props.deletingCampaign === campaign.id
+            ? h('div', { class: 'animate-spin w-4 h-4 border-2 border-destructive-foreground border-t-transparent rounded-full' })
+            : h(TrashIcon, { class: 'w-4 h-4 text-muted-foreground hover:text-destructive-foreground' })
         ])
       ])
     }
@@ -109,6 +129,13 @@ const columns = [
 
 <template>
   <DataTable :data="campaigns" :columns="columns">
+    <template #actions>
+      <UiButton @click="$emit('create')" class="flex items-center gap-2">
+        <PlusIcon class="w-4 h-4" />
+        Nueva Campaña
+      </UiButton>
+    </template>
+    
     <template #empty>
       <div class="flex flex-col items-center space-y-4 py-8">
         <MegaphoneIcon class="h-12 w-12 text-muted-foreground" />

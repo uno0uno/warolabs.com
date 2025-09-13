@@ -22,17 +22,22 @@ import {
   DocumentTextIcon, 
   PencilIcon,
   CalendarIcon,
-  TagIcon
+  TagIcon,
+  TrashIcon
 } from '@heroicons/vue/24/outline'
 
 const props = defineProps({
   templates: {
     type: Array,
     required: true
+  },
+  deletingTemplate: {
+    type: String,
+    default: null
   }
 })
 
-const emit = defineEmits(['create', 'edit', 'view'])
+const emit = defineEmits(['create', 'edit', 'view', 'delete'])
 
 // Define las columnas de la tabla
 const columns = [
@@ -106,6 +111,20 @@ const columns = [
           title: 'Editar template'
         }, [
           h(PencilIcon, { class: 'w-4 h-4 text-muted-foreground hover:text-foreground' })
+        ]),
+        h('button', {
+          class: `p-1 rounded transition-colors ${
+            props.deletingTemplate === (template.pair_id || template.id)
+              ? 'bg-destructive text-destructive-foreground cursor-not-allowed' 
+              : 'hover:bg-destructive hover:text-destructive-foreground'
+          }`,
+          onClick: () => props.deletingTemplate !== (template.pair_id || template.id) && emit('delete', template),
+          title: props.deletingTemplate === (template.pair_id || template.id) ? 'Eliminando...' : 'Eliminar template',
+          disabled: props.deletingTemplate === (template.pair_id || template.id)
+        }, [
+          props.deletingTemplate === (template.pair_id || template.id)
+            ? h('div', { class: 'animate-spin w-4 h-4 border-2 border-destructive-foreground border-t-transparent rounded-full' })
+            : h(TrashIcon, { class: 'w-4 h-4 text-muted-foreground hover:text-destructive-foreground' })
         ])
       ])
     }
