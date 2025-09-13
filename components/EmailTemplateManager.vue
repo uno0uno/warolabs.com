@@ -133,9 +133,13 @@
           <UiButton variant="outline" @click="cancelForm">
             Cancelar
           </UiButton>
-          <UiButton @click="saveTemplate" :disabled="!templateForm.name || !templateForm.content">
-            {{ showEditModal ? 'Guardar Cambios' : 'Crear Template' }}
-          </UiButton>
+          <CommonsLoadingButton 
+            :text="showEditModal ? 'Guardar Cambios' : 'Crear Template'"
+            :loading-text="showEditModal ? 'Guardando...' : 'Creando...'"
+            :loading="savingTemplate"
+            :disabled="!templateForm.name || !templateForm.content"
+            @click="saveTemplate"
+          />
         </div>
       </UiCardContent>
     </UiCard>
@@ -173,6 +177,7 @@ onMounted(() => {
 const showCreateForm = ref(false);
 const showEditModal = ref(false);
 const selectedVersionId = ref(null);
+const savingTemplate = ref(false);
 
 const templateForm = ref({
   id: null,
@@ -226,6 +231,8 @@ const editTemplate = async (templateId) => {
 
 const saveTemplate = async () => {
   try {
+    savingTemplate.value = true;
+    
     const payload = {
       name: templateForm.value.name,
       description: templateForm.value.description,
@@ -245,6 +252,8 @@ const saveTemplate = async () => {
   } catch (error) {
     console.error('Error guardando el template:', error);
     alert('Error al guardar el template.');
+  } finally {
+    savingTemplate.value = false;
   }
 };
 

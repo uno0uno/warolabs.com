@@ -39,8 +39,6 @@ export const useCampaigns = () => {
     return data
   }
 
-  // Auto load will be called manually from onMounted in components
-
   return {
     campaigns: readonly(campaigns),
     loading: readonly(loading),

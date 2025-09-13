@@ -1,16 +1,19 @@
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { computed } from 'vue';
 import { useCampaignStore } from '@/store/useCampaignStore';
 import TheLoadingOverlay from '@/components/Commons/TheLoadingOverlay.vue';
 import StatCard from '@/components/Commons/StatCard.vue';
 import CampaignCard from '@/components/Commons/CampaignCard.vue';
 import CampaignsTable from '@/components/CampaignsTable.vue';
 
-const loading = ref(true);
-const campaigns = ref([]);
 const showNewCampaignModal = ref(false);
 const store = useCampaignStore();
+
+const { data: campaigns, pending: loading } = useFetch('/api/campaign', {
+  transform: (response) => response.success ? response.data : [],
+  default: () => []
+});
 
 const stats = computed(() => {
   return {
@@ -29,32 +32,6 @@ const editCampaign = (campaign) => {
   navigateTo(`/dashboard/campaigns/settings/${campaign.id}/edit`);
 };
 
-const loadCampaigns = async () => {
-  try {
-    loading.value = true;
-    console.log('🔄 Loading campaigns...');
-    const response = await $fetch('/api/campaign');
-    console.log('📊 Campaigns response:', response);
-    
-    if (response.success) {
-      campaigns.value = response.data;
-      console.log('✅ Campaigns loaded:', campaigns.value.length);
-    } else {
-      console.error('❌ Failed to load campaigns:', response);
-      campaigns.value = [];
-    }
-  } catch (error) {
-    console.error('❌ Error loading campaigns:', error);
-    campaigns.value = [];
-  } finally {
-    console.log('🏁 Setting loading to false');
-    loading.value = false;
-  }
-};
-
-onMounted(() => {
-  loadCampaigns();
-});
 </script>
 
 <style scoped>

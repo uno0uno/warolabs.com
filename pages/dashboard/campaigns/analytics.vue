@@ -5,17 +5,11 @@
     <div v-if="loading" class="min-h-screen"></div>
     
     <div v-else>
-      <UiCard>
-        <UiCardContent class="p-6">
-          <div class="text-center text-muted-foreground">
-            <div class="mx-auto h-12 w-12 mb-4 bg-blue-100 rounded-full flex items-center justify-center">
-              <div class="w-6 h-6 bg-blue-600 rounded"></div>
-            </div>
-            <h3 class="text-lg font-medium" style="font-family: 'Lato', sans-serif;">Analíticas de Campañas</h3>
-            <p>Próximamente - Métricas detalladas de rendimiento</p>
-          </div>
-        </UiCardContent>
-      </UiCard>
+      <CommonsEmptyState 
+        icon-name="heroicons:chart-bar"
+        title="Analíticas de Campañas"
+        description="Próximamente - Métricas detalladas de rendimiento"
+      />
     </div>
   </div>
 </template>

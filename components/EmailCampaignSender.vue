@@ -1,7 +1,7 @@
 <template>
   <CommonsTheLoadingOverlay :show="loadingCampaigns"/>
   <div v-if="!loadingCampaigns" class="space-y-6">
-    <UiCard>
+    <UiCard v-if="campaignsWithTemplates.length > 0">
       <UiCardHeader>
         <UiCardTitle style="font-family: 'Lato', sans-serif;">Seleccionar Campaña</UiCardTitle>
       </UiCardHeader>
@@ -15,47 +15,39 @@
               @change="loadCampaignData"
             >
               <option value="">Selecciona una campaña...</option>
-              <option v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
+              <option v-for="campaign in campaignsWithTemplates" :key="campaign.id" :value="campaign.id">
                 {{ campaign.name }}
               </option>
             </select>
           </div>
           <div class="flex flex-col h-full">
             <label class="block text-base font-medium mb-2" style="font-family: 'Lato', sans-serif;">Template</label>
-            <select
-              v-if="templates.length > 0"
-              v-model="selectedTemplate"
-              class="w-full p-3 border border-border rounded-md bg-background flex"
-              :disabled="!selectedCampaign"
+            <div
+              v-if="selectedTemplate && selectedTemplateData"
+              class="w-full p-3 border border-border rounded-md bg-background flex items-center"
             >
-              <option value="">Selecciona un template...</option>
-              <option v-for="template in templates" :key="template.id" :value="template.id">
-                {{ template.name }}
-              </option>
-            </select>
-            <UiButton
-              v-else-if="selectedCampaign"
-              variant="outline"
-              class="w-full px-3 justify-start flex h-full"
-              @click="createTemplate"
-            >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
-              Crear Template
-            </UiButton>
+              <Icon name="heroicons:document-text" class="w-4 h-4 mr-2 text-primary" />
+              {{ selectedTemplateData.name }}
+            </div>
             <div
               v-else
               class="w-full h-12 p-3 border border-border rounded-md bg-muted text-muted-foreground flex items-center"
             >
-              Selecciona una campaña primero
+              {{ selectedCampaign ? 'No hay template disponible' : 'Selecciona una campaña primero' }}
             </div>
           </div>
         </div>
       </UiCardContent>
     </UiCard>
 
-    <UiCard v-if="selectedCampaign">
+    <CommonsEmptyState 
+      v-if="campaignsWithTemplates.length === 0 && !loadingCampaigns"
+      icon-name="heroicons:inbox"
+      title="No hay campañas disponibles"
+      description="No se encontraron campañas con templates de envío masivo"
+    />
+
+    <UiCard v-if="selectedCampaign && campaignsWithTemplates.length > 0">
       <UiCardHeader>
         <UiCardTitle>Configuración del Envío</UiCardTitle>
       </UiCardHeader>
@@ -87,7 +79,7 @@
       </UiCardContent>
     </UiCard>
 
-    <UiCard v-if="selectedCampaign">
+    <UiCard v-if="selectedCampaign && campaignsWithTemplates.length > 0">
       <UiCardHeader>
         <UiCardTitle style="font-family: 'Lato', sans-serif;">Resumen y Envío</UiCardTitle>
       </UiCardHeader>
@@ -151,10 +143,10 @@ import { useCampaigns } from '~/composables/useCampaigns'; // Asegúrate que la 
 
 const router = useRouter();
 const campaignStore = useCampaignStore();
+const { success: toastSuccess, error: toastError, info: toastInfo, loading: toastLoading } = useToast();
 
-const { campaigns, loading: loadingCampaigns, loadCampaigns } = useCampaigns();
-
-const templates = ref([]);
+const campaignsWithTemplates = ref([]);
+const loadingCampaigns = ref(false);
 const leads = ref([]);
 
 const selectedCampaign = ref(campaignStore.selectedCampaignId || '');
@@ -162,6 +154,7 @@ const selectedTemplate = ref('');
 
 const emailSubject = ref('');
 const emailSender = ref('noreply@warolabs.com');
+
 
 const sendingProgress = ref({
   isActive: false,
@@ -171,7 +164,11 @@ const sendingProgress = ref({
 });
 
 const selectedCampaignData = computed(() => {
-  return campaigns.value.find(c => c.id === selectedCampaign.value);
+  return campaignsWithTemplates.value.find(c => c.id === selectedCampaign.value);
+});
+
+const templates = computed(() => {
+  return selectedCampaignData.value?.templates || [];
 });
 
 const selectedTemplateData = computed(() => {
@@ -196,19 +193,21 @@ const canSend = computed(() => {
          emailSubject.value.trim();
 });
 
-const loadTemplates = async () => {
-  if (!selectedCampaign.value) {
-    templates.value = [];
-    return;
-  }
+const loadCampaignsWithTemplates = async () => {
   try {
-    const response = await $fetch('/api/templates', { 
-      query: { campaign_id: selectedCampaign.value }
-    });
-    templates.value = response.data || [];
+    loadingCampaigns.value = true;
+    const response = await $fetch('/api/campaign/with-templates');
+    campaignsWithTemplates.value = response.data || [];
+    
+    if (campaignsWithTemplates.value.length === 0) {
+      toastInfo('No hay campañas disponibles');
+    }
   } catch (error) {
-    console.error('Error loading templates:', error);
-    templates.value = [];
+    console.error('Error loading campaigns with templates:', error);
+    campaignsWithTemplates.value = [];
+    toastError('Error al cargar campañas');
+  } finally {
+    loadingCampaigns.value = false;
   }
 };
 
@@ -235,8 +234,8 @@ const loadCampaignLeads = async () => {
 
 const loadCampaignData = async () => {
   if (!selectedCampaign.value) {
-    templates.value = [];
     leads.value = [];
+    selectedTemplate.value = '';
     campaignStore.clearSelectedCampaign();
     return;
   }
@@ -246,27 +245,22 @@ const loadCampaignData = async () => {
     if (campaign) {
       emailSubject.value = campaign.default_subject || '';
       campaignStore.setSelectedCampaign(selectedCampaign.value, campaign);
+      
+      // Auto-select the first template if available
+      if (campaign.templates && campaign.templates.length > 0) {
+        selectedTemplate.value = campaign.templates[0].id;
+      } else {
+        selectedTemplate.value = '';
+      }
     }
     
-    await Promise.all([
-      loadTemplates(),
-      loadCampaignLeads()
-    ]);
+    await loadCampaignLeads();
 
-  } catch (error)
- {
+  } catch (error) {
     console.error('Error loading campaign data:', error);
   }
 };
 
-const createTemplate = () => {
-  if (!selectedCampaign.value) return;
-  
-  const campaign = selectedCampaignData.value;
-  campaignStore.setSelectedCampaign(selectedCampaign.value, campaign);
-  
-  router.push('/dashboard/campaigns/templates');
-};
 
 const sendCampaign = async () => {
   if (!canSend.value) return;
@@ -278,6 +272,8 @@ const sendCampaign = async () => {
       total: leads.value.length,
       errors: []
     };
+
+    toastLoading('Enviando campaña...');
 
     const response = await $fetch('/api/campaign/send', {
       method: 'POST',
@@ -291,7 +287,7 @@ const sendCampaign = async () => {
 
     if (response.success) {
       sendingProgress.value.sent = leads.value.length;
-      alert(`Campaña enviada exitosamente a ${leads.value.length} destinatarios.`);
+      toastSuccess('Campaña enviada exitosamente');
       emailSubject.value = '';
     } else {
       throw new Error(response.message || 'Error al enviar la campaña');
@@ -300,6 +296,7 @@ const sendCampaign = async () => {
   } catch (error) {
     console.error('Error sending campaign:', error);
     sendingProgress.value.errors.push(error.message);
+    toastError('Error al enviar la campaña');
   } finally {
     setTimeout(() => {
       sendingProgress.value.isActive = false;
@@ -308,7 +305,7 @@ const sendCampaign = async () => {
 };
 
 onMounted(async () => {
-  await loadCampaigns();
+  await loadCampaignsWithTemplates();
   
   if (selectedCampaign.value) {
     await loadCampaignData();

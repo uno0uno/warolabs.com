@@ -218,8 +218,92 @@
     <main class="flex-1 bg-background overflow-auto">
       <slot />
     </main>
+    
+    <!-- Toast notifications -->
+    <ClientOnly>
+      <CommonsToastProvider />
+    </ClientOnly>
   </div>
 </template>
+
+<style>
+/* Estilos personalizados para toast */
+.custom-toast {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.custom-toast > div {
+  border-radius: 8px !important;
+  border: 1px solid #d1d5db !important;
+  background: #ffffff !important;
+  padding: 16px !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 16px !important;
+  min-width: 320px !important;
+  max-width: 420px !important;
+}
+
+.custom-toast .sonner-toast-description {
+  margin-top: 2px !important;
+  font-size: 14px !important;
+  color: #374151 !important;
+  line-height: 1.4 !important;
+}
+
+.custom-toast .sonner-toast-title {
+  font-weight: 500 !important;
+  color: #111827 !important;
+  font-size: 16px !important;
+  margin: 0 !important;
+}
+
+.custom-toast .sonner-toast-close-button {
+  margin: -12px !important;
+  padding: 6px !important;
+  border-radius: 50% !important;
+  color: #6b7280 !important;
+  transition: all 0.2s !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  width: 20px !important;
+  height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.custom-toast .sonner-toast-close-button:hover {
+  background: #f9fafb !important;
+  color: #374151 !important;
+}
+
+/* Iconos de tipo de toast */
+.custom-toast[data-type="success"] .sonner-loading-wrapper,
+.custom-toast[data-type="success"] .sonner-spinner {
+  color: #059669 !important;
+}
+
+.custom-toast[data-type="error"] .sonner-loading-wrapper,
+.custom-toast[data-type="error"] .sonner-spinner {
+  color: #dc2626 !important;
+}
+
+.custom-toast[data-type="info"] .sonner-loading-wrapper,
+.custom-toast[data-type="info"] .sonner-spinner {
+  color: #2563eb !important;
+}
+
+.custom-toast[data-type="loading"] .sonner-loading-wrapper,
+.custom-toast[data-type="loading"] .sonner-spinner {
+  color: #6b7280 !important;
+}
+</style>
 
 <script setup>
 import { ref, onMounted } from 'vue'
