@@ -24,9 +24,8 @@ export default defineEventHandler(async (event) => {
     try {
         let landingPageData = null;
 
-        console.log(`Fetching landing page for slug: ${slug}`);
-
         await withPostgresClient(async (client) => {
+            
             const query = `
                 SELECT
                     tv.content as template_content,
@@ -46,8 +45,9 @@ export default defineEventHandler(async (event) => {
                 WHERE
                     c.slug = $1 
                     AND t.template_type = 'landing'
+                    AND ctv.is_active = true
                 ORDER BY
-                    tv.version_number DESC
+                    tv.created_at DESC, tv.version_number DESC
                 LIMIT 1;
             `;
 

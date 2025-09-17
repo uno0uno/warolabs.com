@@ -2,10 +2,11 @@ import { defineEventHandler, readBody, createError, getRouterParam } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
 
 export default defineEventHandler(async (event) => {
+  const templateId = getRouterParam(event, 'id');
+  const body = await readBody(event);
+  
   return await withPostgresClient(async (client) => {
     try {
-      const templateId = getRouterParam(event, 'id');
-      const body = await readBody(event);
       const { 
         name, 
         description, 
@@ -76,14 +77,80 @@ export default defineEventHandler(async (event) => {
       
       await client.query(updateActiveVersionQuery, [versionId, templateId]);
 
-      // Associate with campaign if provided
+      // Handle campaign associations with traceability (soft delete approach)
+      // Get all active associations for this template
+      const getActiveAssociationsQuery = `
+        SELECT campaign_id, template_version_id 
+        FROM campaign_template_versions ctv
+        JOIN template_versions tv ON ctv.template_version_id = tv.id
+        WHERE tv.template_id = $1 AND ctv.is_active = true
+      `;
+      
+      const activeAssociations = await client.query(getActiveAssociationsQuery, [templateId]);
+      
+      // Deactivate old associations and create history records
+      for (const association of activeAssociations.rows) {
+        // Soft delete the old association
+        const deactivateQuery = `
+          UPDATE campaign_template_versions 
+          SET is_active = false, deactivated_at = NOW()
+          WHERE campaign_id = $1 AND template_version_id = $2 AND is_active = true
+        `;
+        await client.query(deactivateQuery, [association.campaign_id, association.template_version_id]);
+        
+        // Create new active association with the new version
+        const createNewAssociationQuery = `
+          INSERT INTO campaign_template_versions (campaign_id, template_version_id, is_active)
+          VALUES ($1, $2, true)
+          ON CONFLICT (campaign_id, template_version_id) 
+          DO UPDATE SET is_active = true, deactivated_at = NULL
+        `;
+        await client.query(createNewAssociationQuery, [association.campaign_id, versionId]);
+        
+        // Record in history table
+        const historyQuery = `
+          INSERT INTO template_version_history 
+          (template_id, old_version_id, new_version_id, campaign_id, action_type, change_reason)
+          VALUES ($1, $2, $3, $4, 'UPDATE', 'Template content updated')
+        `;
+        await client.query(historyQuery, [
+          templateId, 
+          association.template_version_id, 
+          versionId, 
+          association.campaign_id
+        ]);
+      }
+
+      // Additionally, associate with campaign if specifically provided
       if (campaign_id) {
-        const associationQuery = `
-          INSERT INTO campaign_template_versions (campaign_id, template_version_id)
-          VALUES ($1, $2)
+        // Check if there are existing associations for this specific campaign and template
+        const existingAssociationQuery = `
+          SELECT campaign_id, template_version_id FROM campaign_template_versions 
+          WHERE campaign_id = $1 
+          AND template_version_id IN (
+            SELECT id FROM template_versions WHERE template_id = $2
+          )
+          AND is_active = true
         `;
         
-        await client.query(associationQuery, [campaign_id, versionId]);
+        const existingResult = await client.query(existingAssociationQuery, [campaign_id, templateId]);
+        
+        if (existingResult.rows.length === 0) {
+          // Create new association if it doesn't exist
+          const associationQuery = `
+            INSERT INTO campaign_template_versions (campaign_id, template_version_id, is_active)
+            VALUES ($1, $2, true)
+          `;
+          await client.query(associationQuery, [campaign_id, versionId]);
+          
+          // Record in history table
+          const historyQuery = `
+            INSERT INTO template_version_history 
+            (template_id, old_version_id, new_version_id, campaign_id, action_type, change_reason)
+            VALUES ($1, NULL, $2, $3, 'CREATE', 'New campaign association created')
+          `;
+          await client.query(historyQuery, [templateId, versionId, campaign_id]);
+        }
       }
 
       return {
@@ -98,6 +165,8 @@ export default defineEventHandler(async (event) => {
 
     } catch (error) {
       console.error('Error updating template:', error);
+      console.error('Template ID:', templateId);
+      console.error('Body data:', body);
       throw error;
     }
   }, event);

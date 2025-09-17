@@ -46,13 +46,8 @@ const columns = [
     header: 'Nombre',
     cell: ({ row }) => {
       const template = row.original
-      // Muestra el nombre y la descripción en la misma celda
-      return h('div', { class: 'flex flex-col' }, [
-        h('span', { class: 'font-medium' }, template.name),
-        template.description && h('span', { 
-          class: 'text-sm text-muted-foreground max-w-xs truncate' 
-        }, template.description)
-      ])
+      // Muestra solo el nombre del template
+      return h('span', { class: 'font-medium' }, template.name)
     }
   },
   {

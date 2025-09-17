@@ -1,5 +1,6 @@
 import { defineEventHandler, getRouterParam } from 'h3';
 import { withPostgresClient } from '../../../utils/basedataSettings/withPostgresClient';
+import { verifyAuthToken } from '../../../utils/security/jwtVerifier';
 
 export default defineEventHandler(async (event) => {
   const pairId = getRouterParam(event, 'id');
@@ -13,18 +14,28 @@ export default defineEventHandler(async (event) => {
 
   return await withPostgresClient(async (client) => {
     try {
-      // Comenzar transacción
+      // Get user info for audit trail (optional - remove if no auth)
+      let userId = null;
+      try {
+        const authResult = await verifyAuthToken(event);
+        userId = authResult?.userId || null;
+      } catch (e) {
+        // Continue without user ID if auth fails
+      }
+
+      // Begin transaction
       await client.query('BEGIN');
 
-      // Obtener información del par y sus templates antes de eliminar
+      // Get template pair information before soft delete
       const pairQuery = `
         SELECT 
           t.id,
-          t.name,
+          t.template_name as name,
           t.template_type,
-          t.pair_id
+          t.pair_id,
+          t.active_version_id
         FROM templates t
-        WHERE t.pair_id = $1
+        WHERE t.pair_id = $1 AND t.is_deleted = false
       `;
       
       const pairResult = await client.query(pairQuery, [pairId]);
@@ -33,7 +44,7 @@ export default defineEventHandler(async (event) => {
         await client.query('ROLLBACK');
         throw createError({
           statusCode: 404,
-          statusMessage: 'Template pair not found'
+          statusMessage: 'Template pair not found or already deleted'
         });
       }
 
@@ -41,37 +52,93 @@ export default defineEventHandler(async (event) => {
       const emailTemplate = templates.find(t => t.template_type === 'email');
       const landingTemplate = templates.find(t => t.template_type === 'landing');
 
-      // Eliminar las relaciones en campaign_template_versions si existen
-      await client.query(
-        'DELETE FROM campaign_template_versions WHERE template_version_id IN (SELECT id FROM template_versions WHERE template_id = ANY($1))',
-        [templates.map(t => t.id)]
-      );
+      // Soft delete templates (mark as deleted instead of physical delete)
+      const softDeleteQuery = `
+        UPDATE templates 
+        SET is_deleted = true, deleted_at = NOW(), deleted_by = $1
+        WHERE pair_id = $2
+      `;
+      await client.query(softDeleteQuery, [userId, pairId]);
 
-      // Eliminar todas las versiones de los templates del par
-      await client.query(
-        'DELETE FROM template_versions WHERE template_id = ANY($1)',
-        [templates.map(t => t.id)]
-      );
+      // Deactivate all campaign associations for these templates with traceability
+      for (const template of templates) {
+        // Get all active associations for this template
+        const activeAssociationsQuery = `
+          SELECT campaign_id, template_version_id
+          FROM campaign_template_versions ctv
+          JOIN template_versions tv ON ctv.template_version_id = tv.id
+          WHERE tv.template_id = $1 AND ctv.is_active = true
+        `;
+        
+        const activeAssociations = await client.query(activeAssociationsQuery, [template.id]);
 
-      // Eliminar los templates del par
-      await client.query('DELETE FROM templates WHERE pair_id = $1', [pairId]);
+        // Deactivate each association and record history
+        for (const association of activeAssociations.rows) {
+          // Soft delete the association
+          const deactivateQuery = `
+            UPDATE campaign_template_versions 
+            SET is_active = false, deactivated_at = NOW()
+            WHERE campaign_id = $1 AND template_version_id = $2 AND is_active = true
+          `;
+          await client.query(deactivateQuery, [association.campaign_id, association.template_version_id]);
 
-      // Confirmar transacción
+          // Record deletion in history
+          const historyQuery = `
+            INSERT INTO template_version_history 
+            (template_id, old_version_id, new_version_id, campaign_id, action_type, change_reason, changed_by)
+            VALUES ($1, $2, NULL, $3, 'DELETE', $4, $5)
+          `;
+          await client.query(historyQuery, [
+            template.id,
+            template.active_version_id,
+            association.campaign_id,
+            `Template ${template.template_type} deleted as part of template pair deletion`,
+            userId
+          ]);
+        }
+      }
+
+      // Record pair deletion in history for both templates
+      if (emailTemplate) {
+        const emailHistoryQuery = `
+          INSERT INTO template_version_history 
+          (template_id, old_version_id, new_version_id, campaign_id, action_type, change_reason, changed_by)
+          VALUES ($1, $2, NULL, NULL, 'DELETE_PAIR', 'Email template deleted - template pair removed', $3)
+        `;
+        await client.query(emailHistoryQuery, [emailTemplate.id, emailTemplate.active_version_id, userId]);
+      }
+
+      if (landingTemplate) {
+        const landingHistoryQuery = `
+          INSERT INTO template_version_history 
+          (template_id, old_version_id, new_version_id, campaign_id, action_type, change_reason, changed_by)
+          VALUES ($1, $2, NULL, NULL, 'DELETE_PAIR', 'Landing template deleted - template pair removed', $3)
+        `;
+        await client.query(landingHistoryQuery, [landingTemplate.id, landingTemplate.active_version_id, userId]);
+      }
+
+      // Commit transaction
       await client.query('COMMIT');
 
       return {
         success: true,
-        message: `Par de templates "${emailTemplate?.name || 'Email'}" y "${landingTemplate?.name || 'Landing'}" eliminado exitosamente`,
+        message: `Template pair "${emailTemplate?.name || 'Email'}" y "${landingTemplate?.name || 'Landing'}" eliminado exitosamente con trazabilidad completa`,
         data: { 
           pair_id: pairId,
-          deleted_templates: templates.map(t => ({ id: t.id, name: t.name, type: t.template_type }))
+          soft_deleted_templates: templates.map(t => ({ 
+            id: t.id, 
+            name: t.name, 
+            type: t.template_type,
+            deleted_at: new Date().toISOString(),
+            recoverable: true
+          }))
         }
       };
 
     } catch (error) {
-      // Rollback en caso de error
+      // Rollback on error
       await client.query('ROLLBACK');
-      console.error('Error deleting template pair:', error);
+      console.error('Error soft deleting template pair:', error);
       
       if (error.statusCode) {
         throw error; // Re-throw HTTP errors
@@ -79,7 +146,7 @@ export default defineEventHandler(async (event) => {
       
       throw createError({
         statusCode: 500,
-        statusMessage: 'Error deleting template pair'
+        statusMessage: 'Error deleting template pair with traceability'
       });
     }
   }, event);

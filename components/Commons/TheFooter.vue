@@ -52,7 +52,7 @@ useHead({
 </script>
 
 <template>
-    <div class="flex flex-col gap-2 items-left justify-start md:items-center md:justify-center p-4 bg-black text-white">
+    <div class="flex flex-col gap-2 items-left justify-start md:items-center md:justify-center p-4 brand-header-footer">
         <div class="flex flex-col items-left justify-start md:items-center md:justify-center ">
             <p class="text-sm font-light leading-relaxed text-stone-400">© 2025 Waro Labs. Todos los derechos reservados.</p>
             <p class="text-sm font-light leading-relaxed text-stone-400">Política de privacidad | Términos de servicio</p>

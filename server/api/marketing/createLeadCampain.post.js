@@ -101,6 +101,67 @@ export default defineEventHandler(async (event) => {
     if (associationStatus.includes('_association_created')) {
         setResponseStatus(event, 201);
         responsePayload.message = 'Lead successfully associated with campaign.';
+        
+        // Track lead interaction
+        try {
+            await withPostgresClient(async (client) => {
+                // Get request details for tracking
+                const headers = event.node?.req?.headers || event.req?.headers || {};
+                const userAgent = headers['user-agent'] || null;
+                const ipAddress = headers['x-forwarded-for']?.split(',')[0] || 
+                               headers['x-real-ip'] || 
+                               event.node?.req?.socket?.remoteAddress || 
+                               null;
+                const referrer = headers['referer'] || headers['referrer'] || null;
+                
+                // Parse UTM parameters if they exist in the request
+                const query = getQuery(event);
+                
+                const insertQuery = `
+                    INSERT INTO lead_interactions (
+                        lead_id,
+                        interaction_type,
+                        source,
+                        medium,
+                        campaign,
+                        term,
+                        content,
+                        referrer_url,
+                        ip_address,
+                        user_agent,
+                        metadata
+                    )
+                    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9::inet, $10, $11::jsonb)
+                `;
+                
+                const values = [
+                    leadId,
+                    'lead_capture',
+                    query.utm_source || leadSource || 'api',
+                    query.utm_medium || null,
+                    query.utm_campaign || campaignId,
+                    query.utm_term || null,
+                    query.utm_content || null,
+                    referrer,
+                    ipAddress,
+                    userAgent,
+                    JSON.stringify({
+                        campaign_id: campaignId,
+                        profile_id: associatedProfileId,
+                        lead_source: leadSource,
+                        email: leadEmail,
+                        name: profileName,
+                        created_via: 'createLeadCampain_api'
+                    })
+                ];
+                
+                await client.query(insertQuery, values);
+                console.log(`Lead interaction tracked for lead ${leadId}`);
+            }, event);
+        } catch (trackingError) {
+            // Log error but don't fail the main request
+            console.error('Failed to track lead interaction:', trackingError);
+        }
 
         try {
             const { public: { baseUrl } } = useRuntimeConfig();

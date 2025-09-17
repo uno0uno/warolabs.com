@@ -102,7 +102,7 @@ onMounted(async () => {
       
       // Redirigir a la URL original si existe, sino al dashboard
       const route = useRoute()
-      const redirectUrl = route.query.redirect || '/dashboard'
+      const redirectUrl = route.query.redirect || '/marketing'
       await navigateTo(redirectUrl)
       return
     }

@@ -51,10 +51,10 @@ export default defineEventHandler(async (event) => {
             ARRAY[]::json[]
           ) as landing_template_details
         FROM campaign c
-        LEFT JOIN campaign_template_versions ctv ON c.id = ctv.campaign_id
+        LEFT JOIN campaign_template_versions ctv ON c.id = ctv.campaign_id AND ctv.is_active = true
         LEFT JOIN template_versions tv ON ctv.template_version_id = tv.id
-        LEFT JOIN templates t ON tv.template_id = t.id
-        WHERE c.id = $1
+        LEFT JOIN templates t ON tv.template_id = t.id AND t.is_deleted = false
+        WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
         GROUP BY c.id, c.name, c.status;
       `;
 
@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
       if (result.rows.length === 0) {
         throw createError({
           statusCode: 404,
-          statusMessage: 'Campaign not found'
+          statusMessage: 'Campaign not found or has been deleted'
         });
       }
 

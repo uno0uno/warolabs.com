@@ -46,10 +46,10 @@ const columns = [
     cell: ({ row }) => {
       const status = row.original.status
       const statusColors = {
-        draft: 'bg-gray-100 text-gray-800',
-        active: 'bg-green-100 text-green-800',
-        paused: 'bg-yellow-100 text-yellow-800',
-        completed: 'bg-blue-100 text-blue-800'
+        draft: 'status-draft',
+        active: 'status-active',
+        paused: 'status-paused',
+        completed: 'status-completed'
       }
       const statusLabels = {
         draft: 'Borrador',
@@ -59,7 +59,7 @@ const columns = [
       }
       
       return h('span', { 
-        class: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[status] || 'bg-gray-100 text-gray-800'}` 
+        class: `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[status] || 'status-paused'}` 
       }, statusLabels[status] || status)
     }
   },
@@ -89,10 +89,9 @@ const columns = [
     cell: ({ row }) => {
       const campaign = row.original
       return h('div', { class: 'flex items-center gap-2' }, [
-        // Botón de ver (redireccionado)
-        h(resolveComponent('NuxtLink'), {
-          to: `${campaign.website}/landing/${campaign.slug}`,
-          target: '_blank',
+        // Botón de ver (usando window.open)
+        h('button', {
+          onClick: () => window.open(`${campaign.website}/landing/${campaign.slug}`, '_blank'),
           class: 'p-1 rounded hover:bg-muted transition-colors',
           title: 'Ver Landing Page'
         }, [
@@ -129,13 +128,6 @@ const columns = [
 
 <template>
   <DataTable :data="campaigns" :columns="columns">
-    <template #actions>
-      <UiButton @click="$emit('create')" class="flex items-center gap-2">
-        <PlusIcon class="w-4 h-4" />
-        Nueva Campaña
-      </UiButton>
-    </template>
-    
     <template #empty>
       <div class="flex flex-col items-center space-y-4 py-8">
         <MegaphoneIcon class="h-12 w-12 text-muted-foreground" />

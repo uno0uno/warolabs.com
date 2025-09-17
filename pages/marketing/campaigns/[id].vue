@@ -1,5 +1,5 @@
 <template>
-  <div class="campaign-detail">
+  <div class="campaign-detail dashboard-page">
     <TheLoadingOverlay :show="loading" />
 
     <div v-if="loading" class="min-h-screen"></div>
@@ -11,7 +11,7 @@
 
     <div v-else class="space-y-6">
       <!-- Campaign Header -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div class="bg-white dark:bg-gray-800  shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ campaignData?.campaignName }}</h1>
@@ -21,9 +21,9 @@
             <span :class="[
               'px-3 py-1 rounded-full text-sm font-medium',
               campaignData?.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-              campaignData?.status === 'active' ? 'bg-green-100 text-green-800' :
-              campaignData?.status === 'paused' ? 'bg-gray-100 text-gray-800' :
-              'bg-red-100 text-red-800'
+                campaignData?.status === 'active' ? 'bg-green-100 text-green-800' :
+                  campaignData?.status === 'paused' ? 'bg-gray-100 text-gray-800' :
+                    'bg-red-100 text-red-800'
             ]">
               {{ getStatusText(campaignData?.status) }}
             </span>
@@ -32,11 +32,11 @@
       </div>
 
       <!-- Templates Validation -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div class="bg-white dark:bg-gray-800  shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Estado de Templates</h2>
           <div :class="[
-            'flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium',
+            'flex items-center space-x-2 px-3 py-2  text-sm font-medium',
             validation?.isValid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
           ]">
             <svg v-if="validation?.isValid" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Email Template -->
-          <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+          <div class="border border-gray-200 dark:border-gray-600  p-4">
             <div class="flex items-center justify-between mb-3">
               <h3 class="text-lg font-medium flex items-center">
                 <span class="mr-2">📧</span>
@@ -62,10 +62,10 @@
                 validation?.hasEmailTemplate ? 'bg-green-500' : 'bg-red-500'
               ]"></div>
             </div>
-            
+
             <div v-if="validation?.hasEmailTemplate && templates?.email?.length > 0" class="space-y-2">
-              <div v-for="template in templates.email" :key="template.id" 
-                   class="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+              <div v-for="template in templates.email" :key="template.id"
+                class="bg-gray-50 dark:bg-gray-700 p-3 rounded">
                 <div class="font-medium text-sm">{{ template.name }}</div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">
                   Versión {{ template.version_number }}
@@ -80,10 +80,11 @@
                 </div>
               </div>
             </div>
-            
+
             <div v-else class="text-center py-6 text-gray-500">
               <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                </path>
               </svg>
               <p class="text-sm">Template Email requerido</p>
               <UiButton size="sm" class="mt-2" @click="createTemplate('email')">
@@ -93,7 +94,7 @@
           </div>
 
           <!-- Landing Template -->
-          <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+          <div class="border border-gray-200 dark:border-gray-600  p-4">
             <div class="flex items-center justify-between mb-3">
               <h3 class="text-lg font-medium flex items-center">
                 <span class="mr-2">🎨</span>
@@ -104,10 +105,10 @@
                 validation?.hasLandingTemplate ? 'bg-green-500' : 'bg-red-500'
               ]"></div>
             </div>
-            
+
             <div v-if="validation?.hasLandingTemplate && templates?.landing?.length > 0" class="space-y-2">
-              <div v-for="template in templates.landing" :key="template.id" 
-                   class="bg-gray-50 dark:bg-gray-700 p-3 rounded">
+              <div v-for="template in templates.landing" :key="template.id"
+                class="bg-gray-50 dark:bg-gray-700 p-3 rounded">
                 <div class="font-medium text-sm">{{ template.name }}</div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">
                   Versión {{ template.version_number }}
@@ -122,10 +123,11 @@
                 </div>
               </div>
             </div>
-            
+
             <div v-else class="text-center py-6 text-gray-500">
               <svg class="mx-auto h-8 w-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                </path>
               </svg>
               <p class="text-sm">Template Landing requerido</p>
               <UiButton size="sm" class="mt-2" @click="createTemplate('landing')">
@@ -136,16 +138,18 @@
         </div>
 
         <!-- Missing Templates Alert -->
-        <div v-if="validation?.missingTemplates?.length > 0" 
-             class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
+        <div v-if="validation?.missingTemplates?.length > 0"
+          class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded">
           <div class="flex">
             <svg class="flex-shrink-0 h-5 w-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.349 16c-.77.833.192 2.5 1.732 2.5z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L3.349 16c-.77.833.192 2.5 1.732 2.5z">
+              </path>
             </svg>
             <div class="ml-3">
               <h3 class="text-sm font-medium text-yellow-800">Templates requeridos faltantes</h3>
               <p class="mt-1 text-sm text-yellow-700">
-                Para continuar con la campaña necesitas crear los siguientes templates: 
+                Para continuar con la campaña necesitas crear los siguientes templates:
                 <strong>{{ validation.missingTemplates.join(', ') }}</strong>
               </p>
             </div>
@@ -154,25 +158,22 @@
       </div>
 
       <!-- Campaign Actions -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div class="bg-white dark:bg-gray-800  shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Acciones</h2>
         <div class="flex space-x-3">
-          <UiButton 
-            :disabled="!validation?.isValid"
-            @click="activateCampaign"
-            class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400"
-          >
+          <UiButton :disabled="!validation?.isValid" @click="activateCampaign"
+            class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400">
             {{ campaignData?.status === 'active' ? 'Campaña Activa' : 'Activar Campaña' }}
           </UiButton>
-          
+
           <UiButton variant="outline" @click="previewCampaign" :disabled="!validation?.isValid">
             Vista Previa Completa
           </UiButton>
-          
+
           <UiButton variant="outline" @click="duplicateCampaign">
             Duplicar Campaña
           </UiButton>
-          
+
           <UiButton variant="destructive" @click="deleteCampaign">
             Eliminar Campaña
           </UiButton>
@@ -187,7 +188,7 @@ import { ref, onMounted } from 'vue';
 import TheLoadingOverlay from '@/components/Commons/TheLoadingOverlay.vue';
 
 definePageMeta({
-  layout: 'dashboard'
+  layout: 'marketing'
 });
 
 const loading = ref(true);
@@ -210,9 +211,9 @@ const loadCampaignData = async () => {
   try {
     loading.value = true;
     error.value = null;
-    
+
     const response = await $fetch(`/api/campaign/validate-templates?campaignId=${$route.params.id}`);
-    
+
     if (response.success) {
       campaignData.value = response.data;
       validation.value = response.data.validation;
@@ -227,15 +228,15 @@ const loadCampaignData = async () => {
 };
 
 const editTemplate = (type, template) => {
-  navigateTo(`/dashboard/campaigns/templates/${template.id}/edit`);
+  navigateTo(`/marketing/templates/${template.id}/edit`);
 };
 
 const previewTemplate = (type, template) => {
-  navigateTo(`/dashboard/campaigns/templates/${template.id}/preview`);
+  navigateTo(`/marketing/templates/${template.id}/preview`);
 };
 
 const createTemplate = (type) => {
-  navigateTo(`/dashboard/campaigns/templates/create?type=${type}&campaignId=${$route.params.id}`);
+  navigateTo(`/marketing/templates/create?type=${type}&campaignId=${$route.params.id}`);
 };
 
 const activateCampaign = async () => {
@@ -243,7 +244,7 @@ const activateCampaign = async () => {
     const response = await $fetch(`/api/campaign/${$route.params.id}/activate`, {
       method: 'POST'
     });
-    
+
     if (response.success) {
       await loadCampaignData();
     }
@@ -262,9 +263,9 @@ const duplicateCampaign = async () => {
     const response = await $fetch(`/api/campaign/${$route.params.id}/duplicate`, {
       method: 'POST'
     });
-    
+
     if (response.success) {
-      navigateTo(`/dashboard/campaigns/settings/${response.data.id}`);
+      navigateTo(`/marketing/campaigns/${response.data.id}`);
     }
   } catch (err) {
     console.error('Error duplicating campaign:', err);
@@ -278,8 +279,8 @@ const deleteCampaign = async () => {
       await $fetch(`/api/campaign/${$route.params.id}`, {
         method: 'DELETE'
       });
-      
-      navigateTo('/dashboard/campaigns');
+
+      navigateTo('/marketing/campaigns');
     } catch (err) {
       console.error('Error deleting campaign:', err);
       alert('Error al eliminar la campaña');

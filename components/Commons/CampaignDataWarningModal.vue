@@ -83,7 +83,7 @@
             <UiButton variant="outline" @click="$emit('close')">
               Entendido
             </UiButton>
-            <UiButton @click="$emit('pauseCampaign')" class="bg-amber-600 hover:bg-amber-700">
+            <UiButton @click="$emit('pauseCampaign')" class="btn-warning">
               Pausar Campaña
             </UiButton>
           </UiCardFooter>

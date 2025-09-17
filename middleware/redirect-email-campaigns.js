@@ -1,5 +1,5 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-  if (to.path === '/dashboard/email-campaigns') {
-    return navigateTo('/dashboard/email-campaigns/campaigns', { redirectCode: 301 })
+  if (to.path === '/email-campaigns') {
+    return navigateTo('/marketing/campaigns', { redirectCode: 301 })
   }
 })

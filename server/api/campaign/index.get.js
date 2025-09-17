@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
           FROM campaign c
           LEFT JOIN profile p ON c.profile_id = p.id
           LEFT JOIN campaign_summary cs ON c.id = cs.campaign_id
+          WHERE (c.is_deleted = false OR c.is_deleted IS NULL)
           ORDER BY c.created_at DESC
       `;
 

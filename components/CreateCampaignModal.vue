@@ -42,10 +42,10 @@
             </div>
 
             <div v-else class="space-y-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-lg">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/30">
                 <div>
                   <label for="tenant-select" class="block text-sm font-medium mb-2">Organización (Tenant)</label>
-                  <select id="tenant-select" v-model="selectedTenantId" class="w-full p-2 border rounded-md bg-white dark:bg-gray-800">
+                  <select id="tenant-select" v-model="selectedTenantId" class="input-base">
                     <option :value="null" disabled>Seleccione un tenant</option>
                     <option v-for="tenant in tenants" :key="tenant.tenant_id" :value="tenant.tenant_id">
                       {{ tenant.tenant_name }}
@@ -54,7 +54,7 @@
                 </div>
                 <div>
                   <label for="profile-select" class="block text-sm font-medium mb-2">Usuario (Profile)</label>
-                  <select id="profile-select" v-model="form.profile_id" :disabled="!selectedTenantId || selectedTenantMembers.length === 0" class="w-full p-2 border rounded-md bg-white dark:bg-gray-800">
+                  <select id="profile-select" v-model="form.profile_id" :disabled="!selectedTenantId || selectedTenantMembers.length === 0" class="input-base">
                     <option value="" disabled>Seleccione un usuario</option>
                     <option v-for="member in selectedTenantMembers" :key="member.profile_id" :value="member.profile_id">
                       {{ member.name }} ({{ member.email }})
@@ -87,7 +87,7 @@
                   <div
                     v-for="pair in templatePairs"
                     :key="pair.pair_id"
-                    class="border rounded-lg p-4 cursor-pointer transition-all duration-200"
+                    class="border p-4 cursor-pointer transition-all duration-200"
                     :class="form.pair_id === pair.pair_id 
                       ? 'border-primary bg-primary/5 shadow-sm' 
                       : 'border-border hover:border-primary/50 hover:shadow-sm'"
@@ -116,7 +116,7 @@
                 <DocumentDuplicateIcon class="mx-auto h-12 w-12 text-muted-foreground mb-4" />
                 <h3 class="text-lg font-medium text-muted-foreground mb-2">No hay pares de templates</h3>
                 <p class="text-muted-foreground mb-4">Necesitas crear al menos un par de templates para poder crear una campaña.</p>
-                <UiButton @click="navigateTo('/dashboard/marketing/templates')" variant="outline">
+                <UiButton @click="navigateTo('/marketing/templates')" variant="outline">
                   Crear Templates
                 </UiButton>
               </div>

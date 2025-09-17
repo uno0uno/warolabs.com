@@ -19,17 +19,67 @@ export default defineEventHandler(async (event) => {
 
   try {
     await withPostgresClient(async (client) => {
-      const query = emailSendId 
-        ? 'INSERT INTO "email_opens" ("lead_id", "campaign_id", "email_send_id", "ip_address", "user_agent") VALUES ($1, $2, $3, $4, $5)'
-        : 'INSERT INTO "email_opens" ("lead_id", "campaign_id", "ip_address", "user_agent") VALUES ($1, $2, $3, $4)';
+      // Begin transaction
+      await client.query('BEGIN');
       
-      const params = emailSendId 
-        ? [leadId, campaignId, emailSendId, ipAddress, userAgent]
-        : [leadId, campaignId, ipAddress, userAgent];
+      try {
+        // Insert into email_opens table
+        const emailOpenQuery = emailSendId 
+          ? 'INSERT INTO "email_opens" ("lead_id", "campaign_id", "email_send_id", "ip_address", "user_agent") VALUES ($1, $2, $3, $4, $5) RETURNING id'
+          : 'INSERT INTO "email_opens" ("lead_id", "campaign_id", "ip_address", "user_agent") VALUES ($1, $2, $3, $4) RETURNING id';
+        
+        const emailOpenParams = emailSendId 
+          ? [leadId, campaignId, emailSendId, ipAddress, userAgent]
+          : [leadId, campaignId, ipAddress, userAgent];
 
-      await client.query(query, params);
+        const emailOpenResult = await client.query(emailOpenQuery, emailOpenParams);
+        const emailOpenId = emailOpenResult.rows[0].id;
+        
+        // Also track in lead_interactions
+        const interactionQuery = `
+          INSERT INTO lead_interactions (
+            lead_id,
+            interaction_type,
+            source,
+            medium,
+            campaign,
+            ip_address,
+            user_agent,
+            metadata
+          )
+          SELECT 
+            $1::uuid,
+            'email_open',
+            'email_campaign',
+            'email',
+            c.name,
+            $2::inet,
+            $3,
+            jsonb_build_object(
+              'campaign_id', $4::uuid,
+              'email_open_id', $5::uuid,
+              'email_send_id', $6::uuid
+            )
+          FROM campaign c
+          WHERE c.id = $4
+        `;
+        
+        await client.query(interactionQuery, [
+          leadId,
+          ipAddress,
+          userAgent,
+          campaignId,
+          emailOpenId,
+          emailSendId || null
+        ]);
+        
+        await client.query('COMMIT');
+        console.log('Apertura de correo electrónico registrada exitosamente en ambas tablas.'); // Log de éxito
+      } catch (innerError) {
+        await client.query('ROLLBACK');
+        throw innerError;
+      }
     });
-    console.log('Apertura de correo electrónico registrada exitosamente.'); // Log de éxito
   } catch (error) {
     console.error('Error al registrar la apertura de correo electrónico:', error); // Log de error
   }

@@ -1,7 +1,55 @@
 <template>
-  <CommonsTheLoadingOverlay :show="loadingCampaigns"/>
-  <div v-if="!loadingCampaigns" class="space-y-6">
-    <UiCard v-if="campaignsWithTemplates.length > 0">
+  <div v-if="loadingCampaigns || loadingGroups" class="space-y-6">
+    <CommonsTheLoading />
+  </div>
+  
+  <div v-else class="space-y-6">
+    <!-- Header with back button (only show when campaign is selected) -->
+    <div v-if="selectedCampaign" class="page-header">
+      <div class="flex items-center gap-3">
+        <UiButton variant="ghost" size="sm" @click="goBackToCampaignList" class="p-2">
+          <ArrowLeftIcon class="w-4 h-4" />
+        </UiButton>
+        <div>
+          <h1 class="page-title">Envío Masivo por Grupos</h1>
+          <p class="page-description">Selecciona un grupo de leads para el envío</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Header when no campaign selected -->
+    <div v-else class="page-header">
+      <div>
+        <h1 class="page-title">Envío Masivo por Grupos</h1>
+        <p class="page-description">Selecciona una campaña y un grupo para comenzar el envío</p>
+      </div>
+    </div>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 section-spacing">
+      <StatCard 
+        :value="campaignsWithTemplates.length" 
+        label="campañas disponibles" 
+        icon="heroicons:megaphone" 
+      />
+      <StatCard 
+        :value="totalTemplates" 
+        label="templates listos" 
+        icon="heroicons:document-text" 
+      />
+      <StatCard 
+        :value="availableGroups.length" 
+        label="grupos disponibles" 
+        icon="heroicons:user-group" 
+      />
+      <StatCard 
+        :value="totalLeadsForSending" 
+        label="leads para envío" 
+        icon="heroicons:users" 
+      />
+    </div>
+
+    <UiCard v-if="campaignsWithTemplates.length > 0" class="section-spacing">
       <UiCardHeader>
         <UiCardTitle style="font-family: 'Lato', sans-serif;">Seleccionar Campaña</UiCardTitle>
       </UiCardHeader>
@@ -55,11 +103,17 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-base font-medium mb-2">Asunto</label>
-            <UiInput v-model="emailSubject" placeholder="Asunto del email..." class="h-10 w-full" />
+            <div class="w-full p-3 border border-border rounded-md bg-muted/30 flex items-center min-h-[40px]">
+              <Icon name="heroicons:envelope" class="w-4 h-4 mr-2 text-primary" />
+              <span class="text-sm">{{ emailSubject || 'Sin asunto definido' }}</span>
+            </div>
           </div>
           <div>
             <label class="block text-base font-medium mb-2">Remitente</label>
-            <UiInput v-model="emailSender" placeholder="nombre@warolabs.com" class="h-10 w-full" />
+            <div class="w-full p-3 border border-border rounded-md bg-muted/30 flex items-center min-h-[40px]">
+              <Icon name="heroicons:at-symbol" class="w-4 h-4 mr-2 text-primary" />
+              <span class="text-sm">{{ emailSender || 'Sin remitente definido' }}</span>
+            </div>
           </div>
         </div>
         
@@ -136,14 +190,25 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCampaignStore } from '~/store/useCampaignStore';
 import { useCampaigns } from '~/composables/useCampaigns'; // Asegúrate que la ruta sea correcta
+import StatCard from '@/components/Commons/StatCard.vue'
 
 const router = useRouter();
 const campaignStore = useCampaignStore();
 const { success: toastSuccess, error: toastError, info: toastInfo, loading: toastLoading } = useToast();
+
+// Navigation function to go back to campaign list
+const goBackToCampaignList = () => {
+  selectedCampaign.value = '';
+  selectedTemplate.value = '';
+  emailSubject.value = '';
+  emailSender.value = 'noreply@warolabs.com';
+  leads.value = [];
+  campaignStore.clearSelectedCampaign();
+};
 
 const campaignsWithTemplates = ref([]);
 const loadingCampaigns = ref(false);
@@ -177,20 +242,29 @@ const selectedTemplateData = computed(() => {
   
   return {
     ...template,
-    content: template.active_version?.content || '<p>Contenido no disponible</p>',
+    content: template.content || '<p>Contenido no disponible</p>',
     name: template.name
   };
 });
 
 const verifiedLeadsCount = computed(() => {
-  return leads.value.filter(lead => lead.is_active).length;
+  return leads.value.filter(lead => lead.is_verified).length;
 });
 
 const canSend = computed(() => {
   return selectedCampaign.value && 
          selectedTemplate.value && 
          leads.value.length > 0 && 
-         emailSubject.value.trim();
+         emailSubject.value && 
+         emailSender.value;
+});
+
+const totalTemplates = computed(() => {
+  return campaignsWithTemplates.value.reduce((sum, campaign) => sum + (campaign.templates?.length || 0), 0);
+});
+
+const totalLeadsForSending = computed(() => {
+  return leads.value.length;
 });
 
 const loadCampaignsWithTemplates = async () => {
@@ -243,12 +317,14 @@ const loadCampaignData = async () => {
   try {
     const campaign = selectedCampaignData.value;
     if (campaign) {
-      emailSubject.value = campaign.default_subject || '';
       campaignStore.setSelectedCampaign(selectedCampaign.value, campaign);
       
       // Auto-select the first template if available
       if (campaign.templates && campaign.templates.length > 0) {
         selectedTemplate.value = campaign.templates[0].id;
+        // Use nextTick to ensure computed properties are updated before auto-filling
+        await nextTick();
+        updateFormFromTemplate();
       } else {
         selectedTemplate.value = '';
       }
@@ -261,6 +337,21 @@ const loadCampaignData = async () => {
   }
 };
 
+// Auto-completar campos desde el template seleccionado
+const updateFormFromTemplate = () => {
+  const templateData = selectedTemplateData.value;
+  if (templateData) {
+    // Auto-llenar asunto desde el template si existe
+    if (templateData.subject_template) {
+      emailSubject.value = templateData.subject_template;
+    }
+    
+    // Auto-llenar remitente desde el template si existe
+    if (templateData.sender_email) {
+      emailSender.value = templateData.sender_email;
+    }
+  }
+};
 
 const sendCampaign = async () => {
   if (!canSend.value) return;
@@ -303,6 +394,14 @@ const sendCampaign = async () => {
     }, 2000);
   }
 };
+
+// Watch for template selection changes to auto-populate form fields
+watch(selectedTemplate, async (newTemplateId) => {
+  if (newTemplateId) {
+    await nextTick();
+    updateFormFromTemplate();
+  }
+});
 
 onMounted(async () => {
   await loadCampaignsWithTemplates();

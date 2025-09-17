@@ -1,7 +1,8 @@
 <script setup>
 import { computed } from 'vue';
 import { useCampaignStore } from '@/store/useCampaignStore';
-import TheLoadingOverlay from '@/components/Commons/TheLoadingOverlay.vue';
+import { useToast } from '@/composables/useToast';
+import { useRouter } from 'vue-router';
 import StatCard from '@/components/Commons/StatCard.vue';
 import CampaignCard from '@/components/Commons/CampaignCard.vue';
 import CampaignsTable from '@/components/CampaignsTable.vue';
@@ -18,6 +19,13 @@ const isDeletingCampaign = ref(false);
 const showDataWarningModal = ref(false);
 const campaignDataWarning = ref(null);
 const store = useCampaignStore();
+const toast = useToast();
+const router = useRouter();
+
+// Navigation function
+const goBackToTemplates = () => {
+  router.push('/marketing/templates');
+};
 
 const { data: campaigns, pending: loading, refresh } = useFetch('/api/campaign', {
   transform: (response) => response.success ? response.data : [],
@@ -45,7 +53,7 @@ const deleteCampaignInfo = computed(() => {
 });
 
 const navigateToCampaign = (campaign) => {
-  navigateTo(`/dashboard/marketing/campaigns/${campaign.id}`);
+  navigateTo(`/marketing/campaigns/${campaign.id}`);
 };
 
 const editCampaign = (campaign) => {
@@ -87,6 +95,8 @@ const confirmDeleteCampaign = async () => {
     });
 
     if (response.success) {
+      // Mostrar toast de éxito
+      toast.success('Campaña eliminada exitosamente');
       // Recargar las campañas
       await refresh();
       // Cerrar modal
@@ -107,6 +117,9 @@ const confirmDeleteCampaign = async () => {
         data: error.data.details
       };
       showDataWarningModal.value = true;
+    } else {
+      // Error genérico
+      toast.error('Error al eliminar la campaña');
     }
   } finally {
     isDeletingCampaign.value = false;
@@ -150,16 +163,9 @@ const pauseCampaignFromWarning = async () => {
 
 </script>
 
-<style scoped>
-.bg-background-light {
-  background-color: #f8f9fa;
-  /* Un color de fondo claro */
-}
-</style>
 
 <template>
-  <div class="campaigns-dashboard">
-    <TheLoadingOverlay :show="loading" />
+  <div class="campaigns-dashboard dashboard-page">
 
     <div v-if="loading" class="min-h-screen"></div>
 
@@ -173,7 +179,7 @@ const pauseCampaignFromWarning = async () => {
       </div>
 
       <!-- Recent Campaigns -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+      <div class="card-base p-6">
 
         <CampaignsTable 
           :campaigns="campaigns" 

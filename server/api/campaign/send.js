@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
           c.name AS campaign_name,
           c.description
         FROM campaign c
-        WHERE c.id = $1
+        WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
       `, [campaignId]);
       campaignData = result.rows[0];
     });
@@ -56,11 +56,13 @@ export default defineEventHandler(async (event) => {
         const result = await client.query(`
           SELECT 
             t.name as template_name,
+            t.subject_template,
+            tv.id as template_version_id,
             tv.content,
-            tv.subject as template_subject
+            tv.version_number
           FROM templates t
-          JOIN template_versions tv ON t.id = tv.template_id
-          WHERE t.id = $1 AND tv.is_active = true
+          JOIN template_versions tv ON t.id = tv.template_id AND t.active_version_id = tv.id
+          WHERE t.id = $1 AND t.is_deleted = false
         `, [templateId]);
         templateData = result.rows[0];
       });
@@ -118,7 +120,7 @@ export default defineEventHandler(async (event) => {
     
     console.log(`Se encontraron ${leadsToSend.length} leads para enviar la campaña.`);
 
-    const emailSubjectTemplate = subject || templateData?.template_subject || 'Asunto no disponible';
+    const emailSubjectTemplate = subject || templateData?.subject_template || 'Asunto no disponible';
     const emailBodyTemplate = bodyHtml || templateData?.content || '<p>Este es el cuerpo de tu campaña.</p>';
     const fromEmail = sender || 'noreply@warolabs.com';
 
@@ -131,10 +133,10 @@ export default defineEventHandler(async (event) => {
         // 4. Crear registro en email_sends ANTES del envío
         await withPostgresClient(async (client) => {
           const result = await client.query(`
-            INSERT INTO email_sends (campaign_id, lead_id, email, subject, sent_at, status)
-            VALUES ($1, $2, $3, $4, NOW(), 'sending')
+            INSERT INTO email_sends (campaign_id, lead_id, email, subject, sent_at, status, template_id, template_version_id)
+            VALUES ($1, $2, $3, $4, NOW(), 'sending', $5, $6)
             RETURNING id
-          `, [campaignId, lead.id, lead.email, emailSubjectTemplate]);
+          `, [campaignId, lead.id, lead.email, emailSubjectTemplate, templateId, templateData?.template_version_id]);
           
           emailSendId = result.rows[0].id;
         });

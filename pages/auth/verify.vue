@@ -85,8 +85,8 @@ async function verifyMagicLink() {
       
       // Esperar un poco más para asegurar que la cookie se establezca
       setTimeout(() => {
-        console.log('🚀 Redirecting to dashboard...')
-        router.push('/dashboard')
+        console.log('🚀 Redirecting to marketing...')
+        router.push('/marketing')
       }, 2500)
     } else {
       throw new Error(response.message || 'No se pudo verificar el magic link')

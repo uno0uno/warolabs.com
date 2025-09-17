@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
             WHERE tv.template_id = t.id
           ) as versions
         FROM templates t
-        WHERE t.id = $1;
+        WHERE t.id = $1 AND t.is_deleted = false;
       `;
 
       const result = await client.query(query, [templateId]);

@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   }
 
   // Definir rutas protegidas específicamente
-  const protectedRoutes = ['/dashboard']
+  const protectedRoutes = ['/marketing']
   const authRoutes = ['/auth/login', '/auth/logout', '/auth/verify']
   
   // Si no es una ruta protegida, permitir acceso

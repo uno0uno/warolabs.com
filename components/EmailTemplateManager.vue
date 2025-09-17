@@ -1,46 +1,63 @@
 <template>
-  <Transition
-    enter-active-class="transition-all duration-400 ease-out"
-    enter-from-class="opacity-0 transform -translate-y-5"
-    enter-to-class="opacity-100 transform translate-y-0"
-    leave-active-class="transition-all duration-300 ease-in"
-    leave-from-class="opacity-100 transform translate-y-0"
-    leave-to-class="opacity-0 transform -translate-y-5"
-  >
-    <div class="space-y-6">
+  <div v-if="loading" class="space-y-6">
+    <CommonsTheLoading />
+  </div>
+  
+  <div v-else class="space-y-6">
+    <!-- Header (always visible) -->
+    <div v-if="!showEditModal && !showCreateForm && !showCreatePair" class="page-header">
+      <div>
+        <h2 class="page-title">Templates de Email</h2>
+        <p class="page-description">Gestiona templates para todos los tipos de email</p>
+      </div>
+      <div class="flex gap-2">
+        <UiButton @click="toggleCreateForm" :variant="showCreateForm ? 'outline' : 'default'" class="flex items-center gap-2">
+          <PlusIcon v-if="!showCreateForm" class="w-4 h-4" />
+          <XMarkIcon v-else class="w-4 h-4" />
+          {{ showCreateForm ? 'Cancelar' : 'Nuevo Template' }}
+        </UiButton>
+        <UiButton @click="toggleCreatePair" :variant="showCreatePair ? 'outline' : 'secondary'" class="flex items-center gap-2">
+          <DocumentDuplicateIcon v-if="!showCreatePair" class="w-4 h-4" />
+          <XMarkIcon v-else class="w-4 h-4" />
+          {{ showCreatePair ? 'Cancelar' : 'Crear Par Email+Landing' }}
+        </UiButton>
+      </div>
+    </div>
 
-      <CommonsTheLoadingOverlay v-if="loading" :show="loading" />
+    <!-- Stats Overview -->
+    <div v-if="!showEditModal && !showCreateForm && !showCreatePair" class="grid grid-cols-1 md:grid-cols-4 gap-6 section-spacing">
+      <StatCard 
+        :value="templates.length" 
+        label="total templates" 
+        icon="heroicons:document-text" 
+      />
+      <StatCard 
+        :value="emailTemplates" 
+        label="templates email" 
+        icon="heroicons:envelope" 
+      />
+      <StatCard 
+        :value="landingTemplates" 
+        label="templates landing" 
+        icon="heroicons:globe-alt" 
+      />
+      <StatCard 
+        :value="templatePairs" 
+        label="pares creados" 
+        icon="heroicons:document-duplicate" 
+      />
+    </div>
 
-      <div v-else-if="!loading && !showEditModal && !showCreateForm && !showCreatePair">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="text-xl font-semibold font-principal">Templates de Email</h2>
-            <p class="text-sm text-muted-foreground">Gestiona templates para todos los tipos de email</p>
-          </div>
-          <div class="flex gap-2">
-            <UiButton @click="toggleCreateForm" :variant="showCreateForm ? 'outline' : 'default'" class="flex items-center gap-2">
-              <PlusIcon v-if="!showCreateForm" class="w-4 h-4" />
-              <XMarkIcon v-else class="w-4 h-4" />
-              {{ showCreateForm ? 'Cancelar' : 'Nuevo Template' }}
-            </UiButton>
-            <UiButton @click="toggleCreatePair" :variant="showCreatePair ? 'outline' : 'secondary'" class="flex items-center gap-2">
-              <DocumentDuplicateIcon v-if="!showCreatePair" class="w-4 h-4" />
-              <XMarkIcon v-else class="w-4 h-4" />
-              {{ showCreatePair ? 'Cancelar' : 'Crear Par Email+Landing' }}
-            </UiButton>
-          </div>
-        </div>
-
-        <div >
-          <TemplatesTable 
-            :templates="templates" 
-            :deleting-template="deletingTemplateId"
-            @create="toggleCreateForm"
-            @edit="editTemplate"
-            @view="viewTemplate"
-            @delete="deleteTemplate"
-          />
-        </div>
+      <!-- Table and content -->
+      <div v-if="!showEditModal && !showCreateForm && !showCreatePair" class="section-spacing">
+        <TemplatesTable 
+          :templates="templates" 
+          :deleting-template="deletingTemplateId"
+          @create="toggleCreateForm"
+          @edit="editTemplate"
+          @view="viewTemplate"
+          @delete="deleteTemplate"
+        />
       </div>
 
       <Transition
@@ -87,7 +104,7 @@
           </UiCardHeader>
           <UiCardContent>
             <div class="space-y-6">
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/50">
                 <div>
                   <label class="block text-sm font-medium mb-2">Nombre Base del Template</label>
                   <UiInput v-model="pairForm.template_name" placeholder="Ej: Asesoría Legal Gratis" class="h-10 w-full" :disabled="!!editingPair" />
@@ -117,7 +134,7 @@
 
                   <div>
                     <label class="block text-sm font-medium mb-2">Contenido del Email</label>
-                    <QuillEditorClient v-model:content="pairForm.email_content" />
+                    <QuillEditorClient v-model="pairForm.email_content" />
                     <p class="text-xs text-muted-foreground mt-1">Variables: <code class="bg-muted px-1 rounded-sm font-mono text-xs" v-text="'{{nombre}}'"></code>, <code class="bg-muted px-1 rounded-sm font-mono text-xs" v-text="'{{email}}'"></code></p>
                   </div>
                 </div>
@@ -137,7 +154,7 @@
                     <label class="block text-sm font-medium mb-2">Descripción de la Landing</label>
                     <textarea 
                       v-model="pairForm.landing_description" 
-                      class="w-full p-3 border border-border rounded-md bg-background resize-none"
+                      class="w-full p-3 border border-border bg-background resize-none"
                       rows="4"
                       placeholder="Describe los beneficios de tu oferta..."
                     ></textarea>
@@ -160,7 +177,7 @@
                       <img 
                         :src="pairForm.landing_image_url" 
                         :alt="pairForm.landing_title"
-                        class="max-w-full h-auto rounded-md shadow-sm max-h-32 object-cover"
+                        class="max-w-full h-auto shadow-sm max-h-32 object-cover"
                         @error="onImageError"
                       />
                     </div>
@@ -227,19 +244,42 @@
                     <select 
                       v-model="templateForm.templateType" 
                       @change="onTemplateTypeChange"
-                      class="w-full h-10 p-2 border border-border rounded-md bg-background"
+                      class="w-full h-10 p-2 border border-border bg-background"
                     >
                       <option value="massive_email">Envío Masivo</option>
                     </select>
                   </div>
                 </div>
 
-                <div v-if="showEditModal && templateVersions.length > 0">
+                <div v-if="!showEditModal">
+                  <label class="block text-sm font-medium mb-2">
+                    Campaña <span class="text-destructive">*</span>
+                  </label>
+                  <select 
+                    v-model="templateForm.campaignId" 
+                    class="w-full h-10 p-2 border border-border bg-background"
+                    :class="{ 'border-destructive': !templateForm.campaignId && showValidationError }"
+                    required
+                  >
+                    <option value="">Selecciona una campaña...</option>
+                    <option v-for="campaign in availableCampaigns" :key="campaign.id" :value="campaign.id">
+                      {{ campaign.name }}
+                    </option>
+                  </select>
+                  <p v-if="!templateForm.campaignId && showValidationError" class="text-sm text-destructive mt-1">
+                    La selección de campaña es obligatoria
+                  </p>
+                  <p class="text-xs text-muted-foreground mt-1">
+                    El template se asociará automáticamente con la campaña seleccionada
+                  </p>
+                </div>
+
+                <div v-if="shouldShowVersionSelector">
                   <label class="block text-sm font-medium mb-2">Seleccionar Versión para Editar</label>
                   <select 
                     v-model="selectedVersionId" 
                     @change="loadSelectedVersion"
-                    class="w-full h-10 p-2 border border-border rounded-md bg-background"
+                    class="w-full h-10 p-2 border border-border bg-background"
                   >
                     <option v-for="version in templateVersions" :key="version.id" :value="version.id">
                       Versión {{ version.version_number }} - {{ formatDate(version.created_at) }}
@@ -252,7 +292,7 @@
                   <label class="block text-sm font-medium mb-2">Descripción</label>
                   <textarea 
                     v-model="templateForm.description" 
-                    class="w-full p-3 border border-border rounded-md bg-background h-full"
+                    class="w-full p-3 border border-border bg-background h-full"
                     rows="2"
                     placeholder="Describe el propósito de este template..."
                   ></textarea>
@@ -268,7 +308,7 @@
                   </div>
                 </div>
                 
-                <QuillEditorClient v-model:content="templateForm.content" />
+                <QuillEditorClient v-model="templateForm.content" />
                 <p class="text-sm text-muted-foreground mt-2 flex flex-wrap gap-2">
                   <span>Variables:</span>
                   <code class="bg-muted px-1 rounded-sm font-mono text-xs" v-text="'{{nombre}}'"></code>
@@ -285,7 +325,7 @@
                 :text="showEditModal ? 'Guardar Cambios' : 'Crear Template'"
                 :loading-text="showEditModal ? 'Guardando...' : 'Creando...'"
                 :loading="savingTemplate"
-                :disabled="!templateForm.name || !templateForm.content"
+                :disabled="!templateForm.name || !templateForm.content || (!showEditModal && !templateForm.campaignId)"
                 @click="saveTemplate"
                 class="bg-primary text-primary-foreground"
               />
@@ -294,8 +334,7 @@
         </UiCard>
       </Transition>
 
-    </div>
-  </Transition>
+  </div>
 
   <!-- Delete Confirmation Modal -->
   <ConfirmDeleteModal
@@ -314,6 +353,7 @@ import { DocumentTextIcon, PlusIcon, XMarkIcon, ArrowLeftIcon, PencilIcon, Docum
 import ConfirmDeleteModal from '~/components/Commons/ConfirmDeleteModal.vue';
 import { useTemplates } from '~/composables/useTemplates';
 import { useToast } from '~/composables/useToast';
+import StatCard from '@/components/Commons/StatCard.vue';
 
 const campaignStore = useCampaignStore();
 const toast = useToast();
@@ -337,12 +377,15 @@ const loadingTemplate = computed(() => loadingDetail.value);
 
 onMounted(() => {
   loadTemplateList();
+  loadAvailableCampaigns();
 });
 
 const showCreateForm = ref(false);
 const showEditModal = ref(false);
+const showViewerModal = ref(false);
 const showCreatePair = ref(false);
 const selectedVersionId = ref(null);
+const selectedTemplateId = ref(null);
 const savingTemplate = ref(false);
 const savingPair = ref(false);
 const editingPair = ref(null);
@@ -350,6 +393,8 @@ const deletingTemplateId = ref(null);
 const showDeleteModal = ref(false);
 const templateToDelete = ref(null);
 const isDeletingTemplate = ref(false);
+const availableCampaigns = ref([]);
+const showValidationError = ref(false);
 
 const templateForm = ref({
   id: null,
@@ -401,10 +446,18 @@ const shouldShowEmptyState = computed(() => {
          !showCreateForm.value && 
          !showEditModal.value && 
          !showCreatePair.value && 
-         !loading.value && 
          !loadingTemplate.value &&
          !savingTemplate.value &&
          !savingPair.value;
+});
+
+const shouldShowVersionSelector = computed(() => {
+  console.log('🔄 shouldShowVersionSelector computed:', {
+    showEditModal: showEditModal.value,
+    templateVersions: templateVersions.value,
+    templateVersionsLength: templateVersions.value?.length || 0
+  });
+  return showEditModal.value && templateVersions.value && templateVersions.value.length > 0;
 });
 
 const deleteTemplateInfo = computed(() => {
@@ -435,6 +488,18 @@ const deleteTemplateInfo = computed(() => {
   }
 });
 
+const emailTemplates = computed(() => {
+  return templates.value.filter(template => !template.is_pair && (template.template_type === 'massive_email' || template.template_type === 'email')).length;
+});
+
+const landingTemplates = computed(() => {
+  return templates.value.filter(template => !template.is_pair && template.template_type === 'landing').length;
+});
+
+const templatePairs = computed(() => {
+  return templates.value.filter(template => template.is_pair).length;
+});
+
 const editTemplate = async (templateId) => {
   try {
     const template = templates.value.find(t => t.id === templateId);
@@ -445,12 +510,13 @@ const editTemplate = async (templateId) => {
     }
     
     const detailedTemplate = await loadTemplateById(templateId);
+    
     if (!detailedTemplate) {
       toast.error('No se pudo cargar el template.');
       return;
     }
 
-    const activeVersion = detailedTemplate.versions.find(v => v.is_active) || detailedTemplate.versions[0];
+    const activeVersion = detailedTemplate.versions?.find(v => v.is_active) || detailedTemplate.versions?.[0];
     
     templateForm.value = {
       id: detailedTemplate.id,
@@ -587,6 +653,13 @@ const handleSubmitPair = async () => {
 };
 
 const saveTemplate = async () => {
+  // Validar que se haya seleccionado una campaña para nuevos templates
+  if (!showEditModal.value && !templateForm.value.campaignId) {
+    showValidationError.value = true;
+    toast.error('Debes seleccionar una campaña para el template');
+    return;
+  }
+
   try {
     savingTemplate.value = true;
     
@@ -615,8 +688,10 @@ const saveTemplate = async () => {
 
     if (showEditModal.value) {
       await updateTemplate(templateForm.value.id, payload);
+      toast.success('Template actualizado exitosamente');
     } else {
       await createTemplate(payload);
+      toast.success('Template creado exitosamente');
     }
     
     showCreateForm.value = false;
@@ -674,6 +749,18 @@ const resetForm = () => {
   };
   templateVersions.value = [];
   selectedVersionId.value = null;
+  showValidationError.value = false;
+};
+
+// Cargar campañas disponibles
+const loadAvailableCampaigns = async () => {
+  try {
+    const response = await $fetch('/api/campaign');
+    availableCampaigns.value = response.data || [];
+  } catch (error) {
+    console.error('Error loading campaigns:', error);
+    availableCampaigns.value = [];
+  }
 };
 
 const formatDate = (dateString) => {

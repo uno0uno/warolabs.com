@@ -10,14 +10,17 @@ export default defineEventHandler(async (event) => {
           c.name,
           t.id as template_id,
           t.template_name,
+          t.subject_template,
+          t.sender_email,
           tv.id as template_version_id,
           tv.content as template_content,
           tv.version_number
         FROM campaign c
-        INNER JOIN campaign_template_versions ctv ON c.id = ctv.campaign_id
+        INNER JOIN campaign_template_versions ctv ON c.id = ctv.campaign_id AND ctv.is_active = true
         INNER JOIN template_versions tv ON ctv.template_version_id = tv.id
-        INNER JOIN templates t ON tv.template_id = t.id AND t.active_version_id = tv.id
-        WHERE t.template_type = 'massive_email'
+        INNER JOIN templates t ON tv.template_id = t.id AND t.active_version_id = tv.id AND t.is_deleted = false
+        WHERE t.template_type = 'massive_email' 
+          AND (c.is_deleted = false OR c.is_deleted IS NULL)
         ORDER BY c.id DESC, t.id DESC;
       `;
 
@@ -43,6 +46,8 @@ export default defineEventHandler(async (event) => {
             campaign.templates.push({
               id: row.template_id,
               name: row.template_name,
+              subject_template: row.subject_template,
+              sender_email: row.sender_email,
               version_id: row.template_version_id,
               content: row.template_content,
               version_number: row.version_number
