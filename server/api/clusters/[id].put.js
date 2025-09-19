@@ -1,9 +1,10 @@
 // server/api/clusters/[id].put.js
 
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+    const tenantContext = event.context.tenant;
     if (event.method !== 'PUT') {
         throw createError({ statusCode: 405, statusMessage: 'Method Not Allowed', message: 'This endpoint only accepts PUT requests.' });
     }

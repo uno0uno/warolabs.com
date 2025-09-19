@@ -1,8 +1,10 @@
 // server/api/profiles/index.post.js
 
-import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient'; // Importa la nueva utilidad
+import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+    const tenantContext = event.context.tenant;
 
     if (event.method !== 'POST') {
         setResponseStatus(event, 405);

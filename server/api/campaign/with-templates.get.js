@@ -1,10 +1,12 @@
 import { defineEventHandler } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   return await withPostgresClient(async (client) => {
     try {
-      const query = `
+      let query = `
         SELECT 
           c.id,
           c.name,
@@ -19,12 +21,19 @@ export default defineEventHandler(async (event) => {
         INNER JOIN campaign_template_versions ctv ON c.id = ctv.campaign_id AND ctv.is_active = true
         INNER JOIN template_versions tv ON ctv.template_version_id = tv.id
         INNER JOIN templates t ON tv.template_id = t.id AND t.active_version_id = tv.id AND t.is_deleted = false
-        WHERE t.template_type = 'massive_email' 
-          AND (c.is_deleted = false OR c.is_deleted IS NULL)
-        ORDER BY c.id DESC, t.id DESC;
+        WHERE (c.is_deleted = false OR c.is_deleted IS NULL)
       `;
 
-      const result = await client.query(query);
+      let queryParams = [];
+      
+      if (!tenantContext.is_superuser) {
+        query += ` AND c.profile_id = $1`;
+        queryParams.push(tenantContext.user_id);
+      }
+      
+      query += ` ORDER BY c.id DESC, t.id DESC`;
+
+      const result = await client.query(query, queryParams);
       
       // Group by campaign
       const campaignsMap = new Map();

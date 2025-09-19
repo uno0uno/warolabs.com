@@ -1,9 +1,10 @@
 import { defineEventHandler, getRouterParam, createError } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
   const templateId = getRouterParam(event, 'id');
+  const tenantContext = event.context.tenant;
   
   if (!templateId) {
     throw createError({
@@ -14,32 +15,84 @@ export default defineEventHandler(async (event) => {
 
   return await withPostgresClient(async (client) => {
     try {
-      // Get user info for audit trail (optional - remove if no auth)
-      let userId = null;
-      try {
-        const authResult = await verifyAuthToken(event);
-        userId = authResult?.userId || null;
-      } catch (e) {
-        // Continue without user ID if auth fails
-      }
+      console.log(`🔐 Eliminando template ${templateId} para tenant: ${tenantContext.tenant_name}`);
+      
+      // User ID desde el contexto de tenant
+      const userId = tenantContext.user_id;
 
       // Begin transaction
       await client.query('BEGIN');
 
-      // Get template information before soft delete
-      const templateQuery = `
-        SELECT 
-          t.id,
-          t.template_name as name,
-          t.template_type,
-          t.pair_id,
-          t.active_version_id,
-          t.is_deleted
-        FROM templates t
-        WHERE t.id = $1 AND t.is_deleted = false
-      `;
+      // Verificar acceso al template con ownership
+      let verifyQuery;
+      let verifyParams;
+
+      if (tenantContext.is_superuser) {
+        // Superuser can delete any template
+        console.log('🔓 Superuser access: can delete any template');
+        verifyQuery = `
+          SELECT t.id 
+          FROM templates t
+          WHERE t.id = $1 AND t.is_deleted = false
+        `;
+        verifyParams = [templateId];
+      } else {
+        // Other users can only delete their own templates
+        console.log(`🔒 User access: verifying template ownership for ${tenantContext.user_id}`);
+        verifyQuery = `
+          SELECT t.id 
+          FROM templates t
+          WHERE t.id = $1 AND t.is_deleted = false AND t.created_by_profile_id = $2
+        `;
+        verifyParams = [templateId, tenantContext.user_id];
+      }
       
-      const templateResult = await client.query(templateQuery, [templateId]);
+      const verifyResult = await client.query(verifyQuery, verifyParams);
+      
+      if (verifyResult.rows.length === 0) {
+        await client.query('ROLLBACK');
+        console.log(`❌ Template ${templateId} no encontrado o sin acceso para tenant: ${tenantContext.tenant_name}`);
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Template not found or access denied'
+        });
+      }
+
+      // Get template information before soft delete
+      let templateQuery;
+      let templateParams;
+
+      if (tenantContext.is_superuser) {
+        // Superuser can access any template
+        templateQuery = `
+          SELECT 
+            t.id,
+            t.template_name as name,
+            t.template_type,
+            t.pair_id,
+            t.active_version_id,
+            t.is_deleted
+          FROM templates t
+          WHERE t.id = $1 AND t.is_deleted = false
+        `;
+        templateParams = [templateId];
+      } else {
+        // Other users can only access their own templates
+        templateQuery = `
+          SELECT 
+            t.id,
+            t.template_name as name,
+            t.template_type,
+            t.pair_id,
+            t.active_version_id,
+            t.is_deleted
+          FROM templates t
+          WHERE t.id = $1 AND t.is_deleted = false AND t.created_by_profile_id = $2
+        `;
+        templateParams = [templateId, tenantContext.user_id];
+      }
+      
+      const templateResult = await client.query(templateQuery, templateParams);
       
       if (templateResult.rows.length === 0) {
         await client.query('ROLLBACK');
@@ -114,6 +167,7 @@ export default defineEventHandler(async (event) => {
       // Commit transaction
       await client.query('COMMIT');
 
+      console.log(`✅ Template ${templateId} ("${template.name}") eliminado exitosamente para tenant: ${tenantContext.tenant_name}`);
       return {
         success: true,
         message: `Template "${template.name}" eliminado exitosamente con trazabilidad completa`,
@@ -124,13 +178,19 @@ export default defineEventHandler(async (event) => {
           deleted_at: new Date().toISOString(),
           recoverable: true,
           deactivated_associations: activeAssociations.rows.length
+        },
+        tenant_info: {
+          tenant_id: tenantContext.tenant_id,
+          tenant_name: tenantContext.tenant_name,
+          user_role: tenantContext.role,
+          is_superuser: tenantContext.is_superuser
         }
       };
 
     } catch (error) {
       // Rollback on error
       await client.query('ROLLBACK');
-      console.error('Error soft deleting template:', error);
+      console.error(`Error deleting template ${templateId} para tenant ${tenantContext.tenant_name}:`, error);
       
       if (error.statusCode) {
         throw error; // Re-throw HTTP errors

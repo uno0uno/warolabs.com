@@ -1,13 +1,9 @@
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
-  // Authentication is commented out for testing - uncomment when needed
-  // try {
-  //   await verifyAuthToken(event);
-  // } catch (error) {
-  //   throw error;
-  // }
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
+  console.log(`🔐 Creando lead group para tenant: ${tenantContext.tenant_name}`);
 
   const body = await readBody(event);
   const {
@@ -36,22 +32,24 @@ export default defineEventHandler(async (event) => {
     try {
       await client.query('BEGIN');
 
-      // First create the lead group record
+      // First create the lead group record with tenant association
       const createGroupQuery = `
         INSERT INTO lead_groups (
           name,
           description,
           filters,
+          created_by_profile_id,
           created_at
         )
-        VALUES ($1, $2, $3::jsonb, NOW())
+        VALUES ($1, $2, $3::jsonb, $4, NOW())
         RETURNING id, created_at
       `;
 
       const groupResult = await client.query(createGroupQuery, [
         group_name,
         group_description || null,
-        JSON.stringify(filters)
+        JSON.stringify(filters),
+        tenantContext.user_id
       ]);
 
       const groupId = groupResult.rows[0].id;
@@ -108,7 +106,7 @@ export default defineEventHandler(async (event) => {
 
         if (filters.campaigns && filters.campaigns.length > 0) {
           const campaignPlaceholders = filters.campaigns.map(() => `$${paramIndex++}`).join(',');
-          whereConditions.push(`campaign_slugs::text[] && ARRAY[${campaignPlaceholders}]::text[]`);
+          whereConditions.push(`campaign_slugs && ARRAY[${campaignPlaceholders}]::text[]`);
           queryParams.push(...filters.campaigns);
         }
 
@@ -165,39 +163,65 @@ export default defineEventHandler(async (event) => {
           paramIndex++;
         }
 
+        // Handle specific emails filter
+        if (filters.specific_emails && filters.specific_emails.length > 0) {
+          const emailPlaceholders = filters.specific_emails.map(() => `$${paramIndex++}`).join(',');
+          whereConditions.push(`email IN (${emailPlaceholders})`);
+          queryParams.push(...filters.specific_emails);
+        }
+
         const whereClause = whereConditions.length > 0 
           ? `WHERE ${whereConditions.join(' AND ')}` 
           : '';
 
-        // Insert leads into lead_group_members
-        const addMembersQuery = `
-          INSERT INTO lead_group_members (group_id, lead_id, added_at)
-          WITH lead_metrics AS (
-            SELECT 
-              l.id as lead_id,
-              l.is_verified,
-              l.converted_at,
-              COUNT(DISTINCT li.id) as interaction_count,
-              COUNT(DISTINCT CASE WHEN li.interaction_type = 'email_open' THEN li.id END) as email_open_count,
-              COUNT(DISTINCT CASE WHEN li.interaction_type = 'email_click' THEN li.id END) as email_click_count,
-              ARRAY_AGG(DISTINCT li.source) FILTER (WHERE li.source IS NOT NULL) as sources,
-              ARRAY_AGG(DISTINCT li.medium) FILTER (WHERE li.medium IS NOT NULL) as mediums,
-              ARRAY_AGG(DISTINCT li.campaign) FILTER (WHERE li.campaign IS NOT NULL) as campaigns,
-              ARRAY_AGG(DISTINCT c.slug) FILTER (WHERE c.slug IS NOT NULL) as campaign_slugs,
-              ARRAY_AGG(DISTINCT li.interaction_type) FILTER (WHERE li.interaction_type IS NOT NULL) as interaction_types,
-              MAX(li.created_at) as last_interaction_date
+        // If campaigns are specified, use a simpler approach to get ALL leads from those campaigns
+        let addMembersQuery;
+        if (filters.campaigns && filters.campaigns.length > 0) {
+          // Simple approach: get all leads from specified campaigns
+          const campaignPlaceholders = filters.campaigns.map((_, index) => `$${index + 1}`).join(',');
+          addMembersQuery = `
+            INSERT INTO lead_group_members (group_id, lead_id, added_at)
+            SELECT DISTINCT $${filters.campaigns.length + 1}::uuid, l.id, NOW()
             FROM leads l
-            LEFT JOIN lead_interactions li ON l.id = li.lead_id
-            LEFT JOIN campaign_leads cl ON l.id = cl.lead_id
-            LEFT JOIN campaign c ON cl.campaign_id = c.id
-            GROUP BY l.id, l.is_verified, l.converted_at
-          )
-          SELECT $${paramIndex}, lead_id, NOW()
-          FROM lead_metrics
-          ${whereClause}
-        `;
+            JOIN campaign_leads cl ON l.id = cl.lead_id
+            JOIN campaign c ON cl.campaign_id = c.id
+            WHERE c.slug IN (${campaignPlaceholders})
+          `;
+          queryParams = [...filters.campaigns, groupId];
+        } else {
+          // Complex filtering approach for other criteria
+          addMembersQuery = `
+            INSERT INTO lead_group_members (group_id, lead_id, added_at)
+            WITH lead_metrics AS (
+              SELECT 
+                l.id as lead_id,
+                l.is_verified,
+                l.converted_at,
+                p.email,
+                COUNT(DISTINCT li.id) as interaction_count,
+                COUNT(DISTINCT CASE WHEN li.interaction_type = 'email_open' THEN li.id END) as email_open_count,
+                COUNT(DISTINCT CASE WHEN li.interaction_type = 'email_click' THEN li.id END) as email_click_count,
+                ARRAY_AGG(DISTINCT li.source) FILTER (WHERE li.source IS NOT NULL) as sources,
+                ARRAY_AGG(DISTINCT li.medium) FILTER (WHERE li.medium IS NOT NULL) as mediums,
+                ARRAY_AGG(DISTINCT li.campaign) FILTER (WHERE li.campaign IS NOT NULL) as campaigns,
+                ARRAY_AGG(DISTINCT c.slug) FILTER (WHERE c.slug IS NOT NULL) as campaign_slugs,
+                ARRAY_AGG(DISTINCT c.id::text) FILTER (WHERE c.id IS NOT NULL) as campaign_ids,
+                ARRAY_AGG(DISTINCT li.interaction_type) FILTER (WHERE li.interaction_type IS NOT NULL) as interaction_types,
+                MAX(li.created_at) as last_interaction_date
+              FROM leads l
+              JOIN profile p ON l.profile_id = p.id
+              LEFT JOIN lead_interactions li ON l.id = li.lead_id
+              LEFT JOIN campaign_leads cl ON l.id = cl.lead_id
+              LEFT JOIN campaign c ON cl.campaign_id = c.id
+              GROUP BY l.id, l.is_verified, l.converted_at, p.email
+            )
+            SELECT $${paramIndex}::uuid, lead_id, NOW()
+            FROM lead_metrics
+            ${whereClause}
+          `;
+          queryParams.push(groupId);
+        }
 
-        queryParams.push(groupId);
         membersResult = await client.query(addMembersQuery, queryParams);
       }
 

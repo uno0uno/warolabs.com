@@ -1,11 +1,13 @@
 // server/api/campaign/send.js
+import { defineEventHandler, readBody, createError } from 'h3';
 import { withPostgresClient } from '~/server/utils/basedataSettings/withPostgresClient';
 import { injectTracking } from '~/server/utils/tracking';
 import { sendEmail } from '~/server/utils/aws/sesClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
-  console.log('API de envío de campaña llamada.');
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
+  console.log(`🔐 API de envío de campaña para tenant: ${tenantContext.tenant_name}`);
   const { campaignId, templateId, leadIds, subject, sender, emails, bodyHtml } = await readBody(event);
   const config = useRuntimeConfig();
   const { baseUrl } = config.public;
@@ -18,27 +20,31 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    await verifyAuthToken(event);
-  } catch (error) {
-    throw error;
-  }
-
-  try {
     let leadsToSend;
     let campaignData;
     let templateData;
 
-    // 1. Obtener la información de la campaña
-    console.log(`Verificando la existencia de la campaña con ID: ${campaignId}`);
+    // 1. Obtener la información de la campaña con tenant isolation
+    console.log(`Verificando la existencia de la campaña con ID: ${campaignId} para tenant: ${tenantContext.tenant_name}`);
     await withPostgresClient(async (client) => {
-      const result = await client.query(`
+      const baseCampaignQuery = `
         SELECT 
           c.id,
           c.name AS campaign_name,
           c.description
         FROM campaign c
+        JOIN profile p ON c.profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
         WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
-      `, [campaignId]);
+      `;
+      
+      const { query: campaignQuery, params: campaignParams } = addTenantFilterSimple(
+        baseCampaignQuery, 
+        tenantContext, 
+        [campaignId]
+      );
+      
+      const result = await client.query(campaignQuery, campaignParams);
       campaignData = result.rows[0];
     });
 

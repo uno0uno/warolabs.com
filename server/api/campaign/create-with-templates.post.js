@@ -1,12 +1,13 @@
 import { defineEventHandler, readBody } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
+  
   return await withPostgresClient(async (client) => {
     try {
-      // Authentication - uncomment when needed
-      // await verifyAuthToken(event);
+      console.log(`🔐 Creando campaña con templates para tenant: ${tenantContext.tenant_name}`);
 
       const body = await readBody(event);
       const { name, description } = body;
@@ -21,8 +22,8 @@ export default defineEventHandler(async (event) => {
       // Generate slug from name
       const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       
-      // Default profile ID - in production, get this from authenticated user
-      const profileId = '550e8400-e29b-41d4-a716-446655440000';
+      // Use authenticated user's profile ID from tenant context
+      const profileId = tenantContext.user_id;
 
       // Prepare template content
       const emailContent = `
@@ -151,8 +152,8 @@ export default defineEventHandler(async (event) => {
         message: status_message,
         data: {
           campaign: campaignData,
-          emailTemplate: campaignData.templates?.find(t => t.type === 'email') || null,
-          landingTemplate: campaignData.templates?.find(t => t.type === 'landing') || null,
+          emailTemplate: campaignData.templates?.find(t => t.template_type === 'email') || null,
+          landingTemplate: campaignData.templates?.find(t => t.template_type === 'landing') || null,
           requiredTemplates: {
             email: true,
             landing: true

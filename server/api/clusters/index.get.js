@@ -1,9 +1,10 @@
 // server/api/clusters/index.get.js
 
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
 
   if (event.method !== 'GET') {
     throw createError({ statusCode: 405, statusMessage: 'Method Not Allowed', message: 'This endpoint only accepts GET requests.' });
@@ -35,15 +36,9 @@ export default defineEventHandler(async (event) => {
   if (queryParams.start_date_after) p_filters.start_date_after = queryParams.start_date_after; //
   if (queryParams.end_date_before) p_filters.end_date_before = queryParams.end_date_before; //
 
-  console.log('GET /api/clusters - Parámetros recibidos:', { limit, offset, p_filters }); //
+  console.log(`🔐 GET /api/clusters - Parámetros recibidos para tenant ${tenantContext.tenant_name}:`, { limit, offset, p_filters });
 
   return await withPostgresClient(async (client) => {
-
-    // try {
-    //     await verifyAuthToken(event);
-    // } catch (error) {
-    //     throw error;
-    // }
 
     const pgQuery = `SELECT cluster_id, profile_id, cluster_name, description, start_date, end_date,
                       cluster_type, slug_cluster, legal_info_id,

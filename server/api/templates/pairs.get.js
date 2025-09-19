@@ -1,12 +1,18 @@
 import { defineEventHandler } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   return await withPostgresClient(async (client) => {
     try {
-      console.log('🔍 [API] Fetching template pairs...');
+      if (tenantContext.is_superuser) {
+        console.log(`🔓 Superuser obteniendo todos los pares de templates`);
+      } else {
+        console.log(`🔐 Obteniendo pares de templates para usuario: ${tenantContext.user_id}`);
+      }
       
-      const query = `
+      let baseQuery = `
         SELECT 
           t.pair_id,
           -- Obtener el nombre base del par (sin " - Email" o " - Landing")
@@ -26,12 +32,22 @@ export default defineEventHandler(async (event) => {
           COUNT(*) as template_count
         FROM templates t
         WHERE t.pair_id IS NOT NULL AND t.is_deleted = false
-        GROUP BY t.pair_id
-        HAVING COUNT(*) = 2  -- Solo pares completos
-        ORDER BY MIN(t.created_at) DESC;
       `;
 
-      const result = await client.query(query);
+      let params = [];
+      
+      if (!tenantContext.is_superuser) {
+        baseQuery += ` AND t.created_by_profile_id = $1`;
+        params.push(tenantContext.user_id);
+      }
+      
+      baseQuery += `
+        GROUP BY t.pair_id
+        HAVING COUNT(*) = 2  -- Solo pares completos
+        ORDER BY MIN(t.created_at) DESC
+      `;
+
+      const result = await client.query(baseQuery, params);
       console.log(`📋 [API] Found ${result.rows.length} template pairs`);
       
       // Formatear los resultados
@@ -42,8 +58,8 @@ export default defineEventHandler(async (event) => {
         created_at: row.created_at,
         sender_email: row.sender_email,
         templates: row.templates,
-        email_template: row.templates.find(t => t.type === 'email'),
-        landing_template: row.templates.find(t => t.type === 'landing'),
+        email_template: row.templates.find(t => t.template_type === 'email'),
+        landing_template: row.templates.find(t => t.template_type === 'landing'),
         is_complete: parseInt(row.template_count) === 2
       }));
 

@@ -1,16 +1,12 @@
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
-  // Authentication is commented out for testing - uncomment when needed
-  // try {
-  //   await verifyAuthToken(event);
-  // } catch (error) {
-  //   throw error;
-  // }
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
 
   return await withPostgresClient(async (client) => {
     try {
+      console.log(`🔐 Consultando lead groups para tenant: ${tenantContext.tenant_name}`);
       // First check if tables exist
       const checkTableQuery = `
         SELECT EXISTS (
@@ -29,6 +25,7 @@ export default defineEventHandler(async (event) => {
             name varchar(255) NOT NULL,
             description text,
             filters jsonb DEFAULT '{}'::jsonb,
+            created_by_profile_id uuid REFERENCES profile(id),
             created_at timestamp with time zone DEFAULT now(),
             updated_at timestamp with time zone DEFAULT now()
           )
@@ -62,8 +59,8 @@ export default defineEventHandler(async (event) => {
         };
       }
 
-      // Get all lead groups with member counts
-      const groupsQuery = `
+      // Get lead groups with tenant isolation
+      const baseGroupsQuery = `
         SELECT 
           lg.id,
           lg.name,
@@ -75,19 +72,32 @@ export default defineEventHandler(async (event) => {
           COUNT(DISTINCT CASE WHEN l.converted_at IS NOT NULL THEN lgm.lead_id END) as converted_count,
           COUNT(DISTINCT CASE WHEN l.is_verified = true THEN lgm.lead_id END) as verified_count
         FROM lead_groups lg
+        JOIN profile p ON lg.created_by_profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
         LEFT JOIN lead_group_members lgm ON lg.id = lgm.group_id
         LEFT JOIN leads l ON lgm.lead_id = l.id
         GROUP BY lg.id, lg.name, lg.description, lg.filters, lg.created_at, lg.updated_at
         ORDER BY lg.created_at DESC
       `;
 
-      const groupsResult = await client.query(groupsQuery);
+      // Apply tenant filter
+      const { query: groupsQuery, params: groupsParams } = addTenantFilterSimple(baseGroupsQuery, tenantContext, []);
+
+      const groupsResult = await client.query(groupsQuery, groupsParams);
 
       // For each group, get recent activity
       const groupsWithActivity = await Promise.all(
         groupsResult.rows.map(async (group) => {
           const activityQuery = `
             SELECT 
+              COUNT(DISTINCT CASE 
+                WHEN li.interaction_type = 'email_open' 
+                THEN li.lead_id 
+              END) as total_opens,
+              COUNT(DISTINCT CASE 
+                WHEN li.interaction_type = 'email_click' 
+                THEN li.lead_id 
+              END) as total_clicks,
               COUNT(DISTINCT CASE 
                 WHEN li.interaction_type = 'email_open' 
                 AND li.created_at >= NOW() - INTERVAL '7 days' 
@@ -100,15 +110,38 @@ export default defineEventHandler(async (event) => {
               END) as recent_clicks,
               MAX(li.created_at) as last_activity
             FROM lead_group_members lgm
-            JOIN lead_interactions li ON lgm.lead_id = li.lead_id
+            LEFT JOIN lead_interactions li ON lgm.lead_id = li.lead_id
             WHERE lgm.group_id = $1
           `;
 
           const activityResult = await client.query(activityQuery, [group.id]);
           
+          console.log(`📊 Activity stats for group ${group.name}:`, {
+            group_id: group.id,
+            member_count: group.member_count,
+            total_opens: activityResult.rows[0].total_opens,
+            total_clicks: activityResult.rows[0].total_clicks,
+            recent_opens: activityResult.rows[0].recent_opens,
+            recent_clicks: activityResult.rows[0].recent_clicks,
+            raw_result: activityResult.rows[0]
+          });
+          
+          // Debug: Ver qué leads están en este grupo
+          const debugMembersQuery = `
+            SELECT lgm.lead_id, l.profile_id, p.email 
+            FROM lead_group_members lgm 
+            JOIN leads l ON lgm.lead_id = l.id 
+            JOIN profile p ON l.profile_id = p.id 
+            WHERE lgm.group_id = $1
+          `;
+          const debugMembersResult = await client.query(debugMembersQuery, [group.id]);
+          console.log(`👥 Members in group ${group.name}:`, debugMembersResult.rows);
+          
           return {
             ...group,
-            recent_activity: {
+            activity_stats: {
+              total_opens: activityResult.rows[0].total_opens || 0,
+              total_clicks: activityResult.rows[0].total_clicks || 0,
               recent_opens: activityResult.rows[0].recent_opens || 0,
               recent_clicks: activityResult.rows[0].recent_clicks || 0,
               last_activity: activityResult.rows[0].last_activity
@@ -120,15 +153,28 @@ export default defineEventHandler(async (event) => {
         })
       );
 
+      console.log(`✅ Encontrados ${groupsResult.rowCount} lead groups para tenant: ${tenantContext.tenant_name}`);
       return {
         success: true,
         data: groupsWithActivity,
-        total_groups: groupsResult.rowCount
+        total_groups: groupsResult.rowCount,
+        tenant_info: {
+          tenant_id: tenantContext.tenant_id,
+          tenant_name: tenantContext.tenant_name,
+          user_role: tenantContext.role,
+          is_superuser: tenantContext.is_superuser
+        }
       };
 
     } catch (error) {
-      console.error('Error fetching lead groups:', error);
-      throw error;
+      console.error(`Error fetching lead groups para tenant ${tenantContext.tenant_name}:`, error);
+      if (error.statusCode) {
+        throw error; // Re-throw known errors
+      }
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Error fetching lead groups'
+      });
     }
   }, event);
 });

@@ -1,8 +1,9 @@
 import { defineEventHandler, getRouterParam } from 'h3';
 import { withPostgresClient } from '../../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../../utils/security/jwtVerifier';
+import { withTenantIsolation } from '../../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   const pairId = getRouterParam(event, 'id');
   
   if (!pairId) {
@@ -26,19 +27,41 @@ export default defineEventHandler(async (event) => {
       // Begin transaction
       await client.query('BEGIN');
 
-      // Get template pair information before soft delete
-      const pairQuery = `
-        SELECT 
-          t.id,
-          t.template_name as name,
-          t.template_type,
-          t.pair_id,
-          t.active_version_id
-        FROM templates t
-        WHERE t.pair_id = $1 AND t.is_deleted = false
-      `;
+      // Get template pair information before soft delete with ownership verification
+      let pairQuery;
+      let pairParams;
+
+      if (tenantContext.is_superuser) {
+        // Superuser can delete any pair
+        console.log('🔓 Superuser access: can delete any template pair');
+        pairQuery = `
+          SELECT 
+            t.id,
+            t.template_name as name,
+            t.template_type,
+            t.pair_id,
+            t.active_version_id
+          FROM templates t
+          WHERE t.pair_id = $1 AND t.is_deleted = false
+        `;
+        pairParams = [pairId];
+      } else {
+        // Other users can only delete their own template pairs
+        console.log(`🔒 User access: verifying template pair ownership for ${tenantContext.user_id}`);
+        pairQuery = `
+          SELECT 
+            t.id,
+            t.template_name as name,
+            t.template_type,
+            t.pair_id,
+            t.active_version_id
+          FROM templates t
+          WHERE t.pair_id = $1 AND t.is_deleted = false AND t.created_by_profile_id = $2
+        `;
+        pairParams = [pairId, tenantContext.user_id];
+      }
       
-      const pairResult = await client.query(pairQuery, [pairId]);
+      const pairResult = await client.query(pairQuery, pairParams);
       
       if (pairResult.rows.length === 0) {
         await client.query('ROLLBACK');

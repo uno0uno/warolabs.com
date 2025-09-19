@@ -1,7 +1,9 @@
 import { defineEventHandler, getQuery } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   return await withPostgresClient(async (client) => {
     try {
       const query = getQuery(event);
@@ -15,7 +17,7 @@ export default defineEventHandler(async (event) => {
       }
 
       // Check if campaign has required templates
-      const validationQuery = `
+      let validationQuery = `
         SELECT 
           c.id as campaign_id,
           c.name as campaign_name,
@@ -55,10 +57,18 @@ export default defineEventHandler(async (event) => {
         LEFT JOIN template_versions tv ON ctv.template_version_id = tv.id
         LEFT JOIN templates t ON tv.template_id = t.id AND t.is_deleted = false
         WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
-        GROUP BY c.id, c.name, c.status;
       `;
 
-      const result = await client.query(validationQuery, [campaignId]);
+      let queryParams = [campaignId];
+      
+      if (!tenantContext.is_superuser) {
+        validationQuery += ` AND c.profile_id = $2`;
+        queryParams.push(tenantContext.user_id);
+      }
+      
+      validationQuery += ` GROUP BY c.id, c.name, c.status`;
+
+      const result = await client.query(validationQuery, queryParams);
       
       if (result.rows.length === 0) {
         throw createError({

@@ -1,9 +1,15 @@
 import { defineEventHandler, readBody, createError } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   return await withPostgresClient(async (client) => {
     try {
+      console.log(`🔐 Creando template para tenant: ${tenantContext.tenant_name}`);
+      console.log(`👤 Profile ID: ${tenantContext.profile_id}`);
+      console.log(`🆔 Tenant ID: ${tenantContext.tenant_id}`);
+      
       const body = await readBody(event);
       const { 
         name, 
@@ -22,10 +28,10 @@ export default defineEventHandler(async (event) => {
         });
       }
 
-      // Create template
+      // Create template with tenant profile association
       const templateQuery = `
-        INSERT INTO templates (template_name, description, template_type, subject_template, sender_email)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO templates (template_name, description, template_type, subject_template, sender_email, created_by_profile_id)
+        VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING id
       `;
 
@@ -34,7 +40,8 @@ export default defineEventHandler(async (event) => {
         description,
         template_type,
         subject_template,
-        sender_email
+        sender_email,
+        tenantContext.profile_id
       ]);
 
       const templateId = templateResult.rows[0].id;
@@ -57,6 +64,8 @@ export default defineEventHandler(async (event) => {
       `;
       
       await client.query(updateTemplateQuery, [versionId, templateId]);
+      
+      console.log(`✅ Template creado exitosamente - ID: ${templateId}, Profile ID: ${tenantContext.profile_id}`);
 
       // Associate with campaign if provided
       if (campaign_id) {

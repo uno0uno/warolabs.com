@@ -4,12 +4,15 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return
   }
 
-  // Definir rutas protegidas específicamente
-  const protectedRoutes = ['/marketing']
+  // Definir patrones de rutas protegidas
+  const protectedRoutePatterns = ['/marketing']
   const authRoutes = ['/auth/login', '/auth/logout', '/auth/verify']
   
+  // Verificar si la ruta actual coincide con algún patrón protegido
+  const isProtectedRoute = protectedRoutePatterns.some(pattern => to.path.startsWith(pattern))
+  
   // Si no es una ruta protegida, permitir acceso
-  if (!protectedRoutes.includes(to.path)) {
+  if (!isProtectedRoute) {
     return
   }
 

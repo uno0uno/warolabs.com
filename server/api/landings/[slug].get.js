@@ -1,6 +1,7 @@
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { createError } from 'h3';
+import { createError, defineEventHandler, getRouterParam } from 'h3';
 import { encryptWithPublicKey } from '../../utils/security/rsaEncryptor.js';
+import { verifyAuthToken } from '../../utils/security/jwtVerifier.js';
 
 export default defineEventHandler(async (event) => {
 

@@ -19,69 +19,42 @@ export default defineEventHandler(async (event) => {
 
   try {
     await withPostgresClient(async (client) => {
-      // Begin transaction
-      await client.query('BEGIN');
+      // Track in lead_interactions only - simplified version
+      const interactionQuery = `
+        INSERT INTO lead_interactions (
+          lead_id,
+          interaction_type,
+          source,
+          medium,
+          campaign_id,
+          metadata
+        )
+        VALUES ($1, 'email_open', 'email_campaign', 'email', $2, '{}')
+      `;
       
-      try {
-        // Insert into email_opens table
-        const emailOpenQuery = emailSendId 
-          ? 'INSERT INTO "email_opens" ("lead_id", "campaign_id", "email_send_id", "ip_address", "user_agent") VALUES ($1, $2, $3, $4, $5) RETURNING id'
-          : 'INSERT INTO "email_opens" ("lead_id", "campaign_id", "ip_address", "user_agent") VALUES ($1, $2, $3, $4) RETURNING id';
-        
-        const emailOpenParams = emailSendId 
-          ? [leadId, campaignId, emailSendId, ipAddress, userAgent]
-          : [leadId, campaignId, ipAddress, userAgent];
-
-        const emailOpenResult = await client.query(emailOpenQuery, emailOpenParams);
-        const emailOpenId = emailOpenResult.rows[0].id;
-        
-        // Also track in lead_interactions
-        const interactionQuery = `
-          INSERT INTO lead_interactions (
-            lead_id,
-            interaction_type,
-            source,
-            medium,
-            campaign,
-            ip_address,
-            user_agent,
-            metadata
-          )
-          SELECT 
-            $1::uuid,
-            'email_open',
-            'email_campaign',
-            'email',
-            c.name,
-            $2::inet,
-            $3,
-            jsonb_build_object(
-              'campaign_id', $4::uuid,
-              'email_open_id', $5::uuid,
-              'email_send_id', $6::uuid
-            )
-          FROM campaign c
-          WHERE c.id = $4
-        `;
-        
-        await client.query(interactionQuery, [
-          leadId,
-          ipAddress,
-          userAgent,
-          campaignId,
-          emailOpenId,
-          emailSendId || null
-        ]);
-        
-        await client.query('COMMIT');
-        console.log('Apertura de correo electrónico registrada exitosamente en ambas tablas.'); // Log de éxito
-      } catch (innerError) {
-        await client.query('ROLLBACK');
-        throw innerError;
-      }
+      console.log(`🎯 Attempting to track email open with params:`, {
+        leadId,
+        campaignId,
+        emailSendId: emailSendId || null
+      });
+      
+      await client.query(interactionQuery, [
+        leadId,
+        campaignId
+      ]);
+      
+      console.log(`✅ EMAIL OPEN TRACKED: leadId=${leadId}, campaignId=${campaignId}, emailSendId=${emailSendId}`); // Log de éxito
     });
   } catch (error) {
-    console.error('Error al registrar la apertura de correo electrónico:', error); // Log de error
+    console.error('Error al registrar la apertura de correo electrónico:', error.message); // Log de error
+    console.error('Error details:', {
+      leadId,
+      campaignId,
+      ipAddress,
+      userAgent,
+      emailSendId,
+      error: error.toString()
+    });
   }
 
   // Siempre responde con una imagen de píxel, incluso si hubo un error en la base de datos

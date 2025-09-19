@@ -23,7 +23,17 @@ export const useCampaigns = () => {
   const refresh = () => loadCampaigns()
 
   const createCampaign = async (campaignData) => {
-    const { data } = await $fetch('/api/campaign', {
+    const { data } = await $fetch('/api/campaign/create-with-pair', {
+      method: 'POST',
+      body: campaignData
+    })
+    
+    await refresh()
+    return data
+  }
+
+  const createCampaignWithPair = async (campaignData) => {
+    const { data } = await $fetch('/api/campaign/create-with-pair', {
       method: 'POST',
       body: campaignData
     })
@@ -91,9 +101,10 @@ export const useCampaigns = () => {
     fetchCampaigns,
     loadCampaigns,
     createCampaign,
+    createCampaignWithPair,
     createCampaignWithTemplates,
     updateCampaign,
     deleteCampaign,
-    updateCampaignTemplates, // <-- Nueva función exportada
+    updateCampaignTemplates,
   }
 }

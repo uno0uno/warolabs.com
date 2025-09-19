@@ -1,9 +1,10 @@
 // server/api/profiles/index.get.js
 
-import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient'; // Importa la utilidad
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+    const tenantContext = event.context.tenant;
     if (event.method !== 'GET') {
         setResponseStatus(event, 405);
         return { error: 'Method Not Allowed', message: 'This endpoint only accepts GET requests.' };

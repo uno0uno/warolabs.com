@@ -251,7 +251,8 @@
                   </div>
                 </div>
 
-                <div v-if="!showEditModal">
+                <!-- Solo mostrar campaña para templates que NO sean massive_email -->
+                <div v-if="!showEditModal && templateForm.templateType !== 'massive_email'">
                   <label class="block text-sm font-medium mb-2">
                     Campaña <span class="text-destructive">*</span>
                   </label>
@@ -272,6 +273,17 @@
                   <p class="text-xs text-muted-foreground mt-1">
                     El template se asociará automáticamente con la campaña seleccionada
                   </p>
+                </div>
+
+                <!-- Mensaje informativo para templates masivos -->
+                <div v-if="!showEditModal && templateForm.templateType === 'massive_email'" class="p-3 bg-green-50 border border-green-200 rounded">
+                  <div class="flex items-center gap-2">
+                    <div class="text-green-600">✓</div>
+                    <div>
+                      <div class="text-sm font-medium text-green-800">Template de Envío Masivo</div>
+                      <div class="text-xs text-green-600">Este template quedará disponible para envío directo a grupos sin asociar a campañas</div>
+                    </div>
+                  </div>
                 </div>
 
                 <div v-if="shouldShowVersionSelector">
@@ -325,7 +337,7 @@
                 :text="showEditModal ? 'Guardar Cambios' : 'Crear Template'"
                 :loading-text="showEditModal ? 'Guardando...' : 'Creando...'"
                 :loading="savingTemplate"
-                :disabled="!templateForm.name || !templateForm.content || (!showEditModal && !templateForm.campaignId)"
+                :disabled="!templateForm.name || !templateForm.content || (!showEditModal && templateForm.templateType !== 'massive_email' && !templateForm.campaignId)"
                 @click="saveTemplate"
                 class="bg-primary text-primary-foreground"
               />
@@ -653,8 +665,8 @@ const handleSubmitPair = async () => {
 };
 
 const saveTemplate = async () => {
-  // Validar que se haya seleccionado una campaña para nuevos templates
-  if (!showEditModal.value && !templateForm.value.campaignId) {
+  // Validar que se haya seleccionado una campaña SOLO para templates que NO sean massive_email
+  if (!showEditModal.value && templateForm.value.templateType !== 'massive_email' && !templateForm.value.campaignId) {
     showValidationError.value = true;
     toast.error('Debes seleccionar una campaña para el template');
     return;
@@ -682,9 +694,13 @@ const saveTemplate = async () => {
       subject_template: templateForm.value.subject,
       sender_email: templateForm.value.senderEmail,
       content: content,
-      template_type: templateForm.value.templateType,
-      campaign_id: templateForm.value.campaignId
+      template_type: templateForm.value.templateType
     };
+
+    // Solo incluir campaign_id para templates que NO sean massive_email
+    if (templateForm.value.templateType !== 'massive_email') {
+      payload.campaign_id = templateForm.value.campaignId;
+    }
 
     if (showEditModal.value) {
       await updateTemplate(templateForm.value.id, payload);

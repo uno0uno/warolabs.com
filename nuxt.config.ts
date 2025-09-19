@@ -2,7 +2,8 @@
 export default defineNuxtConfig({
   ssr: true,
   devServer: {
-    port: 4000
+    port: 4000,
+    host: 'localhost'
   },
   nitro: {
     preset: 'node-server'

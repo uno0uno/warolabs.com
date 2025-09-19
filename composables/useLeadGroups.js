@@ -123,10 +123,12 @@ export const useLeadGroups = () => {
       if (dateRange.end_date) queryParams.append('end_date', dateRange.end_date)
       
       const url = `/api/lead-interactions/analytics?${queryParams.toString()}`
+      console.log('Fetching analytics from URL:', url)
       
-      const { data } = await $fetch(url)
+      const response = await $fetch(url)
+      console.log('Analytics response:', response)
       
-      return data
+      return response
     } catch (err) {
       error.value = err.message || 'Error al cargar analytics'
       console.error('Error fetching interaction analytics:', err)

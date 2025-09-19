@@ -1,7 +1,9 @@
 import { encryptWithPublicKey } from '~/server/utils/security/rsaEncryptor';
 import { createError } from 'h3';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+    const tenantContext = event.context.tenant;
     const { leadEmail } = await readBody(event);
 
     if (!leadEmail) {

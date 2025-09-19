@@ -1,9 +1,10 @@
 import { defineEventHandler, getRouterParam, createError } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
   const campaignId = getRouterParam(event, 'id');
+  const tenantContext = event.context.tenant;
   
   if (!campaignId) {
     throw createError({
@@ -14,20 +15,41 @@ export default defineEventHandler(async (event) => {
 
   return await withPostgresClient(async (client) => {
     try {
-      // Get user info for audit trail
-      let userId = null;
-      try {
-        const authResult = await verifyAuthToken(event);
-        userId = authResult?.userId || null;
-      } catch (e) {
-        // Continue without user ID if auth fails
-      }
+      console.log(`🔐 Eliminando campaign ${campaignId} para tenant: ${tenantContext.tenant_name}`);
+      
+      // User ID desde el contexto de tenant
+      const userId = tenantContext.user_id;
 
       // Comenzar transacción
       await client.query('BEGIN');
 
+      // Verificar que el usuario tiene acceso al campaign
+      let verifyQuery = `
+        SELECT c.id 
+        FROM campaign c
+        WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
+      `;
+      
+      let verifyParams = [campaignId];
+      
+      if (!tenantContext.is_superuser) {
+        verifyQuery += ` AND c.profile_id = $2`;
+        verifyParams.push(tenantContext.user_id);
+      }
+      
+      const verifyResult = await client.query(verifyQuery, verifyParams);
+      
+      if (verifyResult.rows.length === 0) {
+        await client.query('ROLLBACK');
+        console.log(`❌ Campaign ${campaignId} no encontrado o sin acceso para tenant: ${tenantContext.tenant_name}`);
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Campaign not found or access denied'
+        });
+      }
+
       // Obtener información de la campaña y verificar datos críticos
-      const campaignQuery = `
+      let campaignQuery = `
         SELECT 
           c.id,
           c.name,
@@ -43,10 +65,18 @@ export default defineEventHandler(async (event) => {
         LEFT JOIN email_clicks ec ON c.id = ec.campaign_id
         LEFT JOIN email_opens eo ON c.id = eo.campaign_id
         WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
-        GROUP BY c.id, c.name, c.slug, c.status, c.created_at
       `;
       
-      const campaignResult = await client.query(campaignQuery, [campaignId]);
+      let campaignParams = [campaignId];
+      
+      if (!tenantContext.is_superuser) {
+        campaignQuery += ` AND c.profile_id = $2`;
+        campaignParams.push(tenantContext.user_id);
+      }
+      
+      campaignQuery += ` GROUP BY c.id, c.name, c.slug, c.status, c.created_at`;
+      
+      const campaignResult = await client.query(campaignQuery, campaignParams);
       
       if (campaignResult.rows.length === 0) {
         await client.query('ROLLBACK');
@@ -133,6 +163,7 @@ export default defineEventHandler(async (event) => {
       // Confirmar transacción
       await client.query('COMMIT');
 
+      console.log(`✅ Campaign ${campaignId} ("${campaign.name}") eliminado exitosamente para tenant: ${tenantContext.tenant_name}`);
       return {
         success: true,
         message: `Campaña "${campaign.name}" eliminada exitosamente con trazabilidad completa`,
@@ -147,13 +178,19 @@ export default defineEventHandler(async (event) => {
             clicks_count: parseInt(campaign.total_clicks) || 0,
             opens_count: parseInt(campaign.total_opens) || 0
           }
+        },
+        tenant_info: {
+          tenant_id: tenantContext.tenant_id,
+          tenant_name: tenantContext.tenant_name,
+          user_role: tenantContext.role,
+          is_superuser: tenantContext.is_superuser
         }
       };
 
     } catch (error) {
       // Rollback en caso de error
       await client.query('ROLLBACK');
-      console.error('Error deleting campaign:', error);
+      console.error(`Error deleting campaign ${campaignId} para tenant ${tenantContext.tenant_name}:`, error);
       
       if (error.statusCode) {
         throw error; // Re-throw HTTP errors

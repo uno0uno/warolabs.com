@@ -1,12 +1,8 @@
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
-  try {
-    await verifyAuthToken(event);
-  } catch (error) {
-    throw error;
-  }
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
 
   const query = getQuery(event);
   const {
@@ -17,6 +13,8 @@ export default defineEventHandler(async (event) => {
 
   return await withPostgresClient(async (client) => {
     try {
+      console.log(`🔐 Obteniendo analytics para tenant: ${tenantContext.tenant_name}`);
+      
       let whereConditions = [];
       let queryParams = [];
       let paramIndex = 1;
@@ -32,6 +30,18 @@ export default defineEventHandler(async (event) => {
         whereConditions.push(`li.created_at <= $${paramIndex}`);
         queryParams.push(end_date);
         paramIndex++;
+      }
+
+      // Add campaign ownership filter based on user role
+      if (tenantContext.is_superuser) {
+        // Superuser sees all interactions from all campaigns
+        console.log('🔓 Superuser access: showing all lead interactions');
+      } else {
+        // Other users only see interactions from their own campaigns
+        whereConditions.push(`c.profile_id = $${paramIndex}`);
+        queryParams.push(tenantContext.user_id);
+        paramIndex++;
+        console.log(`🔒 User access: showing only campaigns owned by ${tenantContext.user_id}`);
       }
 
       const whereClause = whereConditions.length > 0 
@@ -53,8 +63,8 @@ export default defineEventHandler(async (event) => {
           selectField = 'li.medium as group_key';
           break;
         case 'campaign':
-          groupByField = 'li.campaign';
-          selectField = 'li.campaign as group_key';
+          groupByField = 'COALESCE(c.name, \'Unknown\'), li.campaign_id';
+          selectField = 'COALESCE(c.name, \'Unknown\') as group_key, li.campaign_id';
           break;
         case 'date':
           groupByField = 'DATE(li.created_at)';
@@ -65,6 +75,12 @@ export default defineEventHandler(async (event) => {
           selectField = 'li.interaction_type as group_key';
       }
 
+      // Base FROM clause with campaign ownership filtering
+      let fromClause = `
+        FROM lead_interactions li
+        LEFT JOIN campaign c ON li.campaign_id = c.id
+      `;
+
       analyticsQuery = `
         SELECT 
           ${selectField},
@@ -72,7 +88,7 @@ export default defineEventHandler(async (event) => {
           COUNT(DISTINCT li.lead_id) as unique_leads,
           MIN(li.created_at) as first_interaction,
           MAX(li.created_at) as last_interaction
-        FROM lead_interactions li
+        ${fromClause}
         ${whereClause}
         GROUP BY ${groupByField}
         ORDER BY total_interactions DESC
@@ -80,46 +96,49 @@ export default defineEventHandler(async (event) => {
 
       const analyticsResult = await client.query(analyticsQuery, queryParams);
 
-      // Get overall metrics
+      // Get overall metrics with campaign ownership filtering
       const overallQuery = `
         SELECT 
           COUNT(*) as total_interactions,
-          COUNT(DISTINCT lead_id) as unique_leads,
-          COUNT(DISTINCT source) as unique_sources,
-          COUNT(DISTINCT medium) as unique_mediums,
-          COUNT(DISTINCT campaign) as unique_campaigns,
-          MIN(created_at) as first_interaction,
-          MAX(created_at) as last_interaction
+          COUNT(DISTINCT li.lead_id) as unique_leads,
+          COUNT(DISTINCT li.source) as unique_sources,
+          COUNT(DISTINCT li.medium) as unique_mediums,
+          COUNT(DISTINCT li.campaign_id) as unique_campaigns,
+          MIN(li.created_at) as first_interaction,
+          MAX(li.created_at) as last_interaction
         FROM lead_interactions li
+        LEFT JOIN campaign c ON li.campaign_id = c.id
         ${whereClause}
       `;
 
       const overallResult = await client.query(overallQuery, queryParams);
 
-      // Get interaction types breakdown
+      // Get interaction types breakdown with campaign ownership filtering
       const typesQuery = `
         SELECT 
-          interaction_type,
+          li.interaction_type,
           COUNT(*) as count,
           ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER(), 2) as percentage
         FROM lead_interactions li
+        LEFT JOIN campaign c ON li.campaign_id = c.id
         ${whereClause}
-        GROUP BY interaction_type
+        GROUP BY li.interaction_type
         ORDER BY count DESC
       `;
 
       const typesResult = await client.query(typesQuery, queryParams);
 
-      // Get top sources/mediums/campaigns
+      // Get top sources with campaign ownership filtering
       const topSourcesQuery = `
         SELECT 
-          source,
+          li.source,
           COUNT(*) as interactions,
-          COUNT(DISTINCT lead_id) as unique_leads
+          COUNT(DISTINCT li.lead_id) as unique_leads
         FROM lead_interactions li
+        LEFT JOIN campaign c ON li.campaign_id = c.id
         ${whereClause}
-        AND source IS NOT NULL
-        GROUP BY source
+        ${whereConditions.length > 0 ? 'AND' : 'WHERE'} li.source IS NOT NULL
+        GROUP BY li.source
         ORDER BY interactions DESC
         LIMIT 10
       `;

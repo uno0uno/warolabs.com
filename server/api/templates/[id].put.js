@@ -1,12 +1,16 @@
 import { defineEventHandler, readBody, createError, getRouterParam } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   const templateId = getRouterParam(event, 'id');
   const body = await readBody(event);
   
   return await withPostgresClient(async (client) => {
     try {
+      console.log(`🔐 Actualizando template ${templateId} para tenant: ${tenantContext.tenant_name}`);
+      
       const { 
         name, 
         description, 
@@ -28,6 +32,23 @@ export default defineEventHandler(async (event) => {
         throw createError({
           statusCode: 400,
           statusMessage: 'Nombre y contenido son requeridos'
+        });
+      }
+
+      // Verify template belongs to tenant
+      const verifyOwnershipQuery = `
+        SELECT t.id FROM templates t
+        JOIN profile p ON t.created_by_profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
+        WHERE t.id = $1 AND tm.tenant_id = $2 AND t.is_deleted = false
+      `;
+      
+      const ownershipResult = await client.query(verifyOwnershipQuery, [templateId, tenantContext.tenant_id]);
+      
+      if (ownershipResult.rows.length === 0) {
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Template not found or access denied'
         });
       }
 

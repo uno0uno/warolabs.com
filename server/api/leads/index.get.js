@@ -1,7 +1,10 @@
 import { defineEventHandler, getQuery } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
+  
   return await withPostgresClient(async (client) => {
     try {
       const query = getQuery(event);
@@ -9,7 +12,37 @@ export default defineEventHandler(async (event) => {
       
       // campaign_id es REQUERIDO
       if (!campaign_id) {
-        throw new Error('campaign_id is required');
+        throw createError({
+          statusCode: 400,
+          statusMessage: 'campaign_id is required'
+        });
+      }
+
+      console.log(`🔐 Consultando leads de campaign ${campaign_id} para tenant: ${tenantContext.tenant_name}`);
+      
+      // Primero verificar que el usuario tiene acceso al campaign
+      const verifyCampaignQuery = `
+        SELECT c.id 
+        FROM campaign c
+        JOIN profile p ON c.profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
+        WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
+      `;
+      
+      const { query: verifyFinalQuery, params: verifyParams } = addTenantFilterSimple(
+        verifyCampaignQuery, 
+        tenantContext, 
+        [campaign_id]
+      );
+      
+      const verifyResult = await client.query(verifyFinalQuery, verifyParams);
+      
+      if (verifyResult.rows.length === 0) {
+        console.log(`❌ Campaign ${campaign_id} no encontrado o sin acceso para tenant: ${tenantContext.tenant_name}`);
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Campaign not found or access denied'
+        });
       }
       
       const offset = (parseInt(page) - 1) * parseInt(limit);
@@ -72,6 +105,7 @@ export default defineEventHandler(async (event) => {
 
       const total = parseInt(countResult.rows[0].total);
 
+      console.log(`✅ Encontrados ${total} leads en campaign ${campaign_id} para tenant: ${tenantContext.tenant_name}`);
       return {
         success: true,
         data: mainResult.rows,
@@ -81,12 +115,24 @@ export default defineEventHandler(async (event) => {
           limit: parseInt(limit),
           total: total,
           totalPages: Math.ceil(total / parseInt(limit))
+        },
+        tenant_info: {
+          tenant_id: tenantContext.tenant_id,
+          tenant_name: tenantContext.tenant_name,
+          user_role: tenantContext.role,
+          is_superuser: tenantContext.is_superuser
         }
       };
 
     } catch (error) {
-      console.error('Error fetching campaign leads:', error);
-      throw error;
+      console.error(`Error fetching campaign leads para tenant ${tenantContext.tenant_name}:`, error);
+      if (error.statusCode) {
+        throw error; // Re-throw known errors
+      }
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Error fetching campaign leads'
+      });
     }
   }, event);
 });

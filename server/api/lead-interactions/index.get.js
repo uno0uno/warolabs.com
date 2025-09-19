@@ -1,12 +1,8 @@
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
-  try {
-    await verifyAuthToken(event);
-  } catch (error) {
-    throw error;
-  }
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
 
   const query = getQuery(event);
   const {
@@ -23,6 +19,8 @@ export default defineEventHandler(async (event) => {
 
   return await withPostgresClient(async (client) => {
     try {
+      console.log(`🔐 Obteniendo lead interactions para tenant: ${tenantContext.tenant_name}`);
+      
       let whereConditions = [];
       let queryParams = [];
       let paramIndex = 1;
@@ -74,8 +72,8 @@ export default defineEventHandler(async (event) => {
         ? `WHERE ${whereConditions.join(' AND ')}` 
         : '';
 
-      // Main query with lead profile data
-      const interactionsQuery = `
+      // Main query with lead profile data and tenant isolation
+      const baseQuery = `
         SELECT 
           li.id,
           li.lead_id,
@@ -96,25 +94,40 @@ export default defineEventHandler(async (event) => {
         FROM lead_interactions li
         LEFT JOIN leads l ON li.lead_id = l.id
         LEFT JOIN profile p ON l.profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
         ${whereClause}
         ORDER BY li.created_at DESC
         LIMIT $${paramIndex} OFFSET $${paramIndex + 1}
       `;
+      
+      const { query: interactionsQuery, params: finalParams } = addTenantFilterSimple(
+        baseQuery.replace(`LIMIT $${paramIndex} OFFSET $${paramIndex + 1}`, ''),
+        tenantContext,
+        queryParams
+      );
+      
+      const finalInteractionsQuery = interactionsQuery + ` ORDER BY li.created_at DESC LIMIT $${finalParams.length + 1} OFFSET $${finalParams.length + 2}`;
+      finalParams.push(parseInt(limit));
+      finalParams.push(parseInt(offset));
 
-      queryParams.push(parseInt(limit));
-      queryParams.push(parseInt(offset));
+      const result = await client.query(finalInteractionsQuery, finalParams);
 
-      const result = await client.query(interactionsQuery, queryParams);
-
-      // Get total count for pagination
-      const countQuery = `
+      // Get total count for pagination with tenant isolation
+      const baseCountQuery = `
         SELECT COUNT(*) as total
         FROM lead_interactions li
         LEFT JOIN leads l ON li.lead_id = l.id
+        LEFT JOIN profile p ON l.profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
         ${whereClause}
       `;
 
-      const countParams = queryParams.slice(0, -2); // Remove limit and offset
+      const { query: countQuery, params: countParams } = addTenantFilterSimple(
+        baseCountQuery, 
+        tenantContext, 
+        queryParams.slice(0, -2) // Remove limit and offset
+      );
+      
       const countResult = await client.query(countQuery, countParams);
       const totalCount = parseInt(countResult.rows[0].total);
 

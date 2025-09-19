@@ -1,9 +1,10 @@
 // server/api/profiles/[id].put.js
 
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+    const tenantContext = event.context.tenant;
     if (event.method !== 'PUT') {
         throw createError({ statusCode: 405, statusMessage: 'Method Not Allowed', message: 'This endpoint only accepts PUT requests.' });
     }
@@ -27,11 +28,26 @@ export default defineEventHandler(async (event) => {
     } = body;
 
     return await withPostgresClient(async (client) => {
-
-        try {
-            await verifyAuthToken(event);
-        } catch (error) {
-            throw error;
+        console.log(`🔐 Actualizando profile ${profileId} para tenant: ${tenantContext.tenant_name}`);
+        
+        // Verificar que el profile pertenece al tenant antes de actualizar
+        const verifyQuery = `
+            SELECT p.id 
+            FROM public.profile p
+            JOIN tenant_members tm ON p.id = tm.user_id
+            WHERE p.id = $1
+        `;
+        
+        const { query: verifyFinalQuery, params: verifyParams } = addTenantFilterSimple(
+            verifyQuery, 
+            tenantContext, 
+            [profileId]
+        );
+        
+        const verifyResult = await client.query(verifyFinalQuery, verifyParams);
+        
+        if (verifyResult.rows.length === 0) {
+            throw createError({ statusCode: 404, statusMessage: 'Not Found', message: `Profile with ID ${profileId} not found or access denied.` });
         }
 
         const updates = []; 

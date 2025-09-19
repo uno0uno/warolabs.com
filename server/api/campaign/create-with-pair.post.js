@@ -1,24 +1,28 @@
 import { defineEventHandler, readBody } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   try {
+    console.log(`🔐 Creando campaña con template pair para tenant: ${tenantContext.tenant_name}`);
+    
     const body = await readBody(event);
     console.log('🎯 [API] Received request to create campaign with template pair. Body:', body);
 
     const {
-      campaign_name,
+      name: campaign_name,  // El frontend envía 'name' pero lo asignamos a campaign_name
       pair_id,
-      profile_id
+      slug
     } = body;
 
     // 1. Validación de campos obligatorios.
-    if (!campaign_name || !pair_id || !profile_id) {
+    if (!campaign_name || !pair_id) {
       // Establecer código de estado de error en la respuesta
       event.node.res.statusCode = 400; // Bad Request
       return {
         success: false,
-        message: 'Faltan campos obligatorios: campaign_name, pair_id, profile_id'
+        message: 'Faltan campos obligatorios: campaign_name, pair_id'
       };
     }
 
@@ -32,8 +36,8 @@ export default defineEventHandler(async (event) => {
     // Todo esto ocurre en una única transacción atómica dentro de la función.
     const result = await withPostgresClient(async (client) => {
       const { rows } = await client.query(
-        'SELECT create_campaign_from_pair($1, $2, $3) as campaign',
-        [profile_id, campaign_name, pair_id]
+        'SELECT create_campaign_from_pair($1, $2, $3, $4) as campaign',
+        [tenantContext.user_id, campaign_name, pair_id, slug]
       );
       
       // La función devuelve el objeto JSON de la campaña en la primera fila.

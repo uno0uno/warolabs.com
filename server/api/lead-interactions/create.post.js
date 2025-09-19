@@ -1,13 +1,15 @@
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   const body = await readBody(event);
   const {
     lead_id,
     interaction_type,
     source,
     medium,
-    campaign,
+    campaign_id,
     term,
     content,
     referrer_url,
@@ -26,13 +28,40 @@ export default defineEventHandler(async (event) => {
 
   return await withPostgresClient(async (client) => {
     try {
+      console.log(`🔐 Creando lead interaction para tenant: ${tenantContext.tenant_name}`);
+      
+      // Verificar que el lead pertenece al tenant
+      const verifyLeadQuery = `
+        SELECT l.id 
+        FROM leads l
+        JOIN profile p ON l.profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
+        WHERE l.id = $1
+      `;
+      
+      const { query: verifyQuery, params: verifyParams } = addTenantFilterSimple(
+        verifyLeadQuery, 
+        tenantContext, 
+        [lead_id]
+      );
+      
+      const verifyResult = await client.query(verifyQuery, verifyParams);
+      
+      if (verifyResult.rows.length === 0) {
+        console.log(`❌ Lead ${lead_id} no encontrado o sin acceso para tenant: ${tenantContext.tenant_name}`);
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Lead not found or access denied'
+        });
+      }
+      
       const insertQuery = `
         INSERT INTO lead_interactions (
           lead_id,
           interaction_type,
           source,
           medium,
-          campaign,
+          campaign_id,
           term,
           content,
           referrer_url,
@@ -49,7 +78,7 @@ export default defineEventHandler(async (event) => {
         interaction_type,
         source || null,
         medium || null,
-        campaign || null,
+        campaign_id || null,
         term || null,
         content || null,
         referrer_url || null,

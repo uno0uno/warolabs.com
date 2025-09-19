@@ -77,12 +77,12 @@ const columns = [
     }
   },
   {
-    accessorKey: 'recent_activity',
-    header: 'Actividad Reciente',
+    accessorKey: 'activity_stats',
+    header: 'Aperturas',
     cell: ({ row }) => {
       const group = row.original
       return h('div', { class: 'text-center' }, [
-        h('span', { class: 'text-sm' }, `${group.recent_activity?.recent_opens || 0} aperturas`)
+        h('span', { class: 'text-sm font-semibold' }, `${group.activity_stats?.total_opens || 0} aperturas`)
       ])
     }
   },

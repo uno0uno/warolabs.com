@@ -107,6 +107,7 @@ const { user, getSession, logout } = useAuth()
 // Get menu items from composable
 const { mainMenuItems, favoriteItems, sectionItems } = useDashboardMenu()
 
+
 // Menu action handlers
 const handleMenuAction = (action) => {
   if (action === 'navigateToEmails') {

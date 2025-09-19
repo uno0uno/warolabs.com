@@ -343,10 +343,13 @@ const getGroupByLabel = () => {
 const getInteractionIcon = (type) => {
   const icons = {
     'lead_capture': 'heroicons:user-plus',
+    'email_sent': 'heroicons:paper-airplane',
     'email_open': 'heroicons:envelope-open',
     'email_click': 'heroicons:cursor-arrow-rays',
     'page_view': 'heroicons:eye',
     'form_submit': 'heroicons:document-check',
+    'form_interaction': 'heroicons:cursor-arrow-ripple',
+    'conversion': 'heroicons:trophy',
     'test': 'heroicons:beaker'
   }
   return icons[type] || 'heroicons:question-mark-circle'
@@ -355,17 +358,30 @@ const getInteractionIcon = (type) => {
 const formatInteractionType = (type) => {
   const labels = {
     'lead_capture': 'Captura de Lead',
+    'email_sent': 'Email Enviado',
     'email_open': 'Apertura de Email',
     'email_click': 'Click en Email',
     'page_view': 'Vista de Página',
     'form_submit': 'Envío de Formulario',
+    'form_interaction': 'Interacción con Formulario',
+    'conversion': 'Conversión',
     'test': 'Prueba'
   }
   return labels[type] || type
 }
 
 const formatGroupKey = (key) => {
-  if (!key) return 'Sin valor'
+  if (!key || key === 'null') {
+    const noValueLabels = {
+      'campaign': 'Sin campaña',
+      'source': 'Fuente directa', 
+      'medium': 'Sin medio',
+      'interaction_type': 'Sin tipo',
+      'date': 'Sin fecha'
+    }
+    return noValueLabels[groupBy.value] || 'Sin valor'
+  }
+  
   if (groupBy.value === 'date') {
     return new Date(key).toLocaleDateString('es-ES', { 
       year: 'numeric', 

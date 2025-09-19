@@ -1,21 +1,25 @@
 // server/api/templates/[id].get.js
 import { defineEventHandler } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
   const templateId = event.context.params.id;
+  const tenantContext = event.context.tenant;
 
   if (!templateId) {
-    throw new Error('Template ID is required');
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Template ID is required'
+    });
   }
 
   return await withPostgresClient(async (client) => {
     try {
-      // await verifyAuthToken(event);
+      console.log(`🔐 Consultando template ${templateId} para tenant: ${tenantContext.tenant_name}`);
       
-      // ✅ CORREGIDO: Se eliminó la columna `t.updated_at` que no existe.
-      const query = `
+      // Template individual con tenant isolation usando created_by_profile_id
+      const baseQuery = `
         SELECT 
           t.id,
           t.template_name as name,
@@ -37,25 +41,57 @@ export default defineEventHandler(async (event) => {
             )
             FROM template_versions tv
             WHERE tv.template_id = t.id
-          ) as versions
+          ) as versions,
+          -- Indicar si el template tiene campañas asociadas
+          CASE 
+            WHEN EXISTS (
+              SELECT 1 FROM template_versions tv
+              JOIN campaign_template_versions ctv ON tv.id = ctv.template_version_id
+              WHERE tv.template_id = t.id AND ctv.is_active = true
+            ) THEN true
+            ELSE false
+          END as has_campaigns
         FROM templates t
-        WHERE t.id = $1 AND t.is_deleted = false;
+        JOIN profile p ON t.created_by_profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
+        WHERE t.id = $1 AND t.is_deleted = false
       `;
 
-      const result = await client.query(query, [templateId]);
+      // Apply tenant filter
+      const { query, params } = addTenantFilterSimple(baseQuery, tenantContext, [templateId]);
+      
+      console.log(`🏢 Verificando acceso a template ${templateId} para tenant: ${tenantContext.tenant_name}`);
+      const result = await client.query(query, params);
 
       if (result.rows.length === 0) {
-        return { success: false, message: 'Template not found', data: null };
+        console.log(`❌ Template ${templateId} no encontrado o sin acceso para tenant: ${tenantContext.tenant_name}`);
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Template not found or access denied'
+        });
       }
       
+      console.log(`✅ Template ${templateId} encontrado para tenant: ${tenantContext.tenant_name}`);
       return {
         success: true,
-        data: result.rows[0]
+        data: result.rows[0],
+        tenant_info: {
+          tenant_id: tenantContext.tenant_id,
+          tenant_name: tenantContext.tenant_name,
+          user_role: tenantContext.role,
+          is_superuser: tenantContext.is_superuser
+        }
       };
 
     } catch (error) {
-      console.error(`Error fetching template detail for ID ${templateId}:`, error);
-      throw error;
+      console.error(`Error fetching template ${templateId} para tenant ${tenantContext.tenant_name}:`, error);
+      if (error.statusCode) {
+        throw error; // Re-throw known errors
+      }
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Error fetching template detail'
+      });
     }
   }, event);
 });

@@ -1,9 +1,10 @@
 // server/api/clusters/index.post.js
 
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
 
   if (event.method !== 'POST') {
     throw createError({ statusCode: 405, statusMessage: 'Method Not Allowed', message: 'This endpoint only accepts POST requests.' });
@@ -27,12 +28,7 @@ export default defineEventHandler(async (event) => {
 
 
   return await withPostgresClient(async (client) => {
-
-    try {
-        await verifyAuthToken(event);
-    } catch (error) {
-        throw error;
-    }
+    console.log(`🔐 Creando cluster para tenant: ${tenantContext.tenant_name}`);
 
     const query = `SELECT created_cluster_id, status_message FROM public.create_cluster_and_related_entities($1, $2, $3, $4, $5);`;
     console.log('Ejecutando consulta SQL:', query);

@@ -1,6 +1,9 @@
-import { withPostgresClient } from '~/server/utils/basedataSettings/withPostgresClient';
+import { defineEventHandler, readBody, createError } from 'h3';
+import { withPostgresClient } from '../../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation } from '../../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   // El 'id' que viene en la URL es el campaign_id que usamos para agrupar el par
   const { id: pairId } = event.context.params; 
   const body = await readBody(event);

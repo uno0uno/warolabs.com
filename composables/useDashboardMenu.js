@@ -28,11 +28,6 @@ export const useDashboardMenu = () => {
       iconSolid: 'EnvelopeIcon',
       label: 'Marketing',
       action: 'navigateToEmails',
-      children: [
-        { label: 'Campañas', route: '/marketing' },
-        { label: 'Grupos de Leads', route: '/marketing/lead-groups' },
-        { label: 'Enviar', route: '/marketing/sender' }
-      ]
     },
     {
       icon: 'EnvelopeIcon',

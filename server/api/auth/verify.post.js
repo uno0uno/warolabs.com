@@ -41,6 +41,27 @@ export default defineEventHandler(async (event) => {
       const user = tokenResult.rows[0];
       console.log(`✅ Valid token found for user: ${user.user_id}`);
       
+      // Check if user has an associated tenant
+      const tenantQuery = `
+        SELECT tm.tenant_id, tm.role, t.name as tenant_name
+        FROM tenant_members tm
+        JOIN tenants t ON tm.tenant_id = t.id
+        WHERE tm.user_id = $1
+        LIMIT 1
+      `;
+      const tenantResult = await client.query(tenantQuery, [user.user_id]);
+      
+      if (tenantResult.rows.length === 0) {
+        console.log(`❌ User ${user.user_id} has no tenant association - access denied`);
+        throw createError({
+          statusCode: 403,
+          statusMessage: 'Access denied: No tenant association found. Please contact your administrator.'
+        });
+      }
+      
+      const tenantInfo = tenantResult.rows[0];
+      console.log(`✅ User ${user.user_id} has tenant: ${tenantInfo.tenant_name} (${tenantInfo.role})`);
+      
       // Mark magic token as used (preserves for analytics)
       await client.query(
         'UPDATE magic_tokens SET used = true, used_at = NOW() WHERE token = $1', 

@@ -1,8 +1,9 @@
 import { defineEventHandler, getRouterParam } from 'h3';
 import { withPostgresClient } from '../../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../../utils/security/jwtVerifier';
+import { withTenantIsolation } from '../../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
   return await withPostgresClient(async (client) => {
     try {
       // Authentication is commented out for testing - uncomment when needed

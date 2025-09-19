@@ -1,12 +1,8 @@
 import { withPostgresClient } from '../../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
-  try {
-    await verifyAuthToken(event);
-  } catch (error) {
-    throw error;
-  }
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
 
   const leadId = getRouterParam(event, 'lead_id');
 
@@ -19,8 +15,8 @@ export default defineEventHandler(async (event) => {
 
   return await withPostgresClient(async (client) => {
     try {
-      // Get lead basic info
-      const leadInfoQuery = `
+      // Get lead basic info with tenant isolation
+      const baseLeadInfoQuery = `
         SELECT 
           l.id,
           l.created_at as lead_created_at,
@@ -34,10 +30,12 @@ export default defineEventHandler(async (event) => {
           p.country
         FROM leads l
         LEFT JOIN profile p ON l.profile_id = p.id
+        JOIN tenant_members tm ON p.id = tm.user_id
         WHERE l.id = $1
       `;
 
-      const leadResult = await client.query(leadInfoQuery, [leadId]);
+      const { query: leadInfoQuery, params: leadInfoParams } = addTenantFilterSimple(baseLeadInfoQuery, tenantContext, [leadId]);
+      const leadResult = await client.query(leadInfoQuery, leadInfoParams);
       
       if (leadResult.rows.length === 0) {
         throw createError({
@@ -51,19 +49,20 @@ export default defineEventHandler(async (event) => {
       // Get all interactions for this lead
       const interactionsQuery = `
         SELECT 
-          id,
-          interaction_type,
-          source,
-          medium,
-          campaign,
-          term,
-          content,
-          referrer_url,
-          ip_address,
-          user_agent,
-          created_at,
-          metadata
-        FROM lead_interactions
+          li.id,
+          li.interaction_type,
+          li.source,
+          li.medium,
+          c.name as campaign,
+          li.term,
+          li.content,
+          li.referrer_url,
+          li.ip_address,
+          li.user_agent,
+          li.created_at,
+          li.metadata
+        FROM lead_interactions li
+        LEFT JOIN campaign c ON li.campaign_id = c.id
         WHERE lead_id = $1
         ORDER BY created_at ASC
       `;
@@ -85,22 +84,27 @@ export default defineEventHandler(async (event) => {
 
       const summaryResult = await client.query(summaryQuery, [leadId]);
 
-      // Get campaign engagement if any
-      const campaignEngagementQuery = `
+      // Get campaign engagement if any with tenant isolation
+      const baseCampaignEngagementQuery = `
         SELECT 
-          campaign,
+          c.name as campaign,
+          li.campaign_id,
           COUNT(*) as total_interactions,
-          COUNT(CASE WHEN interaction_type = 'email_open' THEN 1 END) as email_opens,
-          COUNT(CASE WHEN interaction_type = 'email_click' THEN 1 END) as email_clicks,
-          MIN(created_at) as first_engagement,
-          MAX(created_at) as last_engagement
-        FROM lead_interactions
-        WHERE lead_id = $1 AND campaign IS NOT NULL
-        GROUP BY campaign
+          COUNT(CASE WHEN li.interaction_type = 'email_open' THEN 1 END) as email_opens,
+          COUNT(CASE WHEN li.interaction_type = 'email_click' THEN 1 END) as email_clicks,
+          MIN(li.created_at) as first_engagement,
+          MAX(li.created_at) as last_engagement
+        FROM lead_interactions li
+        JOIN campaign c ON li.campaign_id = c.id
+        JOIN profile cp ON c.profile_id = cp.id
+        JOIN tenant_members ctm ON cp.id = ctm.user_id
+        WHERE li.lead_id = $1 AND li.campaign_id IS NOT NULL
+        GROUP BY c.name, li.campaign_id
         ORDER BY first_engagement ASC
       `;
 
-      const campaignResult = await client.query(campaignEngagementQuery, [leadId]);
+      const { query: campaignEngagementQuery, params: campaignEngagementParams } = addTenantFilterSimple(baseCampaignEngagementQuery, tenantContext, [leadId]);
+      const campaignResult = await client.query(campaignEngagementQuery, campaignEngagementParams);
 
       // Calculate journey metrics
       const journeyStats = {

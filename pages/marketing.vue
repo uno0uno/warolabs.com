@@ -41,6 +41,13 @@
               class="text-sm transition-colors">
               Analytics
             </NuxtLink>
+            <NuxtLink to="/marketing/cohorts" :class="[
+              $route.path.includes('/cohorts')
+                ? 'text-primary font-medium'
+                : 'text-muted-foreground hover:text-foreground']"
+              class="text-sm transition-colors">
+              Cohortes
+            </NuxtLink>
           </nav>
           
           <!-- Right side actions like mockup -->

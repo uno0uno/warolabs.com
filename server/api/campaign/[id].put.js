@@ -1,9 +1,11 @@
-import { defineEventHandler, getRouterParam, readBody } from 'h3';
+import { defineEventHandler, getRouterParam, readBody, createError } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
   const campaignId = getRouterParam(event, 'id');
   const body = await readBody(event);
+  const tenantContext = event.context.tenant;
   
   if (!campaignId) {
     throw createError({
@@ -12,33 +14,75 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const { campaign_name, pair_id, profile_id } = body;
+  const { name: campaign_name, pair_id, slug, status } = body;
 
-  if (!campaign_name || !profile_id) {
+  if (!campaign_name) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Missing required fields: campaign_name and profile_id are required'
+      statusMessage: 'Missing required field: campaign_name is required'
     });
   }
 
   return await withPostgresClient(async (client) => {
     try {
-      // Solo actualizar los campos que existen en la tabla campaign
-      const query = `
+      if (tenantContext.is_superuser) {
+        console.log(`🔓 Superuser actualizando campaign ${campaignId}`);
+      } else {
+        console.log(`🔐 Actualizando campaign ${campaignId} para usuario: ${tenantContext.user_id}`);
+      }
+      
+      // Verificar que el usuario tiene acceso al campaign
+      let verifyQuery = `
+        SELECT c.id 
+        FROM campaign c
+        WHERE c.id = $1 AND (c.is_deleted = false OR c.is_deleted IS NULL)
+      `;
+      
+      let verifyParams = [campaignId];
+      
+      if (!tenantContext.is_superuser) {
+        verifyQuery += ` AND c.profile_id = $2`;
+        verifyParams.push(tenantContext.user_id);
+      }
+      
+      const verifyResult = await client.query(verifyQuery, verifyParams);
+      
+      if (verifyResult.rows.length === 0) {
+        console.log(`❌ Campaign ${campaignId} no encontrado o sin acceso para tenant: ${tenantContext.tenant_name}`);
+        throw createError({
+          statusCode: 404,
+          statusMessage: 'Campaign not found or access denied'
+        });
+      }
+
+      // Ahora hacer el UPDATE (ya sabemos que tiene acceso)
+      let updateFields = ['name = $2'];
+      let updateParams = [campaignId, campaign_name];
+      let paramIndex = 3;
+      
+      if (slug !== undefined) {
+        updateFields.push(`slug = $${paramIndex}`);
+        updateParams.push(slug);
+        paramIndex++;
+      }
+      
+      if (status !== undefined) {
+        updateFields.push(`status = $${paramIndex}`);
+        updateParams.push(status);
+        paramIndex++;
+      }
+      
+      updateFields.push('updated_at = CURRENT_TIMESTAMP');
+      
+      const updateQuery = `
         UPDATE campaign 
-        SET 
-          name = $2,
-          profile_id = $3,
-          updated_at = CURRENT_TIMESTAMP
+        SET ${updateFields.join(', ')}
         WHERE id = $1 AND (is_deleted = false OR is_deleted IS NULL)
         RETURNING *
       `;
 
-      const result = await client.query(query, [
-        campaignId,
-        campaign_name,
-        profile_id
-      ]);
+      console.log(`📝 Actualizando campaign con: name=${campaign_name}, slug=${slug}, status=${status}`);
+      const result = await client.query(updateQuery, updateParams);
       
       // Si hay un pair_id nuevo, actualizar las relaciones de template
       if (pair_id) {
@@ -66,14 +110,24 @@ export default defineEventHandler(async (event) => {
         });
       }
 
+      console.log(`✅ Campaign ${campaignId} actualizado exitosamente para usuario: ${tenantContext.user_id}`);
       return {
         success: true,
         data: result.rows[0],
-        message: 'Campaign updated successfully'
+        message: 'Campaign updated successfully',
+        tenant_info: {
+          tenant_id: tenantContext.tenant_id,
+          tenant_name: tenantContext.tenant_name,
+          user_role: tenantContext.role,
+          is_superuser: tenantContext.is_superuser
+        }
       };
 
     } catch (error) {
-      console.error('Error updating campaign:', error);
+      console.error(`Error updating campaign ${campaignId} para tenant ${tenantContext.tenant_name}:`, error);
+      if (error.statusCode) {
+        throw error; // Re-throw known errors
+      }
       throw createError({
         statusCode: 500,
         statusMessage: 'Error updating campaign'

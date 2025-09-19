@@ -1,14 +1,19 @@
-import { defineEventHandler } from 'h3';
+import { defineEventHandler, createError } from 'h3';
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
-import { verifyAuthToken } from '../../utils/security/jwtVerifier';
+import { withTenantIsolation, addTenantFilterSimple } from '../../utils/security/tenantIsolation';
 
-export default defineEventHandler(async (event) => {
+export default withTenantIsolation(async (event) => {
+  const tenantContext = event.context.tenant;
+  
   return await withPostgresClient(async (client) => {
     try {
-      // Authentication is commented out for testing - uncomment when needed
-      // await verifyAuthToken(event);
+      if (tenantContext.is_superuser) {
+        console.log(`🔓 Superuser consultando todas las campaigns`);
+      } else {
+        console.log(`🔐 Consultando campaigns para usuario: ${tenantContext.user_id}`);
+      }
 
-      const query = `
+      let baseQuery = `
           SELECT 
             c.id,
             c.name,
@@ -17,27 +22,58 @@ export default defineEventHandler(async (event) => {
             c.updated_at,
             c.slug,
             c.profile_id,
+            p.name as profile_name,
             p.website,
             p.enterprise,
-            COALESCE(cs.total_leads, 0) AS total_leads,
-            COALESCE(cs.total_sends, 0) AS total_sends
+            COALESCE(cl.total_leads, 0) AS total_leads,
+            COALESCE(li.total_sends, 0) AS total_sends
           FROM campaign c
-          LEFT JOIN profile p ON c.profile_id = p.id
-          LEFT JOIN campaign_summary cs ON c.id = cs.campaign_id
+          JOIN profile p ON c.profile_id = p.id
+          LEFT JOIN (
+            SELECT campaign_id, COUNT(*) AS total_leads
+            FROM campaign_leads
+            GROUP BY campaign_id
+          ) cl ON c.id = cl.campaign_id
+          LEFT JOIN (
+            SELECT campaign_id, COUNT(*) AS total_sends
+            FROM lead_interactions
+            WHERE interaction_type = 'email_sent'
+            GROUP BY campaign_id
+          ) li ON c.id = li.campaign_id
           WHERE (c.is_deleted = false OR c.is_deleted IS NULL)
-          ORDER BY c.created_at DESC
       `;
 
-      const result = await client.query(query);
+      let params = [];
+      
+      if (!tenantContext.is_superuser) {
+        baseQuery += ` AND c.profile_id = $1`;
+        params.push(tenantContext.user_id);
+      }
+      
+      const finalQuery = baseQuery + ` ORDER BY c.created_at DESC`;
+      
+      console.log(`👑 Es superuser: ${tenantContext.is_superuser ? 'Sí (ve todas las campaigns)' : 'No (solo sus campaigns)'}`);
+
+      const result = await client.query(finalQuery, params);
       
       return {
         success: true,
-        data: result.rows
+        data: result.rows,
+        tenant_info: {
+          tenant_id: tenantContext.tenant_id,
+          tenant_name: tenantContext.tenant_name,
+          user_role: tenantContext.role,
+          is_superuser: tenantContext.is_superuser,
+          total_campaigns: result.rows.length
+        }
       };
 
     } catch (error) {
-      console.error('Error fetching campaigns:', error);
-      throw error;
+      console.error(`Error fetching campaigns para tenant ${tenantContext.tenant_name}:`, error);
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Error obteniendo campaigns'
+      });
     }
-  }, event);
+  });
 });

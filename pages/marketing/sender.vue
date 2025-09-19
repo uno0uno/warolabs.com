@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-page">
-    <EmailCampaignSender />
+    <GroupEmailSender />
   </div>
 </template>
 

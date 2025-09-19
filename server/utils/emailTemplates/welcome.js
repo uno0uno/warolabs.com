@@ -9,7 +9,7 @@ import { withPostgresClient } from '../basedataSettings/withPostgresClient';
  * @param {string} params.verificationToken - The unique token for verification.
  * @returns {Promise<{html: string, subject: string, sender: string, profileUserName: string, enterprise: string}|null>} - An object with the email and profile details, or null on error.
  */
-export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken, host }) => {
+export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken, host, leadId, emailSendId }) => {
   try {
 
     let emailAndProfileData = null;
@@ -56,7 +56,27 @@ export const getWelcomeTemplate = async ({ campaignUuid, name, verificationToken
     const verificationLink = `${baseUrl}/api/marketing/verify-lead?token=${verificationToken}&campaignId=${campaignUuid}`;
 
     let finalHtml = emailAndProfileData.content.replace(/\${name}/g, name);
-    finalHtml = finalHtml.replace(/\${verificationLink}/g, verificationLink);
+    
+    // Replace verification link with tracking-enabled version if tracking parameters are provided
+    if (leadId && emailSendId) {
+      const trackedVerificationLink = `${baseUrl}/api/tracking/click?leadId=${leadId}&campaignId=${campaignUuid}&emailSendId=${emailSendId}&redirectTo=${encodeURIComponent(verificationLink)}`;
+      finalHtml = finalHtml.replace(/\${verificationLink}/g, trackedVerificationLink);
+    } else {
+      finalHtml = finalHtml.replace(/\${verificationLink}/g, verificationLink);
+    }
+
+    // Add email tracking pixel if leadId and emailSendId are provided
+    if (leadId && emailSendId) {
+      const trackingPixelUrl = `${baseUrl}/api/tracking/open?leadId=${leadId}&campaignId=${campaignUuid}&emailSendId=${emailSendId}`;
+      const trackingPixel = `<img src="${trackingPixelUrl}" width="1" height="1" style="display:none;" alt="">`;
+      
+      // Insert tracking pixel just before closing body tag, or append if no body tag found
+      if (finalHtml.includes('</body>')) {
+        finalHtml = finalHtml.replace('</body>', `${trackingPixel}</body>`);
+      } else {
+        finalHtml += trackingPixel;
+      }
+    }
 
     return {
       html: finalHtml,
