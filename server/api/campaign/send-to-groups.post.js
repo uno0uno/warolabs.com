@@ -20,7 +20,8 @@ export default withTenantIsolation(async (event) => {
   } = await readBody(event);
   
   const config = useRuntimeConfig();
-  const { baseUrl } = config.public;
+  // Usar siempre warolabs.com para tracking, independientemente del cliente
+  const trackingBaseUrl = 'https://warolabs.com/';
 
   // Validaciones
   if (!templateId) {
@@ -234,7 +235,7 @@ export default withTenantIsolation(async (event) => {
           .replace(/{{correo}}/g, lead.email || '');
 
         // Inyectar tracking con emailSendId (igual que send.js)
-        const trackedHtmlBody = injectTracking(personalizedBodyHtml, lead.id, finalCampaignId, baseUrl, emailSendId);
+        const trackedHtmlBody = injectTracking(personalizedBodyHtml, lead.id, finalCampaignId, trackingBaseUrl, emailSendId);
 
         console.log(`Enviando correo a ${lead.email} con el asunto: ${personalizedSubject}`);
         
