@@ -28,12 +28,6 @@ export const useDashboardMenu = () => {
       iconSolid: 'EnvelopeIcon',
       label: 'Marketing',
       action: 'navigateToEmails',
-    },
-    {
-      icon: 'EnvelopeIcon',
-      iconSolid: 'EnvelopeIcon', 
-      label: 'Database',
-      action: 'navigateToEmails'
     }
   ]
 

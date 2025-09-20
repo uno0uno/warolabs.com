@@ -192,6 +192,7 @@ async function verifyCode() {
   error.value = ''
   
   try {
+    console.log(`🔢 Enviando código de verificación para: ${email.value}`)
     const response = await $fetch('/api/auth/verify-code', {
       method: 'POST',
       body: {
@@ -208,8 +209,12 @@ async function verifyCode() {
     const redirectUrl = route.query.redirect || '/marketing'
     console.log(`🔄 Redirigiendo a: ${redirectUrl}`)
     
-    // Usar window.location para forzar recarga completa
-    window.location.href = redirectUrl
+    // Agregar delay antes de redirección
+    setTimeout(() => {
+      console.log('🚀 Ejecutando redirección...')
+      // Usar window.location para forzar recarga completa
+      window.location.href = redirectUrl
+    }, 1000)
     
   } catch (err) {
     console.error('❌ Error al verificar código:', err)
