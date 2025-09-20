@@ -15,6 +15,7 @@ const EXEMPT_ENDPOINTS = [
   '/api/landings/',       // Landing pages públicas
   '/api/tracking/',       // Email tracking endpoints (pixels, clicks)
   '/api/marketing/createLeadCampain', // Public lead capture
+  '/api/marketing/verify-lead', // Lead verification endpoint
   '/api/debug/',          // Endpoints de debug (desarrollo)
   '/api/migration/',      // Endpoints de migración de base de datos
   '/api/_',               // Endpoints internos de Nuxt
