@@ -758,18 +758,18 @@ const formData = reactive({
 
 // Computed properties
 const totalLeads = computed(() => {
-  return leadGroups.value.reduce((sum, group) => sum + (group.member_count || 0), 0)
+  return leadGroups.value.reduce((sum, group) => sum + Number(group.member_count || 0), 0)
 })
 
 const avgConversionRate = computed(() => {
   if (leadGroups.value.length === 0) return 0
-  const sum = leadGroups.value.reduce((acc, group) => acc + (group.conversion_rate || 0), 0)
+  const sum = leadGroups.value.reduce((acc, group) => acc + Number(group.conversion_rate || 0), 0)
   return Math.round(sum / leadGroups.value.length)
 })
 
 const highlyEngagedCount = computed(() => {
   return leadGroups.value.reduce((sum, group) => {
-    return sum + (group.activity_stats?.total_clicks || 0)
+    return sum + Number(group.activity_stats?.total_clicks || 0)
   }, 0)
 })
 
