@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-background">
+  <div class="flex items-center justify-center">
     <div class="w-full max-w-md p-6 text-center space-y-6">
       
       <!-- Logging out State -->
@@ -13,8 +13,8 @@
 
       <!-- Success State -->
       <div v-else class="space-y-4">
-        <div class="mx-auto h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-          <svg class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="mx-auto h-12 w-12 rounded-full bg-success/10 flex items-center justify-center">
+          <svg class="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
         </div>
@@ -23,7 +23,7 @@
           Has cerrado sesión exitosamente. ¡Gracias por usar Warolabs!
         </p>
         <div class="space-y-2">
-          <UiButton @click="$router.push('/')" class="w-full">
+          <UiButton @click="$router.push('/')" class="w-full brand-black">
             Volver al inicio
           </UiButton>
           <UiButton @click="$router.push('/auth/login')" variant="outline" class="w-full">
@@ -38,7 +38,7 @@
 
 <script setup>
 definePageMeta({
-  layout: 'landingv2'
+  layout: 'auth'
 });
 
 const router = useRouter()

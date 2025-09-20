@@ -8,9 +8,10 @@ export const useToast = () => {
   const success = (title) => {
     playNotificationSound('success')
     return toast.custom(
-      h(CustomToastCard, {
+      (t) => h(CustomToastCard, {
         type: 'success',
-        title
+        title,
+        toastId: t
       }),
       {
         duration: 2000
@@ -21,9 +22,10 @@ export const useToast = () => {
   const error = (title) => {
     playNotificationSound('error')
     return toast.custom(
-      h(CustomToastCard, {
+      (t) => h(CustomToastCard, {
         type: 'error',
-        title
+        title,
+        toastId: t
       }),
       {
         duration: 2000
@@ -34,9 +36,10 @@ export const useToast = () => {
   const info = (title) => {
     playNotificationSound('info')
     return toast.custom(
-      h(CustomToastCard, {
+      (t) => h(CustomToastCard, {
         type: 'info',
-        title
+        title,
+        toastId: t
       }),
       {
         duration: 2000
@@ -47,9 +50,10 @@ export const useToast = () => {
   const warning = (title) => {
     playNotificationSound('warning')
     return toast.custom(
-      h(CustomToastCard, {
+      (t) => h(CustomToastCard, {
         type: 'warning',
-        title
+        title,
+        toastId: t
       }),
       {
         duration: 2000
@@ -60,9 +64,10 @@ export const useToast = () => {
   const loading = (title) => {
     playNotificationSound('loading')
     return toast.custom(
-      h(CustomToastCard, {
+      (t) => h(CustomToastCard, {
         type: 'loading',
-        title
+        title,
+        toastId: t
       }),
       {
         duration: 0 // Loading toasts no se auto-cierran

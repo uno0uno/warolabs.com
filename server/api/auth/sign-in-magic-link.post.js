@@ -9,6 +9,10 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const { email } = body;
     
+    // Get redirect parameter from query or body
+    const query = getQuery(event);
+    const redirectParam = query.redirect || body.redirect;
+    
     if (!email) {
       throw createError({
         statusCode: 400,
@@ -19,8 +23,9 @@ export default defineEventHandler(async (event) => {
     console.log(`📧 Magic link handler - Email: ${email}`);
     
     const result = await withPostgresClient(async (client) => {
-      // Generate secure token
+      // Generate secure token and verification code
       const token = crypto.randomBytes(32).toString('hex');
+      const verificationCode = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit code
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
       
       // Check if user exists, if not create one
@@ -57,24 +62,29 @@ export default defineEventHandler(async (event) => {
       
       // Save new magic token to database with analytics fields
       const insertTokenQuery = `
-        INSERT INTO magic_tokens (user_id, token, expires_at, used, created_at, used_at) 
-        VALUES ($1, $2, $3, false, NOW(), NULL)
+        INSERT INTO magic_tokens (user_id, token, verification_code, expires_at, used, created_at, used_at) 
+        VALUES ($1, $2, $3, $4, false, NOW(), NULL)
       `;
-      await client.query(insertTokenQuery, [userId, token, expiresAt]);
+      await client.query(insertTokenQuery, [userId, token, verificationCode, expiresAt]);
       console.log(`🔑 Magic token saved for user: ${userId}`);
       
-      return { userId, token };
+      return { userId, token, verificationCode };
     }, event);
     
     // Generate magic link URL  
     const { public: { baseUrl } } = useRuntimeConfig();
     const cleanBaseUrl = (baseUrl || "http://localhost:4000").replace(/\/$/, '');
-    const magicLinkUrl = `${cleanBaseUrl}/auth/verify?token=${result.token}&email=${encodeURIComponent(email)}`;
+    let magicLinkUrl = `${cleanBaseUrl}/auth/verify?token=${result.token}&email=${encodeURIComponent(email)}`;
+    
+    // Add redirect parameter if provided
+    if (redirectParam) {
+      magicLinkUrl += `&redirect=${encodeURIComponent(redirectParam)}`;
+    }
     
     console.log(`🔗 Magic link URL: ${magicLinkUrl}`);
     
     // Send email
-    const html = getMagicLinkTemplate(magicLinkUrl);
+    const html = getMagicLinkTemplate(magicLinkUrl, result.verificationCode);
     await sendEmail({
       fromEmailAddress: "anderson.arevalo@warolabs.com",
       fromName: "Saifer - Warolabs",

@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-background">
+  <div class="flex items-center justify-center">
     <div class="w-full max-w-md p-6 text-center space-y-6">
       
       <!-- Loading State -->
@@ -13,12 +13,12 @@
 
       <!-- Success State -->
       <div v-else-if="success" class="space-y-4">
-        <div class="mx-auto h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-          <svg class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="mx-auto h-12 w-12 rounded-full bg-success/10 flex items-center justify-center">
+          <svg class="h-6 w-6 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h1 class="text-2xl font-bold text-green-600">¡Acceso verificado!</h1>
+        <h1 class="text-2xl font-bold text-success">¡Acceso verificado!</h1>
         <p class="text-muted-foreground">
           Te estamos redirigiendo a tu dashboard...
         </p>
@@ -26,17 +26,17 @@
 
       <!-- Error State -->
       <div v-else-if="error" class="space-y-4">
-        <div class="mx-auto h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
-          <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="mx-auto h-12 w-12 rounded-full bg-destructive/10 flex items-center justify-center">
+          <svg class="h-6 w-6 text-destructive" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </div>
-        <h1 class="text-2xl font-bold text-red-600">Error de verificación</h1>
+        <h1 class="text-2xl font-bold text-destructive">Error de verificación</h1>
         <p class="text-muted-foreground">
           {{ error }}
         </p>
         <div class="space-y-2">
-          <UiButton @click="$router.push('/auth/login')" class="w-full">
+          <UiButton @click="$router.push('/auth/login')" class="w-full brand-black">
             Volver al login
           </UiButton>
           <UiButton @click="retry" variant="outline" class="w-full">
@@ -51,7 +51,7 @@
 
 <script setup>
 definePageMeta({
-  layout: 'landingv2'
+  layout: 'auth'
 });
 
 const route = useRoute()
@@ -83,10 +83,13 @@ async function verifyMagicLink() {
       success.value = true
       console.log('✅ Magic link verified successfully, user:', response.user)
       
+      // Obtener URL de redirección de los parámetros
+      const redirectUrl = route.query.redirect || '/marketing'
+      
       // Esperar un poco más para asegurar que la cookie se establezca
       setTimeout(() => {
-        console.log('🚀 Redirecting to marketing...')
-        router.push('/marketing')
+        console.log(`🚀 Redirecting to: ${redirectUrl}`)
+        router.push(redirectUrl)
       }, 2500)
     } else {
       throw new Error(response.message || 'No se pudo verificar el magic link')
