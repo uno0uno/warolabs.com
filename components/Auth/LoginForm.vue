@@ -130,7 +130,6 @@ onMounted(async () => {
   try {
     const session = await $fetch('/api/auth/session')
     if (session?.success && session?.user) {
-      console.log('✅ User already authenticated, redirecting...')
       
       // Redirigir a la URL original si existe, sino al dashboard
       const route = useRoute()
@@ -140,7 +139,6 @@ onMounted(async () => {
     }
   } catch (error) {
     // No hay sesión válida, mostrar formulario
-    console.log('ℹ️ No active session found, showing login form')
   } finally {
     checkingSession.value = false
   }
@@ -149,12 +147,10 @@ onMounted(async () => {
 async function handleSubmit() {
   if (!email.value) return
   
-  console.log('📧 Iniciando envío de magic link para:', email.value)
   loading.value = true
   error.value = ''
 
   try {
-    console.log('📨 Enviando magic link...')
     const route = useRoute()
     const response = await $fetch('/api/auth/sign-in-magic-link', {
       method: 'POST',
@@ -163,19 +159,11 @@ async function handleSubmit() {
         redirect: route.query.redirect
       }
     })
-    console.log('✅ Resultado del magic link:', response)
     
     // Mostrar toast de éxito y activar UI de código
     toast.success('Link de ingreso enviado')
     emailSent.value = true
-    console.log('🎉 Magic link enviado exitosamente')
   } catch (err) {
-    console.error('❌ Error al enviar magic link:', err)
-    console.error('❌ Error details:', {
-      message: err.message,
-      status: err.status,
-      cause: err.cause
-    })
     error.value = err.message || 'Error al enviar el magic link. Intenta nuevamente.'
   } finally {
     loading.value = false
@@ -192,7 +180,6 @@ async function verifyCode() {
   error.value = ''
   
   try {
-    console.log(`🔢 Enviando código de verificación para: ${email.value}`)
     const response = await $fetch('/api/auth/verify-code', {
       method: 'POST',
       body: {
@@ -201,23 +188,19 @@ async function verifyCode() {
       }
     })
     
-    console.log('✅ Código verificado exitosamente:', response)
     toast.success('¡Acceso autorizado!')
     
     // Redirigir con recarga completa para asegurar que la cookie se incluya
     const route = useRoute()
     const redirectUrl = route.query.redirect || '/marketing'
-    console.log(`🔄 Redirigiendo a: ${redirectUrl}`)
     
     // Agregar delay antes de redirección
     setTimeout(() => {
-      console.log('🚀 Ejecutando redirección...')
       // Usar window.location para forzar recarga completa
       window.location.href = redirectUrl
     }, 1000)
     
   } catch (err) {
-    console.error('❌ Error al verificar código:', err)
     error.value = err.message || 'Código inválido o expirado'
   } finally {
     verifyingCode.value = false

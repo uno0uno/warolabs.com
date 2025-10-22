@@ -184,6 +184,53 @@ Examples:
 - GOOD: `client.query('SELECT * FROM create_template_pair($1, $2, $3)', [name, email, content])`
 - BAD: Separate INSERT statements for templates, template_versions, and related tables in the API route
 
+### ACID Methodology & Data Integrity
+**CRITICAL: ALWAYS follow ACID principles to prevent data duplication and ensure consistency.**
+
+**Atomicity Rules:**
+- All related database operations MUST be wrapped in transactions
+- Either ALL operations succeed or ALL fail - no partial states
+- Use PostgreSQL functions with proper transaction handling
+- Never leave the database in an inconsistent state
+
+**Consistency Rules:**
+- Enforce data integrity through foreign key constraints
+- Use normalized table structures to prevent duplication
+- Validate data at the database level, not just application level
+- Maintain referential integrity across all related tables
+
+**Isolation Rules:**
+- Handle concurrent operations safely with proper locking
+- Use appropriate transaction isolation levels
+- Prevent race conditions in multi-user scenarios
+- Test concurrent access patterns thoroughly
+
+**Durability Rules:**
+- Ensure committed transactions are permanently stored
+- Handle connection failures gracefully
+- Implement proper error handling and rollback mechanisms
+- Use database constraints to prevent invalid data states
+
+**Anti-Duplication Strategy:**
+- **NEVER store the same information in multiple places**
+- Use foreign keys instead of duplicating data
+- Create separate normalized tables for different entity types
+- Implement proper cascading updates/deletes
+- Use views or computed columns for derived data
+
+**Table Design Principles:**
+- One table per entity type (person, artist, bar, business)
+- Reference the main `profile` table via foreign keys
+- Store type-specific data only in respective tables
+- Use ENUM types for controlled vocabularies
+- Implement proper indexing for performance
+
+Examples:
+- GOOD: `profile` → `artist_profiles` (1:1 relationship via foreign key)
+- BAD: Storing artist data in a JSONB field in the main profile table
+- GOOD: Separate `bar_amenities` table with foreign key to `bar_profiles`
+- BAD: Storing amenities as JSON array in bar_profiles table
+
 ### Email Template Rendering
 Email templates use Handlebars-style variable substitution:
 ```javascript

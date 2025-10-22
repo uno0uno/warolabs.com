@@ -22,11 +22,12 @@ export async function getTenantContext(event) {
   }
 
   return await withPostgresClient(async (client) => {
-    // Obtener información completa del usuario y tenant
+    // Obtener información completa del usuario y tenant usando el tenant_id de la sesión
     const result = await client.query(`
       SELECT 
         s.id as session_id,
         s.user_id,
+        s.tenant_id as session_tenant_id,
         p.email,
         p.name,
         p.enterprise,
@@ -40,8 +41,8 @@ export async function getTenantContext(event) {
         END as is_superuser
       FROM sessions s
       JOIN profile p ON s.user_id = p.id
-      LEFT JOIN tenant_members tm ON p.id = tm.user_id
-      LEFT JOIN tenants t ON tm.tenant_id = t.id
+      LEFT JOIN tenants t ON s.tenant_id = t.id
+      LEFT JOIN tenant_members tm ON p.id = tm.user_id AND tm.tenant_id = s.tenant_id
       WHERE s.id = $1 
         AND s.expires_at > NOW() 
         AND s.is_active = true

@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
       }
       
       const session = sessionResult.rows[0];
-      console.log(`✅ Valid session found for user: ${session.user_id}`);
+      console.log(`✅ Valid session found for user: ${session.user_id}, tenant: ${session.tenant_id}`);
       
       // Update last activity for analytics tracking
       await client.query(
@@ -46,6 +46,16 @@ export default defineEventHandler(async (event) => {
         [sessionToken]
       );
       console.log(`📊 Session activity updated for analytics`);
+      
+      // Get tenant info if tenant_id exists
+      let currentTenant = null
+      if (session.tenant_id) {
+        const tenantQuery = `SELECT id, name, slug FROM tenants WHERE id = $1`
+        const tenantResult = await client.query(tenantQuery, [session.tenant_id])
+        if (tenantResult.rows.length > 0) {
+          currentTenant = tenantResult.rows[0]
+        }
+      }
       
       return {
         user: {
@@ -59,8 +69,10 @@ export default defineEventHandler(async (event) => {
           createdAt: session.created_at,
           lastActivity: session.last_activity_at,
           ipAddress: session.ip_address,
-          loginMethod: session.login_method
-        }
+          loginMethod: session.login_method,
+          tenantId: session.tenant_id
+        },
+        currentTenant
       };
     }, event);
     

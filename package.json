@@ -42,6 +42,7 @@
     "radix-vue": "^1.9.17",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.3.3",
+    "uuid": "^13.0.0",
     "vue-sonner": "^2.0.8"
   },
   "devDependencies": {

@@ -17,11 +17,15 @@ export default defineEventHandler(async (event) => {
     console.log(`🔢 Verification code handler - Email: ${email}, Code: ${code}`);
     
     const result = await withPostgresClient(async (client) => {
-      // Verify code and get user info
+      // Verify code and get user info with tenant from magic_token
       const verifyQuery = `
-        SELECT mt.*, p.email, p.name, p.id as user_id
+        SELECT mt.*, p.email, p.name, p.id as user_id, mt.tenant_id,
+               t.name as tenant_name, t.slug as tenant_slug,
+               tm.role as user_role
         FROM magic_tokens mt
         JOIN profile p ON mt.user_id = p.id
+        LEFT JOIN tenants t ON mt.tenant_id = t.id
+        LEFT JOIN tenant_members tm ON tm.user_id = p.id AND tm.tenant_id = mt.tenant_id
         WHERE p.email = $1 AND mt.verification_code = $2 
         AND mt.expires_at > NOW() AND mt.used = false
         LIMIT 1
@@ -37,34 +41,29 @@ export default defineEventHandler(async (event) => {
         });
       }
       
-      const user = verifyResult.rows[0];
-      console.log(`✅ Valid verification code for user: ${user.user_id}`);
+      const tokenData = verifyResult.rows[0];
+      console.log(`✅ Valid verification code for user: ${tokenData.user_id}, tenant: ${tokenData.tenant_name}`);
       
-      // Check if user has an associated tenant
-      const tenantQuery = `
-        SELECT tm.tenant_id, tm.role, t.name as tenant_name
-        FROM tenant_members tm
-        JOIN tenants t ON tm.tenant_id = t.id
-        WHERE tm.user_id = $1
-        LIMIT 1
-      `;
-      const tenantResult = await client.query(tenantQuery, [user.user_id]);
-      
-      if (tenantResult.rows.length === 0) {
-        console.log(`❌ User ${user.user_id} has no tenant association - access denied`);
+      // Verify tenant access using tenant_id from magic_token
+      if (!tokenData.tenant_id || !tokenData.tenant_name) {
+        console.log(`❌ No tenant context in verification code for user: ${tokenData.user_id}`);
         throw createError({
           statusCode: 403,
-          statusMessage: 'Access denied: No tenant association found. Please contact your administrator.'
+          statusMessage: 'Access denied: Invalid tenant context.'
         });
       }
       
-      const tenantInfo = tenantResult.rows[0];
-      console.log(`✅ User ${user.user_id} has tenant: ${tenantInfo.tenant_name} (${tenantInfo.role})`);
+      const tenantInfo = {
+        tenant_id: tokenData.tenant_id,
+        tenant_name: tokenData.tenant_name,
+        role: tokenData.user_role || 'member'
+      };
+      console.log(`✅ User ${tokenData.user_id} has tenant: ${tenantInfo.tenant_name} (${tenantInfo.role})`);
       
       // Mark token as used
       await client.query(
         'UPDATE magic_tokens SET used = true, used_at = NOW() WHERE verification_code = $1 AND user_id = $2',
-        [code, user.user_id]
+        [code, tokenData.user_id]
       );
       console.log(`✅ Verification code marked as used`);
       
@@ -79,24 +78,24 @@ export default defineEventHandler(async (event) => {
       
       const sessionQuery = `
         INSERT INTO sessions (
-          id, user_id, expires_at, 
+          id, user_id, tenant_id, expires_at, 
           created_at, last_activity_at, 
           ip_address, user_agent, login_method, is_active
         )
-        VALUES ($1, $2, $3, NOW(), NOW(), $4, $5, 'verification_code', true)
+        VALUES ($1, $2, $3, $4, NOW(), NOW(), $5, $6, 'verification_code', true)
         RETURNING id
       `;
       const sessionResult = await client.query(sessionQuery, [
-        sessionId, user.user_id, expiresAt, clientIP, userAgent
+        sessionId, tokenData.user_id, tenantInfo.tenant_id, expiresAt, clientIP, userAgent
       ]);
-      console.log(`🎫 Session created with ID: ${sessionResult.rows[0].id}, IP: ${clientIP}`);
+      console.log(`🎫 Session created with ID: ${sessionResult.rows[0].id}, Tenant: ${tenantInfo.tenant_name}, IP: ${clientIP}`);
       
       return {
         sessionToken: sessionId,
         user: {
-          id: user.user_id,
-          email: user.email,
-          name: user.name
+          id: tokenData.user_id,
+          email: tokenData.email,
+          name: tokenData.name
         },
         tenant: {
           id: tenantInfo.tenant_id,

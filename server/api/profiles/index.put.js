@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    console.log(`💾 Updating profile for user ID ${user_id} on site ${site}...`);
+    console.log(`🔄 Complete profile update for user ID ${user_id} on site ${site}...`);
 
     const result = await withPostgresClient(async (client) => {
       // Get user's current role for the site
@@ -77,13 +77,15 @@ export default defineEventHandler(async (event) => {
       await client.query('BEGIN');
 
       try {
-        // Delete existing role data
-        await client.query(
-          'DELETE FROM tenant_member_role_data WHERE tenant_member_role_id = $1',
-          [roleId]
-        );
+        // Complete replacement: soft delete ALL existing role data
+        await client.query(`
+          UPDATE tenant_member_role_data 
+          SET deleted_at = NOW() 
+          WHERE tenant_member_role_id = $1 
+          AND deleted_at IS NULL
+        `, [roleId]);
 
-        // Insert new role data
+        // Insert new role data (complete replacement)
         const insertPromises = [];
         for (const [fieldName, fieldValue] of Object.entries(role_data)) {
           if (fieldValue !== null && fieldValue !== undefined && fieldValue !== '') {
@@ -122,11 +124,52 @@ export default defineEventHandler(async (event) => {
           [user_id, site]
         );
 
+        // Get the new role data to return
+        const newRoleDataResult = await client.query(`
+          SELECT 
+            tmrd.field_name,
+            tmrd.field_value,
+            tmrd.field_type,
+            tmrd.updated_at
+          FROM tenant_member_role_data tmrd
+          JOIN tenant_member_roles tmr ON tmrd.tenant_member_role_id = tmr.id
+          WHERE tmr.tenant_member_id = $1 
+          AND tmr.site = $2
+          AND tmr.is_active = true
+          AND tmrd.deleted_at IS NULL
+          ORDER BY tmrd.field_name
+        `, [user_id, site]);
+
+        const newRoleSpecificData = {};
+        newRoleDataResult.rows.forEach(row => {
+          let value = row.field_value;
+          
+          try {
+            if (row.field_type === 'json') {
+              value = JSON.parse(value);
+            } else if (row.field_type === 'number') {
+              value = parseFloat(value);
+            } else if (row.field_type === 'boolean') {
+              value = value === 'true';
+            }
+          } catch (error) {
+            console.warn(`Failed to parse field ${row.field_name}:`, error);
+          }
+          
+          newRoleSpecificData[row.field_name] = {
+            value: value,
+            type: row.field_type,
+            updated_at: row.updated_at
+          };
+        });
+
         return {
           updated_profile: updatedProfileResult.rows[0]?.get_tenant_member_profile_for_site,
-          fields_updated: Object.keys(role_data).length,
+          new_role_data: newRoleSpecificData,
+          fields_replaced: Object.keys(role_data).length,
           role: userRole,
-          site: site
+          site: site,
+          operation: 'complete_replacement'
         };
 
       } catch (error) {
@@ -135,16 +178,16 @@ export default defineEventHandler(async (event) => {
       }
     }, event);
 
-    console.log(`✅ Profile updated for user ID ${user_id} as ${result.role}`);
+    console.log(`✅ Complete profile replacement for user ID ${user_id} as ${result.role}`);
 
     return {
       success: true,
-      message: `Profile updated successfully for ${site}`,
+      message: `Profile completely updated for ${site}`,
       data: result
     };
 
   } catch (error) {
-    console.error('❌ Failed to update profile:', error);
+    console.error('❌ Failed to completely update profile:', error);
     
     throw createError({
       statusCode: error.statusCode || 500,
