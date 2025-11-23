@@ -26,47 +26,40 @@
 </template>
 
 <script setup>
-// SEO Meta Tags
+// SEO Meta Tags para la página principal
 useSeoMeta({
-  title: 'Waro Labs - Software de Verdad con Inteligencia Artificial',
+  title: 'Software de Verdad con Inteligencia Artificial',
   description: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
 
   // Open Graph
   ogTitle: 'Waro Labs - Software de Verdad con Inteligencia Artificial',
   ogDescription: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
-  ogImage: 'https://warolabs.com/og-image.png',
   ogUrl: 'https://warolabs.com',
-  ogType: 'website',
-  ogLocale: 'es_ES',
-  ogSiteName: 'Waro Labs',
 
   // Twitter Cards
-  twitterCard: 'summary_large_image',
   twitterTitle: 'Waro Labs - Software de Verdad con Inteligencia Artificial',
-  twitterDescription: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro.',
-  twitterImage: 'https://warolabs.com/og-image.png',
-  twitterSite: '@warolabs',
-  twitterCreator: '@warolabs',
-
-  // Additional SEO
-  author: 'Waro Labs',
-  keywords: 'inteligencia artificial, IA, software, desarrollo, LatAm, open source, marketing, diseño, tecnología',
-  robots: 'index, follow'
+  twitterDescription: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro.'
 })
 
-// Schema.org - WebPage
-useSchemaOrg([
-  {
-    '@type': 'WebPage',
-    name: 'Waro Labs - Software de Verdad',
-    description: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
-    url: 'https://warolabs.com',
-    inLanguage: 'es',
-    isPartOf: {
-      '@type': 'WebSite',
-      name: 'Waro Labs',
-      url: 'https://warolabs.com'
+// JSON-LD Schema para esta página específica
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Waro Labs - Software de Verdad',
+        description: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
+        url: 'https://warolabs.com',
+        inLanguage: 'es',
+        isPartOf: {
+          '@type': 'WebSite',
+          name: 'Waro Labs',
+          url: 'https://warolabs.com'
+        }
+      })
     }
-  }
-])
+  ]
+})
 </script>
