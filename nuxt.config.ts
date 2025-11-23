@@ -1,4 +1,3 @@
-
 export default defineNuxtConfig({
   ssr: true,
   devServer: {
@@ -38,13 +37,16 @@ export default defineNuxtConfig({
       ],
       htmlAttrs: {
         lang: 'es'
-      }
+      },
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      ]
     }
   },
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
-    '@nuxtjs/robots'
+    '@nuxtjs/seo'
   ],
   colorMode: {
     preference: 'dark',
@@ -52,22 +54,76 @@ export default defineNuxtConfig({
     classSuffix: '',
     storageKey: 'nuxt-color-mode'
   },
+
+  // ============================================
+  // SEO CONFIGURATION
+  // ============================================
   site: {
-    url: 'https://warolabs.com'
+    url: 'https://warolabs.com',
+    name: 'Waro Labs',
+    description: 'Democratizamos la tecnología y la inteligencia artificial. Eventos, workshops y contenido educativo para la comunidad hispanohablante.',
+    defaultLocale: 'es'
   },
+
+  // Sitemap automático
+  sitemap: {
+    excludeAppSources: ['nuxt:pages'],
+    sources: ['/api/__sitemap__/urls']
+  },
+
+  // Robots.txt mejorado
   robots: {
     credits: false,
     groups: [
       {
-        userAgents: ['GPTBot'],
-        disallow: ['/api/*'],
-        allow: ['/']
+        userAgents: ['*'],
+        allow: ['/'],
+        disallow: ['/api/*', '/admin/*', '/_nuxt/*']
+      },
+      {
+        userAgents: ['GPTBot', 'ChatGPT-User', 'CCBot', 'anthropic-ai'],
+        disallow: ['/']
       }
     ]
   },
-  head: {
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+
+  // Open Graph defaults
+  ogImage: {
+    enabled: true,
+    defaults: {
+      width: 1200,
+      height: 630,
+      type: 'image/png'
+    }
   },
+
+  // Schema.org JSON-LD
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: 'Waro Labs',
+      url: 'https://warolabs.com',
+      logo: 'https://warolabs.com/logo.png',
+      description: 'Democratizamos la tecnología y la inteligencia artificial para la comunidad hispanohablante.',
+      sameAs: [
+        'https://github.com/warolabs',
+        'https://twitter.com/warolabs',
+        'https://www.tiktok.com/@waro.labs',
+        'https://www.linkedin.com/company/warolabs'
+      ]
+    }
+  },
+
+  // Link Checker (solo en desarrollo)
+  linkChecker: {
+    enabled: false
+  },
+
+  // SEO Experiments
+  seoExperiments: {
+    enabled: false
+  },
+
   devtools: { enabled: true },
   css: ['~/assets/css/main.scss', '~/assets/css/components.css'],
   postcss: {
