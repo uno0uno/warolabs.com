@@ -49,7 +49,8 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'dark',
     fallback: 'dark',
-    classSuffix: ''
+    classSuffix: '',
+    storageKey: 'nuxt-color-mode'
   },
   site: {
     url: 'https://warolabs.com'

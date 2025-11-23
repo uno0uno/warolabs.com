@@ -9,12 +9,12 @@
           <NuxtLink to="/blog" class="nav-link text-sm sm:text-[15px]">Blog</NuxtLink>
         </li>
         <li>
-          <button @click="$emit('toggleTheme')" class="theme-toggle" aria-label="Cambiar tema">
-            <!-- Moon Icon (Light Mode) -->
-            <svg v-if="!isDark" width="18" height="18" class="sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <button @click="toggleTheme" class="theme-toggle" aria-label="Cambiar tema">
+            <!-- Moon Icon (mostrar en light mode para cambiar a dark) -->
+            <svg v-if="colorMode.value === 'light'" width="18" height="18" class="sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
-            <!-- Sun Icon (Dark Mode) -->
+            <!-- Sun Icon (mostrar en dark mode para cambiar a light) -->
             <svg v-else width="18" height="18" class="sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
             </svg>
@@ -26,12 +26,9 @@
 </template>
 
 <script setup>
-defineProps({
-  isDark: {
-    type: Boolean,
-    default: false
-  }
-})
+const colorMode = useColorMode()
 
-defineEmits(['toggleTheme'])
+const toggleTheme = () => {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+}
 </script>
