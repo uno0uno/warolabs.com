@@ -1,5 +1,5 @@
 <template>
-  <footer class="py-10 px-5 md:px-10 flex flex-col items-center gap-5 text-xs mt-auto text-secondary border-t border-glass-border transition-all duration-300">
+  <footer class="py-10 flex flex-col items-center gap-5 text-xs mt-auto text-secondary border-t border-glass-border transition-all duration-300">
     <NuxtLink to="/" class="font-display font-bold text-base text-main">waro labs</NuxtLink>
     <div class="flex gap-5">
       <a href="https://github.com/uno0uno/warocol.com" target="_blank" rel="noopener" class="nav-link">Github</a>
