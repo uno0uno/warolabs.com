@@ -25,40 +25,33 @@
   </section>
 </template>
 
-<script setup>
-// SEO Meta Tags para la página principal
+<script setup lang="ts">
+const {
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  ogUrl,
+  twitterTitle,
+  twitterDescription,
+  jsonLd
+} = useSeo()
+
 useSeoMeta({
-  title: 'Software de Verdad con Inteligencia Artificial',
-  description: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
-
-  // Open Graph
-  ogTitle: 'Waro Labs - Software de Verdad con Inteligencia Artificial',
-  ogDescription: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
-  ogUrl: 'https://warolabs.com',
-
-  // Twitter Cards
-  twitterTitle: 'Waro Labs - Software de Verdad con Inteligencia Artificial',
-  twitterDescription: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro.'
+  title,
+  description,
+  ogTitle,
+  ogDescription,
+  ogUrl,
+  twitterTitle,
+  twitterDescription
 })
 
-// JSON-LD Schema para esta página específica
 useHead({
   script: [
     {
       type: 'application/ld+json',
-      innerHTML: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebPage',
-        name: 'Waro Labs - Software de Verdad',
-        description: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
-        url: 'https://warolabs.com',
-        inLanguage: 'es',
-        isPartOf: {
-          '@type': 'WebSite',
-          name: 'Waro Labs',
-          url: 'https://warolabs.com'
-        }
-      })
+      innerHTML: JSON.stringify(jsonLd)
     }
   ]
 })

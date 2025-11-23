@@ -28,7 +28,16 @@ export default defineNuxtConfig({
       nameSite: process.env.NUXT_PRIVATE_NAME_SITE || '',
       xNameUser: process.env.NUXT_PRIVATE_X_NAME || '',
       gtmContainerId: process.env.NUXT_PUBLIC_GTM_CONTAINER_ID || '',
-      publicKeyEncrypter: process.env.NUXT_PUBLIC_PUBLIC_KEY_ENCRYPTER || ''
+      publicKeyEncrypter: process.env.NUXT_PUBLIC_PUBLIC_KEY_ENCRYPTER || '',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://warolabs.com',
+      canonicalUrl: process.env.NUXT_PUBLIC_CANONICAL_URL || 'https://warolabs.com',
+      seoTitle: process.env.NUXT_PUBLIC_SEO_TITLE || '',
+      seoDescription: process.env.NUXT_PUBLIC_SEO_DESCRIPTION || '',
+      ogTitle: process.env.NUXT_PUBLIC_OG_TITLE || '',
+      ogDescription: process.env.NUXT_PUBLIC_OG_DESCRIPTION || '',
+      ogUrl: process.env.NUXT_PUBLIC_OG_URL || 'https://warolabs.com',
+      twitterTitle: process.env.NUXT_PUBLIC_TWITTER_TITLE || '',
+      twitterDescription: process.env.NUXT_PUBLIC_TWITTER_DESCRIPTION || ''
     }
   },
   app: {
@@ -58,7 +67,7 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'canonical', href: 'https://warolabs.com' }
+        { rel: 'canonical', href: process.env.NUXT_PUBLIC_CANONICAL_URL || process.env.NUXT_PUBLIC_SITE_URL }
       ],
       script: [
         // JSON-LD Schema.org Organization
