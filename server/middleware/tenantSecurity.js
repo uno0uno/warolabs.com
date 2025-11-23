@@ -17,6 +17,7 @@ const EXEMPT_ENDPOINTS = [
   '/api/tracking/',       // Email tracking endpoints (pixels, clicks)
   '/api/marketing/createLeadCampain', // Public lead capture
   '/api/marketing/verify-lead', // Lead verification endpoint
+  '/api/utils/encrypt-data', // Public encryption endpoint for landing pages
   '/api/profiles/',       // Public profile endpoints (ahora con filtro por tenant)
   '/api/events/',         // Events endpoints (tenant detection via headers)
   '/api/gamification/',   // Gamification endpoints (temporary for testing)
