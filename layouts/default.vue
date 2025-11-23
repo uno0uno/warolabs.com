@@ -6,7 +6,7 @@
     <div class="flex flex-col w-full min-h-screen px-4 md:px-16 2xl:px-[30rem]">
       <TheHeader />
 
-      <main class="flex-grow">
+      <main class="flex-grow flex flex-col items-center">
         <slot />
       </main>
 
