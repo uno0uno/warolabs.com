@@ -1,5 +1,5 @@
 <template>
-  <section class="relative flex flex-col items-center justify-center text-center min-h-[calc(100vh-72px)] py-12 md:py-16 overflow-hidden">
+  <section class="relative flex flex-col items-center justify-center text-center py-12 md:py-16 overflow-hidden">
     <!-- Ambient Glow - smaller on mobile -->
     <div class="absolute w-[400px] h-[300px] md:w-[800px] md:h-[600px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 blur-[60px] md:blur-[80px] -z-10 pointer-events-none glow transition-all duration-300"></div>
 
