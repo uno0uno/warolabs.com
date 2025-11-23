@@ -61,7 +61,7 @@ export default defineNuxtConfig({
   site: {
     url: 'https://warolabs.com',
     name: 'Waro Labs',
-    description: 'Democratizamos la tecnología y la inteligencia artificial. Eventos, workshops y contenido educativo para la comunidad hispanohablante.',
+    description: 'Diseño + IA + Marketing. Súmate al lab open-source donde destripamos las herramientas del futuro para que LatAm la rompa.',
     defaultLocale: 'es'
   },
 
@@ -104,7 +104,7 @@ export default defineNuxtConfig({
       name: 'Waro Labs',
       url: 'https://warolabs.com',
       logo: 'https://warolabs.com/logo.png',
-      description: 'Democratizamos la tecnología y la inteligencia artificial para la comunidad hispanohablante.',
+      description: 'Hacemos software de verdad, exprimiendo las IAs más top del mundo. Lab open-source de Diseño + IA + Marketing para que LatAm la rompa.',
       sameAs: [
         'https://github.com/warolabs',
         'https://twitter.com/warolabs',
