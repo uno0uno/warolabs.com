@@ -36,6 +36,9 @@ export const useSeo = () => {
         ogUrl,
         twitterTitle,
         twitterDescription,
-        jsonLd
+        jsonLd,
+        heroTitle: config.heroTitle,
+        heroTitleHighlight: config.heroTitleHighlight,
+        heroDescription: config.heroDescription
     }
 }

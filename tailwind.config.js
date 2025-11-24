@@ -23,8 +23,8 @@ module.exports = {
 
         // Accent colors
         'accent': {
-          DEFAULT: 'var(--accent-green)',
-          green: 'var(--accent-green)',
+          DEFAULT: 'var(--accent-lime)',
+          lime: 'var(--accent-lime)',
         },
 
         // Button colors

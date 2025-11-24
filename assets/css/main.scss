@@ -48,14 +48,15 @@
 
   /* Background */
   --bg-body: #FFFFFF;
-  --bg-pattern: #E5E5E5;
+  --bg-pattern: #d4d4d4;
+  /* Darker for more visibility */
 
   /* Text */
   --text-main: #000000;
   --text-secondary: #555555;
 
   /* Accent - Monochrome */
-  --accent-green: #000000;
+  --accent-lime: #dadf5b;
 
   /* Buttons */
   --btn-bg: #000000;
@@ -72,19 +73,22 @@
 
 /* === DARK THEME - MONOCHROME === */
 .dark {
-  --bg-body: #000000;
-  --bg-pattern: #1a1a1a;
+  --bg-body: #2d2d2e;
+  --bg-pattern: #4a4a4b;
+  /* Lighter for more visibility */
+  /* Slightly lighter for contrast */
 
   --text-main: #FFFFFF;
   --text-secondary: #999999;
 
-  --accent-green: #FFFFFF;
+  --accent-lime: #dadf5b;
 
   --btn-bg: #FFFFFF;
-  --btn-text: #000000;
+  --btn-text: #2d2d2e;
 
   --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-bg: rgba(0, 0, 0, 0.85);
+  --glass-bg: rgba(45, 45, 46, 0.85);
+  /* #2d2d2e with opacity */
 
   --hero-gradient-start: #FFFFFF;
   --hero-gradient-end: #888888;
@@ -129,6 +133,14 @@ body {
   background-clip: text;
 }
 
+/* Reset Gradient Text */
+.text-gradient-reset {
+  -webkit-text-fill-color: currentColor;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+}
+
 /* Ambient Glow - Monochrome */
 .glow {
   background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 0%, transparent 60%);
@@ -167,7 +179,7 @@ body {
   display: inline-block;
   width: 10px;
   height: 20px;
-  background-color: var(--accent-green);
+  background-color: var(--accent-lime);
   animation: blink 1s step-end infinite;
 }
 
@@ -180,10 +192,8 @@ body {
 }
 
 .nav-link:hover {
-  color: var(--text-main);
-  text-decoration: underline;
-  text-decoration-color: var(--accent-green);
-  text-underline-offset: 4px;
+  color: var(--accent-lime);
+  text-decoration: none;
 }
 
 /* Theme Toggle */
@@ -207,7 +217,9 @@ body {
    ======================================== */
 
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
 .animate-blink {

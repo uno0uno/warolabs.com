@@ -1,8 +1,8 @@
 <template>
-  <header class="h-[60px] sm:h-[72px] flex items-center justify-center z-50 glass border-b border-glass-border transition-all duration-300">
+  <header class="h-[60px] sm:h-[72px] py-6 sm:py-12 flex items-center justify-center z-50 glass border-b border-glass-border transition-all duration-300">
     <div class="w-full max-w-[1000px] flex items-center justify-between">
-      <NuxtLink to="/" class="font-display font-bold text-lg sm:text-xl tracking-tight flex items-center gap-2 text-main">
-        waro labs<span class="terminal-cursor"></span>
+      <NuxtLink to="/" class="flex items-center gap-2">
+        <img src="https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/logo_warolabs.webp" alt="Waro Labs" class="h-12 sm:h-16 w-auto" />
       </NuxtLink>
       <nav>
         <ul class="flex items-center gap-4 sm:gap-6">
