@@ -13,7 +13,7 @@
     </p>
 
     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0">
-      <button class="flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 border-2 border-accent-lime text-accent-lime font-bold rounded-md transition-all duration-200 hover:bg-accent-lime hover:text-body">
+      <button class="flex items-center justify-center gap-2 w-full sm:w-auto btn-accent">
         <span>Únete a nuestros Labs</span>
         <ArrowRightIcon class="w-5 h-5" />
       </button>

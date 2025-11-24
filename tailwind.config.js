@@ -14,17 +14,20 @@ module.exports = {
       colors: {
         // Background colors
         'body': 'var(--bg-body)',
+        'surface': 'var(--bg-surface)',
         'pattern': 'var(--bg-pattern)',
         'glass': 'var(--glass-bg)',
 
         // Text colors
         'main': 'var(--text-main)',
+        'text-body': 'var(--text-body)',
         'secondary': 'var(--text-secondary)',
 
         // Accent colors
         'accent': {
-          DEFAULT: 'var(--accent-lime)',
-          lime: 'var(--accent-lime)',
+          DEFAULT: 'var(--accent-text)',  // Uses readable version
+          lime: 'var(--accent-lime)',     // Brand lime (constant)
+          text: 'var(--accent-text)',     // Readable text version
         },
 
         // Button colors
