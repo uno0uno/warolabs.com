@@ -88,7 +88,7 @@
 /* === DARK THEME - ORIGINAL === */
 .dark {
   --bg-body: #2d2d2e;
-  --bg-pattern: #4a4a4b;
+  --bg-pattern: rgba(74, 74, 75, 0.3);
   --bg-surface: #3a3a3c;
 
   --text-main: #FFFFFF;
@@ -209,6 +209,35 @@ body {
   opacity: 1;
 }
 
+
+/* Utility Classes */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.glow-accent {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -0.5rem;
+    background: linear-gradient(to right, var(--accent-lime), rgba(255, 255, 255, 0.1));
+    border-radius: 0.75rem;
+    opacity: 0.2;
+    filter: blur(12px);
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  &:hover::before {
+    opacity: 0.4;
+  }
+}
 
 
 

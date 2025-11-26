@@ -6,7 +6,7 @@
     "db:update-docs": "dotenv -e .env -- node scripts/update-schema-docs.js",
     "check-db-url": "node_modules/.bin/dotenv -e .env -- node -e 'console.log(process.env.DATABASE_URL)'",
     "build": "nuxt build",
-    "dev": "PORT=4000 nuxt dev --port 4000",
+    "dev": "PORT=3000 nuxt dev --port 3000",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
