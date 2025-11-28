@@ -9,6 +9,10 @@
           <li>
             <NuxtLink to="/blog" class="nav-link text-sm sm:text-[15px]">Blog</NuxtLink>
           </li>
+          
+          <li>
+            <NuxtLink to="/team" class="nav-link text-sm sm:text-[15px]">Team</NuxtLink>
+          </li>
 
           <li>
             <a href="https://github.com/uno0uno/warolabs.com" target="_blank" rel="noopener" class="nav-link flex items-center" aria-label="GitHub">
