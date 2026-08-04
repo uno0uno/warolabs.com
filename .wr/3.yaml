@@ -1,0 +1,122 @@
+# Compact plan for uno0uno/warolabs.com#3 - Blog dinamico (data model + componentes)
+issue: 3
+title: B2 Implementar blog dinamico (content collections + componentes WARO Colombia)
+repo: warolabs.com
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-3-blog-dynamic
+parent_epic: 1
+gating: "Mockup visual owner-approved en #2 (docs/blog-mockup/*)."
+
+# Data model ABIERTO: A (API+DB) vs B (@nuxt/content). Delta de #2 (comment 5182136002)
+# defirio esta decision a #3. El checklist del issue presupone Nuxt Content, pero el AC
+# no lo bloquea. Sin ADR aprobado por owner no se codea.
+research:
+  decision: "A (API+DB) confirmado por owner en chat (comentario 5183225373). No se reasignan articulos de warocolombia."
+  mode: "wr-research --delta 2 sobre live DB (tunnel localhost:5432, api_warocol.com/.env)"
+  live_db_findings:
+    - "articles table CONFIRMADA en DB. 65 filas, 53 published. TODAS con tenant_id=93b3e582-... (warocolombia). warolabs tenant=0 articulos."
+    - "warolabs tenant EXISTE: b2fd8797-ec09-4ba5-aee4-f2d81ef66412."
+    - "Pillars reales: software-para-restaurantes (27), como-administrar-restaurante (21), facturacion-electronica-restaurantes (5). 12 drafts sin pillar."
+    - "author (uuid) SIN FK; id_profile CON FK a profile(id). Composables JOIN por id_profile."
+    - "views es NUMERIC, no integer."
+    - "get_clusters_list(p_limit, p_offset, p_filters) existe como template de PG function."
+    - "100% lang='es'. Confirma ES-only en blog publico."
+  inputs:
+    - "DB ya tiene tabla `articles` (multi-tenant, multilingual, SEO)."
+    - "Sin @nuxt/content instalado; no aparece en nuxt.config.ts modules."
+    - "Stack API: H3 + withPostgresClient + funciones PG (CLAUDE.md:118, 150-185, ACID)."
+    - "warocol.com es referencia visual, no de stack de datos."
+  options:
+    A: "H3 /api/blog/{index,[slug],categories}.get.ts -> useFetch. Reusa articles; multi-tenant/comments/CRM-friendly; ACID via PG funcs. CONFIRMADO."
+    B: "@nuxt/content descartado por owner."
+  recommended: "A"
+  deliverable: "docs/blog-data-model-decision.md (ADR corto firmado por owner)."
+
+scope: data_model_decision + 3_pg_functions + 3_api_routes + composable + 14_componentes_blog + 2_pages + tests
+shared_components: "components/blog/{BlogHero,BlogMasthead,BlogCategorySection,BlogFeaturedArticleCard,BlogCard,BlogFilters,BlogSearchBar,BlogPagination,BlogBreadcrumb,BlogArticleHero,BlogArticleImage,BlogArticleContent,BlogAuthorCard,BlogArticleCTA}.vue"
+new_files:
+  - server/utils/blog/tenant.ts  # WAROLABS_TENANT_ID constant
+  - server/api/blog/index.get.ts  # GET /api/blog/index?pillar=&page=
+  - server/api/blog/[slug].get.ts  # GET /api/blog/[slug]
+  - server/api/blog/categories.get.ts  # GET /api/blog/categories
+  - db/migrations/<ts>_blog_helpers.sql  # 3 PG functions
+  - composables/useBlog.ts
+  - pages/blog/index.vue  # override existing
+  - pages/blog/[slug].vue  # new
+  - test/unit/useBlog.test.ts  # types + query params
+  - docs/blog-data-model-decision.md  # ADR corto
+
+paths:
+  if_A_recommended:
+    - server/api/blog/{index,[slug],categories}.get.ts
+    - db/migrations/<ts>_blog_helpers.sql
+    - composables/useBlog.ts
+    - pages/blog/{index,[slug]}.vue
+    - {shared_components}
+    - docs/blog-data-model-decision.md
+  if_B_alternativa:
+    - content.config.ts
+    - content/blog/*.md
+    - pages/blog/{index,[slug]}.vue
+    - {shared_components}
+    - docs/blog-data-model-decision.md
+
+ac:
+  - "ADR data model A publicado en docs/blog-data-model-decision.md (owner confirmed en chat, falta firma formal en issue)."
+  - "Migracion SQL nueva: 3 PG functions SECURITY DEFINER en UN solo archivo (db/migrations/<ts>_blog_helpers.sql). Patron verificado con get_clusters_list."
+  - "list_articles(p_tenant_id uuid, p_pillar text DEFAULT NULL, p_page int DEFAULT 1, p_page_size int DEFAULT 12) RETURNS TABLE + total_count. Filtra WHERE tenant_id = p_tenant_id AND published = true AND is_active = true AND draft = false."
+  - "get_article_by_slug(p_tenant_id uuid, p_slug text) RETURNS TABLE 200 + autor (JOIN por id_profile) + cover. 404 si no existe."
+  - "count_articles_by_pillar(p_tenant_id uuid) RETURNS TABLE(pillar text, count int)."
+  - "Tenant warolabs hardcoded: 93b3e582-... NO. Usar b2fd8797-ec09-4ba5-aee4-f2d81ef66412 (slug=warolabs). Centralizar en server/utils/blog/tenant.ts."
+  - "GET /api/blog/index?pillar=&page= -> {items,total,page,pageSize} via list_articles."
+  - "GET /api/blog/[slug] -> 200 cover+autor+pillar+related; 404 si no existe."
+  - "GET /api/blog/categories -> pillars + counts via count_articles_by_pillar."
+  - "pages/blog/index.vue (sobrescribe) + [slug].vue (nuevo) con useFetch (no $fetch), CommonsTheLoading, tipos desde useBlog.ts."
+  - "composables/useBlog.ts con Article, ArticleSummary, ArticleAuthor (de JOIN id_profile), CategoryCount, BLOG_PILLARS (3 slugs reales)."
+  - "14 componentes blog/* desde gold warocol, SOLO tokens warolabs + Heroicons. Cero hardcoded colors. Mapear inline SVGs -> Heroicons per CLAUDE.md:264-280."
+  - "Self-contained: NO usa layouts/blog.vue, NO toca BlogSidebar.vue/BlogTOC.vue (limpieza = #4)."
+  - "Blog arranca vacio (0 articulos en warolabs). UI funcional, lista vacia con empty state. seed-articulos se hace en batch posterior."
+  - "nuxt build/generate sin errores; npm run test verde."
+
+out_of_scope:
+  - "Borrar blog viejo (instalacion.vue, configuracion.vue, guias/, BlogSidebar, BlogTOC, layouts/blog.vue) -> #4."
+  - "Drafts tech/opinion definitivos -> batch posterior (#4 o nuevo)."
+  - "Seed/import de articulos desde warocolombia a warolabs -> batch posterior (owner decidio no migrar)."
+  - "Comments / leads / segments sobre articulos (futuro)."
+  - "i18n real (articles.lang='es' 100% en prod; blog publico ES-only)."
+  - "Modificar articulos de warocolombia (tenant 93b3e582-...). NO TOCAR."
+
+hints:
+  entry: "pages/blog/index.vue y pages/blog/[slug].vue."
+  pattern: "uno0uno/warocol.com front_nuxt/pages/blog/index.vue:29-49, [slug].vue:21-53 (contrato TS ya en mockup #2)."
+  ref_mockup: "uno0uno/warolabs.com#2 -> docs/blog-mockup/* (referencia visual; 14 componentes reutilizables; sign-off pendiente pero no bloquea ejecucion)."
+  pg_template: "public.get_clusters_list(p_limit, p_offset, p_filters) en DB. Mismo patron para list_articles/get_article_by_slug/count_articles_by_pillar."
+  pg: "withPostgresClient.js (server/utils/basedataSettings/withPostgresClient.js); list_articles + get_article_by_slug + count_articles_by_pillar en una migracion con SECURITY DEFINER + multi-tenant scope (CLAUDE.md:170-185). Hardcoded p_tenant_id = warolabs UUID b2fd8797-... via server/utils/blog/tenant.ts."
+  join_author: "JOIN por id_profile, NO por author (author uuid no tiene FK declarada; id_profile si)."
+  columns_skip: "No exponer al front: created_at, updated_at, author (uuid sin FK), planet, country, city, is_active, draft, views raw. Mapear a tipos del composable."
+  tokens: "tailwind.config.js + assets/css/components.css. Inventario: text-main, text-text-body, bg-body, bg-surface, bg-glass, border-glass-border, text-accent. Sin tokens custom. Mapear warocol: bg-background->bg-body, text-text-primary->text-main, bg-badge-primary-bg->bg-accent, font-quantico->font-display, inline SVGs->Heroicons."
+  loading: "components/Commons/CommonsTheLoading.vue con data request real (CLAUDE.md:436). Nunca setTimeout."
+  composables: "composables/useBlog.ts con Article, ArticleSummary, ArticleAuthor (de JOIN id_profile), CategoryCount, BLOG_PILLARS (3 slugs reales con labels ES) + useFetch wrappers (no $fetch)."
+  blog_pillars: "Pillars REALES de warolabs (NO warocolombia). Source: content/_graph.md y content/pillar--*/meta.md. SOFTWARE='pillar--software-a-medida' (label: Software a Medida), AUTOMATION='pillar--automatizacion-con-ia' (label: Automatización con IA), AI='pillar--ia-para-empresas' (label: IA para Empresas). Mapeo: estos son los `articles.pillar` values que se usaran al crear articulos. UI labels: title-case espanol."
+  tenant_const: "server/utils/blog/tenant.ts exporta WAROLABS_TENANT_ID = 'b2fd8797-ec09-4ba5-aee4-f2d81ef66412'."
+  tests: "npm run test (Jest). Crear test/ unit para useBlog.ts (tipos + query params). Mock withPostgresClient."
+
+risk:
+  sensitive: true
+  areas:
+    - "PG functions con SECURITY DEFINER + multi-tenant scope. Migracion nueva afecta schema DB. Revisar /wr-review obligatorio tras PR."
+    - "Data model ABIERTO: A confirmado por owner (comentario 5183225373). No se reasignan articulos de warocolombia a warolabs; blog arranca vacio."
+    - "Token gap warocol -> warolabs: BLOG_PILLARS y posibles tokens sin equivalente. Mapear al warolabs mas cercano, documentar en PR, no inventar."
+    - "BLOG_PILLARS usa slugs reales del DB (software-para-restaurantes, como-administrar-restaurante, facturacion-electronica-restaurantes) con labels ES (Tecnologia, Administracion, Facturacion Electronica). Confirmar naming con owner."
+    - "author (uuid) SIN FK declarada; id_profile SI. useBlog.ts hace JOIN por id_profile para autor."
+    - "views es numeric, no integer."
+    - "Mockup #2 (docs/blog-mockup/*) sigue siendo gate independiente no resuelto. Plan ejecuta igual; mockup se usa como referencia visual de 14 componentes y self-contained layout."
+    - "Path B descartado por owner."
+
+skip:
+  audits: [color, typography, ux]
+
+next:
+  after_pr: "/wr-plan uno0uno/warolabs.com#4 (limpieza + primeros drafts tech/opinion)."
