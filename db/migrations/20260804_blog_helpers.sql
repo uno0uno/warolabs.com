@@ -72,9 +72,9 @@ BEGIN
             a.created_at AS published_at,
             a.views,
             p.id AS author_id,
-            p.name AS author_name,
-            p.email AS author_email,
-            p.logo_avatar AS author_avatar,
+            p.name::text AS author_name,
+            p.email::text AS author_email,
+            p.logo_avatar::text AS author_avatar,
             ' || v_total || '::bigint AS total_count
         FROM public.articles a
         JOIN public.profile p ON p.id = a.id_profile
@@ -122,13 +122,13 @@ SECURITY DEFINER
 AS $function$
 BEGIN
     IF p_increment_views THEN
-        UPDATE public.articles
-        SET views = COALESCE(views, 0) + 1
-        WHERE tenant_id = p_tenant_id
-          AND slug = p_slug
-          AND published = true
-          AND is_active = true
-          AND draft = false;
+        UPDATE public.articles AS a
+        SET views = COALESCE(a.views, 0) + 1
+        WHERE a.tenant_id = p_tenant_id
+          AND a.slug = p_slug
+          AND a.published = true
+          AND a.is_active = true
+          AND a.draft = false;
     END IF;
 
     RETURN QUERY
@@ -148,11 +148,11 @@ BEGIN
         a.created_at AS published_at,
         a.updated_at,
         p.id AS author_id,
-        p.name AS author_name,
-        p.email AS author_email,
-        p.logo_avatar AS author_avatar,
-        p.user_name AS author_user_name,
-        t.name AS tenant_name
+        p.name::text AS author_name,
+        p.email::text AS author_email,
+        p.logo_avatar::text AS author_avatar,
+        p.user_name::text AS author_user_name,
+        t.name::text AS tenant_name
     FROM public.articles a
     JOIN public.profile p ON p.id = a.id_profile
     JOIN public.tenants t ON t.id = a.tenant_id
@@ -261,8 +261,8 @@ BEGIN
             a.created_at AS published_at,
             a.views,
             p.id AS author_id,
-            p.name AS author_name,
-            p.logo_avatar AS author_avatar
+            p.name::text AS author_name,
+            p.logo_avatar::text AS author_avatar
         FROM public.articles a
         JOIN public.profile p ON p.id = a.id_profile
         WHERE a.tenant_id = $1
