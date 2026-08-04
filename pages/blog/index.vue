@@ -5,18 +5,24 @@
     <BlogCategorySection title="Explora por tema" />
 
     <section id="articulos" class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-      <BlogSearchBar v-model="searchQuery" @search="onSearch" />
+      <BlogSearchBar v-model="searchInput" @search="onSearch" />
       <BlogFilters v-model="activePillar" :total="data?.total ?? null" />
 
-      <CommonsTheLoading v-if="pending" label="Cargando artículos…" />
+      <CommonsTheLoading v-if="pending && !data" label="Cargando artículos…" />
 
       <div v-else-if="error" class="rounded-lg border border-destructive bg-destructive/5 p-6 text-center text-sm">
         No pudimos cargar los artículos. Intenta de nuevo.
       </div>
 
       <div v-else-if="!data?.items?.length" class="flex flex-col items-center gap-3 py-16 text-center">
-        <p class="text-lg text-text-body">Aún no hay artículos publicados en esta categoría.</p>
-        <NuxtLink to="/blog" class="text-sm text-accent hover:underline">Ver todos los artículos</NuxtLink>
+        <p class="text-lg text-text-body">
+          <template v-if="activePillar">Aún no hay artículos publicados en esta categoría.</template>
+          <template v-else-if="searchInput">No encontramos artículos para «{{ searchInput }}».</template>
+          <template v-else>Aún no hay artículos publicados.</template>
+        </p>
+        <NuxtLink v-if="activePillar || searchInput" to="/blog" class="text-sm text-accent hover:underline">
+          Ver todos los artículos
+        </NuxtLink>
       </div>
 
       <div v-else class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -44,7 +50,9 @@
 </template>
 
 <script setup lang="ts">
-import { isBlogPillar, type BlogPillarValue } from '~/composables/useBlog';
+import { isBlogPillar, type BlogPillarValue } from '~/utils/blog/pillars';
+
+definePageMeta({ layout: 'default' });
 
 useHead({
   title: 'Blog de WARO Labs — IA, Automatización y Software a Medida',
@@ -56,26 +64,32 @@ useHead({
 const route = useRoute();
 const router = useRouter();
 
-const searchQuery = ref(typeof route.query.q === 'string' ? route.query.q : '');
-const page = ref(Number.parseInt(String(route.query.page ?? '1'), 10) || 1);
-const pageSize = 12;
-
+const searchInput = ref(typeof route.query.q === 'string' ? route.query.q : '');
+const activeSearch = ref<string | null>(searchInput.value.trim() ? searchInput.value.trim() : null);
 const activePillar = ref<BlogPillarValue | null>(
   typeof route.query.pillar === 'string' && isBlogPillar(route.query.pillar) ? route.query.pillar : null
 );
+const page = ref(Number.parseInt(String(route.query.page ?? '1'), 10) || 1);
+const pageSize = 12;
 
-const { data, pending, error } = await useBlogIndex({
-  pillar: activePillar.value,
-  page: page.value,
+const { data, pending, error, refresh } = await useBlogIndex({
+  pillar: activePillar,
+  search: activeSearch,
+  page,
   pageSize,
+});
+
+watch([activePillar, activeSearch, page], async () => {
+  await refresh();
 });
 
 const featured = computed(() => (data.value?.items?.length ? data.value.items[0] : null));
 const rest = computed(() => (data.value?.items?.slice(1) ?? []));
 
 function onSearch(value: string) {
-  router.replace({ query: { ...route.query, q: value || undefined, page: undefined } });
+  activeSearch.value = value.trim() ? value.trim() : null;
   page.value = 1;
+  router.replace({ query: { ...route.query, q: value || undefined, page: undefined } });
 }
 
 watch(activePillar, (newPillar) => {

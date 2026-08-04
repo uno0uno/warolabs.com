@@ -1,8 +1,14 @@
 // composables/useBlog.ts
-// Tipos y wrappers useFetch para el blog de WARO Labs.
-// Multi-tenant scope centralizado en server/utils/blog/tenant.ts.
+// Tipos y wrappers useFetch REACTIVOS para el blog de WARO Labs.
+// Tenant UUID vive solo en server/utils/blog/tenant.ts (nunca al bundle del cliente).
+// BLOG_PILLARS viene de utils/blog/pillars.ts (client-safe, auto-imported por Nuxt).
 
-import { BLOG_PILLARS, isBlogPillar, getBlogPillarLabel, type BlogPillarValue } from '~/server/utils/blog/tenant';
+import {
+  BLOG_PILLARS,
+  isBlogPillar,
+  getBlogPillarLabel,
+  type BlogPillarValue,
+} from '~/utils/blog/pillars';
 
 export interface ArticleAuthor {
   id: string;
@@ -62,15 +68,39 @@ export interface BlogCategoriesResponse {
 export { BLOG_PILLARS, isBlogPillar, getBlogPillarLabel };
 export type { BlogPillarValue };
 
-export function useBlogIndex(options: { pillar?: string | null; search?: string | null; tag?: string | null; page?: number; pageSize?: number } = {}) {
-  const pillar = options.pillar && isBlogPillar(options.pillar) ? options.pillar : null;
-  const search = options.search?.trim() ? options.search.trim() : null;
-  const tag = options.tag?.trim() ? options.tag.trim() : null;
-  const page = options.page ?? 1;
-  const pageSize = options.pageSize ?? 12;
+export interface UseBlogIndexOptions {
+  pillar?: Ref<string | null> | string | null;
+  search?: Ref<string | null> | string | null;
+  tag?: Ref<string | null> | string | null;
+  page?: Ref<number> | number;
+  pageSize?: Ref<number> | number;
+}
+
+function unwrap<T>(value: Ref<T> | T | undefined, fallback: T): T {
+  if (value === undefined || value === null) return fallback;
+  return isRef(value) ? value.value : value;
+}
+
+export function useBlogIndex(options: UseBlogIndexOptions = {}) {
+  const pillar = computed(() => {
+    const v = unwrap(options.pillar, null);
+    return v && isBlogPillar(v) ? v : null;
+  });
+  const search = computed(() => {
+    const v = unwrap(options.search, null);
+    return v && typeof v === 'string' && v.trim().length > 0 ? v.trim() : null;
+  });
+  const tag = computed(() => {
+    const v = unwrap(options.tag, null);
+    return v && typeof v === 'string' && v.trim().length > 0 ? v.trim() : null;
+  });
+  const page = computed(() => Math.max(1, Number(unwrap(options.page, 1)) || 1));
+  const pageSize = computed(() => Math.min(60, Math.max(1, Number(unwrap(options.pageSize, 12)) || 12)));
+
   return useFetch<BlogListResponse>('/api/blog/index', {
     query: { pillar, search, tag, page, pageSize },
-    key: `blog-index-${pillar ?? 'all'}-${search ?? ''}-${tag ?? ''}-${page}-${pageSize}`,
+    watch: [pillar, search, tag, page, pageSize],
+    key: 'blog-index',
   });
 }
 
@@ -78,6 +108,18 @@ export function useBlogArticle(slug: string | Ref<string>) {
   const slugRef = isRef(slug) ? slug : ref(slug);
   return useFetch<ArticleDetail>(() => `/api/blog/${slugRef.value}`, {
     key: () => `blog-article-${slugRef.value}`,
+    watch: [slugRef],
+  });
+}
+
+export function useBlogView(slug: string | Ref<string>) {
+  const slugRef = isRef(slug) ? slug : ref(slug);
+  return useFetch<{ ok: boolean; views: number }>(() => `/api/blog/${slugRef.value}/view`, {
+    method: 'POST',
+    body: computed(() => ({ slug: slugRef.value })),
+    server: false,
+    immediate: false,
+    key: () => `blog-view-${slugRef.value}`,
   });
 }
 

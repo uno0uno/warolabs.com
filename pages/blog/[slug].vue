@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-body">
     <BlogBreadcrumb :current="article?.title" />
 
-    <CommonsTheLoading v-if="pending" label="Cargando artículo…" />
+    <CommonsTheLoading v-if="pending && !data" label="Cargando artículo…" />
 
     <div v-else-if="error || !article" class="mx-auto max-w-4xl px-4 py-16 text-center sm:px-6 lg:px-8">
       <h1 class="text-2xl font-bold text-main">Artículo no encontrado</h1>
@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({ layout: 'default' });
+
 const route = useRoute();
 const slug = computed(() => String(route.params.slug ?? ''));
 
@@ -48,4 +50,11 @@ useHead(() => ({
       ]
     : [],
 }));
+
+if (process.client && article.value?.slug) {
+  const { fetch: postView } = useBlogView(slug);
+  onMounted(() => {
+    postView().catch(() => { /* ignore analytics errors */ });
+  });
+}
 </script>

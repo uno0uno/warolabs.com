@@ -1,5 +1,5 @@
 // server/api/blog/categories.get.ts
-// GET /api/blog/categories -> [{pillar, count}]
+// GET /api/blog/categories -> {categories: [{pillar, count}]}
 
 import { defineEventHandler, createError } from 'h3';
 import { withPostgresClient } from '~/server/utils/basedataSettings/withPostgresClient';
@@ -20,7 +20,7 @@ export default defineEventHandler(async () => {
         })),
       };
     } catch (error) {
-      console.error('[api/blog/categories] error:', error);
+      console.error('[api/blog/categories] error:', error instanceof Error ? error.message : String(error));
       throw createError({ statusCode: 500, statusMessage: 'Internal Server Error' });
     }
   });

@@ -34,19 +34,22 @@ research:
   recommended: "A"
   deliverable: "docs/blog-data-model-decision.md (ADR corto firmado por owner)."
 
-scope: data_model_decision + 3_pg_functions + 3_api_routes + composable + 14_componentes_blog + 2_pages + tests
+scope: data_model_decision + 5_pg_functions + 4_api_routes + composable + 14_componentes_blog + 2_commons_helpers + 2_pages + tests
 shared_components: "components/blog/{BlogHero,BlogMasthead,BlogCategorySection,BlogFeaturedArticleCard,BlogCard,BlogFilters,BlogSearchBar,BlogPagination,BlogBreadcrumb,BlogArticleHero,BlogArticleImage,BlogArticleContent,BlogAuthorCard,BlogArticleCTA}.vue"
+commons_helpers: "components/Commons/{CommonsTheLoading,MarkdownRenderer}.vue (scope drift introducido en review: necesarios para loading y markdown del blog)"
 new_files:
-  - server/utils/blog/tenant.ts  # WAROLABS_TENANT_ID constant
-  - server/api/blog/index.get.ts  # GET /api/blog/index?pillar=&page=
-  - server/api/blog/[slug].get.ts  # GET /api/blog/[slug]
+  - server/utils/blog/tenant.ts  # WAROLABS_TENANT_ID (server-only)
+  - utils/blog/pillars.ts  # BLOG_PILLARS (client-safe, auto-imported)
+  - server/api/blog/index.get.ts  # GET /api/blog/index?pillar=&search=&tag=&page=
+  - server/api/blog/[slug].get.ts  # GET /api/blog/[slug] - READ-ONLY
+  - server/api/blog/[slug]/view.post.ts  # POST /api/blog/[slug]/view - increment views
   - server/api/blog/categories.get.ts  # GET /api/blog/categories
-  - db/migrations/<ts>_blog_helpers.sql  # 3 PG functions
-  - composables/useBlog.ts
+  - db/migrations/<ts>_blog_helpers.sql  # 5 PG functions SECURITY DEFINER con SET search_path
+  - composables/useBlog.ts  # tipos + useBlogIndex reactivo (Refs) + useBlogArticle + useBlogView
   - pages/blog/index.vue  # override existing
   - pages/blog/[slug].vue  # new
-  - test/unit/useBlog.test.ts  # types + query params
-  - docs/blog-data-model-decision.md  # ADR corto
+  - test/unit/useBlog.smoke.test.js  # smoke test 22/22
+  - docs/blog-data-model-decision.md  # ADR Path A
 
 paths:
   if_A_recommended:
@@ -65,19 +68,26 @@ paths:
 
 ac:
   - "ADR data model A publicado en docs/blog-data-model-decision.md (owner confirmed en chat, falta firma formal en issue)."
-  - "Migracion SQL nueva: 3 PG functions SECURITY DEFINER en UN solo archivo (db/migrations/<ts>_blog_helpers.sql). Patron verificado con get_clusters_list."
-  - "list_articles(p_tenant_id uuid, p_pillar text DEFAULT NULL, p_page int DEFAULT 1, p_page_size int DEFAULT 12) RETURNS TABLE + total_count. Filtra WHERE tenant_id = p_tenant_id AND published = true AND is_active = true AND draft = false."
-  - "get_article_by_slug(p_tenant_id uuid, p_slug text) RETURNS TABLE 200 + autor (JOIN por id_profile) + cover. 404 si no existe."
-  - "count_articles_by_pillar(p_tenant_id uuid) RETURNS TABLE(pillar text, count int)."
-  - "Tenant warolabs hardcoded: 93b3e582-... NO. Usar b2fd8797-ec09-4ba5-aee4-f2d81ef66412 (slug=warolabs). Centralizar en server/utils/blog/tenant.ts."
-  - "GET /api/blog/index?pillar=&page= -> {items,total,page,pageSize} via list_articles."
-  - "GET /api/blog/[slug] -> 200 cover+autor+pillar+related; 404 si no existe."
+  - "Migracion SQL: 5 PG functions SECURITY DEFINER con SET search_path = public, pg_temp (defensa contra hijacking). Patron verificado con get_clusters_list."
+  - "list_articles(p_tenant_id, p_pillar, p_search, p_tag, p_page, p_page_size) RETURNS TABLE(total bigint, items jsonb). 1 fila, sin duplicacion de total_count. Filtra WHERE tenant_id = p_tenant_id AND published = true AND is_active = true AND draft = false."
+  - "get_article_by_slug(p_tenant_id, p_slug) READ-ONLY (sin UPDATE en body). 200 con article+author+tenant+related; 404 si no existe."
+  - "increment_article_views(p_tenant_id, p_slug) usa pg_advisory_xact_lock por slug (race-free). Retorna el nuevo views o NULL si no existe."
+  - "count_articles_by_pillar(p_tenant_id) RETURNS TABLE(pillar text, count int)."
+  - "get_related_articles(p_tenant_id, p_current_article_id, p_tags, p_limit) tag overlap ILIKE."
+  - "Tenant warolabs: b2fd8797-ec09-4ba5-aee4-f2d81ef66412. Centralizado en server/utils/blog/tenant.ts (server-only)."
+  - "BLOG_PILLARS client-safe en utils/blog/pillars.ts (auto-imported por Nuxt)."
+  - "GET /api/blog/index?pillar=&search=&tag=&page= -> {items,total,page,pageSize,pillar,search,tag} via list_articles."
+  - "GET /api/blog/[slug] -> 200 cover+autor+tenant+related; 404 si no existe. Slug validado con regex [a-z0-9-]{1,200}."
+  - "POST /api/blog/[slug]/view -> {ok, views}. Mutacion separada del GET (REST). Increment race-free via advisory lock."
   - "GET /api/blog/categories -> pillars + counts via count_articles_by_pillar."
-  - "pages/blog/index.vue (sobrescribe) + [slug].vue (nuevo) con useFetch (no $fetch), CommonsTheLoading, tipos desde useBlog.ts."
-  - "composables/useBlog.ts con Article, ArticleSummary, ArticleAuthor (de JOIN id_profile), CategoryCount, BLOG_PILLARS (3 slugs reales)."
+  - "pages/blog/{index,[slug]}.vue con useFetch reactivo (Refs + watch en useBlogIndex), CommonsTheLoading, tipos desde useBlog.ts. definePageMeta explicit en ambas."
+  - "composables/useBlog.ts con useBlogIndex(Refs), useBlogArticle(Ref), useBlogView, useBlogCategories. ARTICLE, ArticleSummary, ArticleAuthor (de JOIN id_profile), CategoryCount, BLOG_PILLARS (3 slugs reales)."
   - "14 componentes blog/* desde gold warocol, SOLO tokens warolabs + Heroicons. Cero hardcoded colors. Mapear inline SVGs -> Heroicons per CLAUDE.md:264-280."
-  - "Self-contained: NO usa layouts/blog.vue, NO toca BlogSidebar.vue/BlogTOC.vue (limpieza = #4)."
-  - "Blog arranca vacio (0 articulos en warolabs). UI funcional, lista vacia con empty state. seed-articulos se hace en batch posterior."
+  - "2 Commons helpers (CommonsTheLoading, MarkdownRenderer) introducidos en review - scope drift documentado en .wr/3.yaml."
+  - "Self-contained: NO usa layouts/blog.vue, NO toca BlogSidebar.vue/BlogTOC.vue (limpieza = #4). Backwards compat: pages viejas dan 404 hasta limpieza (out-of-scope #4)."
+  - "Blog arranca vacio (0 articulos en warolabs). UI funcional, lista vacia con empty state contextual (por pillar/search). seed-articulos se hace en batch posterior."
+  - "Console.error solo loggea error.message (no error completo) - evita leak de schema."
+  - "Smoke test 22/22 PASS (estructura + reactive composable + 5 PG funcs + multi-tenant + search_path + BEGIN/COMMIT + increment race-free + slug regex + definePageMeta + scope drift)."
   - "nuxt build/generate sin errores; npm run test verde."
 
 out_of_scope:
