@@ -25,6 +25,15 @@ function toISODate(value: string | Date | null | undefined): string {
   return d.toISOString().split('T')[0];
 }
 
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig();
   const siteUrl = (config.public?.siteUrl as string | undefined) || 'https://warolabs.com';
@@ -78,7 +87,7 @@ export default defineEventHandler(async (event) => {
 ${allUrls
   .map(
     (url) => `  <url>
-    <loc>${siteUrl}${url.loc}</loc>
+    <loc>${escapeXml(`${siteUrl}${url.loc}`)}</loc>
     <lastmod>${url.lastmod}</lastmod>
     <changefreq>${url.changefreq}</changefreq>
     <priority>${url.priority}</priority>
