@@ -15,6 +15,8 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), { slug: '' });
 
 const md = new MarkdownIt({ html: false, linkify: true, typographer: true, breaks: true });
+md.renderer.rules.table_open = () => '<div class="markdown-table-scroll"><table>';
+md.renderer.rules.table_close = () => '</table></div>';
 const renderedContent = computed(() => md.render(props.content ?? ''));
 
 const articleRef = ref<HTMLElement | null>(null);
@@ -225,6 +227,7 @@ onUnmounted(() => {
 .markdown-body ul, .markdown-body ol { padding-left: 1.5rem; color: var(--text-body); margin: 2em 0 !important; }
 .markdown-body li { margin: 0.6em 0; line-height: 1.7; }
 .markdown-body blockquote { border-left: 3px solid var(--accent-text); padding-left: 1.25rem; color: var(--text-secondary); font-style: italic; margin: 2em 0 !important; }
-.markdown-body table { width: 100%; border-collapse: collapse; table-layout: fixed; word-break: break-word; overflow-wrap: anywhere; margin: 2em 0 !important; }
-.markdown-body th, .markdown-body td { border: 1px solid var(--glass-border); padding: 0.6rem 0.9rem; line-height: 1.6; word-break: break-word; overflow-wrap: anywhere; }
+.markdown-body .markdown-table-scroll { width: 100%; overflow-x: auto; margin: 2em 0 !important; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
+.markdown-body table { width: max-content; min-width: 100%; border-collapse: collapse; table-layout: auto; margin: 0 !important; }
+.markdown-body th, .markdown-body td { min-width: 9rem; max-width: 18rem; border: 1px solid var(--glass-border); padding: 0.6rem 0.9rem; line-height: 1.6; word-break: normal; overflow-wrap: break-word; }
 </style>

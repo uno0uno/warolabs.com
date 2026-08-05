@@ -11,17 +11,19 @@ paths:
   - layouts/default.vue
   - pages/blog/[slug].vue
   - components/blog/BlogBreadcrumb.vue
+  - components/blog/BlogArticleContent.vue
 
 ac:
   - At 320/390/430px /blog/opencode-vs-cursor has scrollWidth === clientWidth and no clipped article
   - layouts/default.vue main stretches full width (no items-center shrink-to-fit)
   - Article page root is w-full; breadcrumb current truncates with min-w-0
+  - Markdown tables scroll horizontally on narrow screens instead of compressing columns
   - Desktop article layout intent unchanged
 
 out_of_scope:
   - content/ drafts
   - header redesign
-  - markdown prose restyle beyond overflow containment
+  - markdown prose restyle beyond table overflow containment
   - nested public-page-container dedupe
 
 hints:
