@@ -1,0 +1,7 @@
+services:
+  warolabs:
+    environment:
+      - NODE_ENV=production
+    build:
+      args:
+        - NODE_ENV=production
