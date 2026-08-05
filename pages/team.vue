@@ -17,10 +17,20 @@
 
       <!-- Team Grid -->
       <div class="w-full grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
-        <TeamMemberCard 
-          v-for="(member, index) in teamMembers" 
-          :key="member.name"
-          :member="member"
+        <p v-if="pending" class="col-span-full text-center text-secondary">Cargando equipo…</p>
+        <p v-else-if="error" class="col-span-full text-center text-red-500">No pudimos cargar el equipo.</p>
+        <p v-else-if="!teamMembers || teamMembers.length === 0" class="col-span-full text-center text-secondary">Aún no hay miembros del equipo.</p>
+        <TeamMemberCard
+          v-for="(member, index) in teamMembers"
+          v-else
+          :key="member.id"
+          :member="{
+            name: member.name,
+            role: member.role,
+            bio: member.description,
+            image: member.avatar || '',
+            social: member.social,
+          }"
           class="animate-fade-in-up"
           :style="{ animationDelay: `${0.2 + (index * 0.1)}s` }"
         />
@@ -48,71 +58,23 @@
 </style>
 
 <script setup lang="ts">
-// Mock Team Data - defined first to avoid hoisting issues
-const teamMembers = [
-  {
-    name: 'Carlos Rodríguez',
-    role: 'CEO & Fundador',
-    bio: 'Visionario tecnológico con más de 10 años de experiencia en desarrollo de software y liderazgo de equipos innovadores.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=faces',
-    social: {
-      github: 'https://github.com',
-      twitter: 'https://twitter.com',
-      linkedin: 'https://linkedin.com'
-    }
-  },
-  {
-    name: 'María González',
-    role: 'CTO',
-    bio: 'Experta en arquitectura de software y sistemas distribuidos. Apasionada por crear soluciones escalables y eficientes.',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=faces',
-    social: {
-      github: 'https://github.com',
-      twitter: 'https://twitter.com',
-      linkedin: 'https://linkedin.com'
-    }
-  },
-  {
-    name: 'Juan Martínez',
-    role: 'Lead Developer',
-    bio: 'Desarrollador full-stack con experiencia en tecnologías modernas. Enfocado en crear experiencias de usuario excepcionales.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=faces',
-    social: {
-      github: 'https://github.com',
-      linkedin: 'https://linkedin.com'
-    }
-  },
-  {
-    name: 'Ana Silva',
-    role: 'UX/UI Designer',
-    bio: 'Diseñadora creativa especializada en interfaces intuitivas y experiencias de usuario memorables.',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=faces',
-    social: {
-      twitter: 'https://twitter.com',
-      linkedin: 'https://linkedin.com'
-    }
-  },
-  {
-    name: 'Pedro Ramírez',
-    role: 'DevOps Engineer',
-    bio: 'Especialista en infraestructura cloud y automatización. Garantiza que nuestros sistemas funcionen sin problemas 24/7.',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=faces',
-    social: {
-      github: 'https://github.com',
-      linkedin: 'https://linkedin.com'
-    }
-  },
-  {
-    name: 'Laura Torres',
-    role: 'Product Manager',
-    bio: 'Gestora de producto con visión estratégica. Conecta las necesidades del usuario con soluciones tecnológicas innovadoras.',
-    image: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&h=400&fit=crop&crop=faces',
-    social: {
-      twitter: 'https://twitter.com',
-      linkedin: 'https://linkedin.com'
-    }
+interface TeamMember {
+  id: string
+  name: string
+  userName: string | null
+  avatar: string | null
+  role: string
+  description: string
+  social: {
+    github?: string
+    twitter?: string
+    linkedin?: string
   }
-]
+}
+
+const { data: teamMembers, pending, error } = await useFetch<TeamMember[]>('/api/team', {
+  key: 'team-members',
+})
 
 // SEO Configuration
 useSeoMeta({
@@ -129,19 +91,19 @@ useHead({
   script: [
     {
       type: 'application/ld+json',
-      innerHTML: JSON.stringify({
+      innerHTML: computed(() => JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Organization',
         name: 'Waro Labs',
         url: 'https://warolabs.com',
         description: 'Laboratorio de innovación tecnológica',
-        member: teamMembers.map(member => ({
+        member: (teamMembers.value ?? []).map((member) => ({
           '@type': 'Person',
           name: member.name,
           jobTitle: member.role,
-          description: member.bio
+          description: member.description
         }))
-      })
+      }))
     }
   ]
 })
