@@ -1,6 +1,6 @@
 <template>
   <section class="border-b border-glass-border bg-surface/40">
-    <div class="py-16 lg:py-20 text-center">
+    <div class="public-page-container py-12 sm:py-16 lg:py-20 text-center">
       <p
         class="text-xs font-semibold uppercase tracking-[0.2em] text-accent animate-fade-in-up"
         style="animation-delay: 0.1s"
@@ -9,7 +9,7 @@
       </p>
 
       <h1
-        class="mt-4 font-display text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-normal leading-[1.2] tracking-tight text-main whitespace-nowrap animate-fade-in-up"
+        class="mt-4 font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-normal leading-[1.15] tracking-tight text-main animate-fade-in-up"
         style="animation-delay: 0.2s"
       >
         Aprende cómo hacemos software <span class="text-accent">con IA</span>

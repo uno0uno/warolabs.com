@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-body">
     <BlogHero />
 
-    <section class="py-12 sm:py-16">
+    <section class="public-page-container py-12 sm:py-16">
       <CommonsTheLoading v-if="pending && !data" label="Cargando artículos…" />
 
       <div v-else-if="error" class="rounded-lg border border-destructive bg-destructive/5 p-6 text-center text-sm">

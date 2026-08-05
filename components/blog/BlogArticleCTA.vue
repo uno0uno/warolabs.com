@@ -124,11 +124,20 @@ aside[data-mid-cta] {
   aside[data-mid-cta] {
     flex-direction: column;
     gap: 0.875rem;
-    padding: 1.25rem;
+    padding: 1rem 1.25rem;
+    margin-top: 2rem;
+  }
+  [data-mid-cta-headline] {
+    font-size: 1.125rem;
+  }
+  [data-mid-cta-body] {
+    font-size: 0.8125rem;
   }
   [data-blog-cta-btn] {
     width: 100%;
     text-align: center;
+    min-height: 44px;
+    padding: 0.75rem 1rem;
   }
 }
 </style>
