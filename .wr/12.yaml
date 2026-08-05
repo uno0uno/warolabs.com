@@ -1,0 +1,36 @@
+issue: 12
+title: "Team members desde DB en /team + home abre el modal de comunidad del blog"
+repo: warolabs
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-12-team-from-db-home-modal
+
+paths:
+  - server/api/team.get.ts
+  - pages/team.vue
+  - pages/index.vue
+  - .wr/12.yaml
+
+ac:
+  - "GET /api/team responde 200 con lista de tenant_members activos del WAROLABS_TENANT_ID JOIN profile"
+  - "pages/team.vue: reemplazar array teamMembers mock por useFetch('/api/team'); renderizar miembros reales (incluido JSON-LD)"
+  - "pages/index.vue: montar <ModalsLeadModal /> + cablear botón Contáctanos a useLeadModal().open('home:cta')"
+  - "TeamMemberCard: shape ya soportado, sin cambios"
+
+out_of_scope:
+  - crear/quitar miembros
+  - campos nuevos en profile (display_role, social_*)
+  - páginas individuales de miembro
+  - i18n del role display
+  - migrar equipo histórico warocol
+
+hints:
+  entry: "server/api/team.get.ts (nuevo, público, sin auth)"
+  pattern: "tenant: server/utils/blog/tenant.ts"
+  pattern: "DB: server/utils/basedataSettings/withPostgresClient.js"
+  pattern: "useLeadModal + <ModalsLeadModal />: pages/blog/[slug].vue:30 + composables/useLeadModal.ts"
+  pattern: "useFetch wrapper: composables/useBlog.ts:101"
+  query: "SELECT p.id, p.name, p.user_name, p.logo_avatar, p.description, tm.role FROM public.tenant_members tm JOIN public.profile p ON p.id = tm.user_id WHERE tm.tenant_id = $1 AND tm.is_active = true AND tm.terminated_at IS NULL ORDER BY tm.role ASC, p.name ASC"
+  role_map: "{ superuser: 'CEO & Fundador', admin: 'CTO', default: 'Team Member' }"
+  tests: "Manual: curl localhost:3000/api/team + curl localhost:3000/team | grep -i 'anderson|carlos' + click Contáctanos abre modal"
