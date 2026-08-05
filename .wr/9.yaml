@@ -1,0 +1,56 @@
+issue: 9
+title: "Captura de leads de comunidad en artículos del blog (modal + banners incrustados + campaña DB)"
+repo: warolabs
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-9-community-leads-blog
+
+paths:
+  - composables/useLeadModal.ts
+  - utils/blog/communityLeadCta.ts
+  - components/ui/Modal.vue
+  - components/ui/BottomSheetModal.vue
+  - components/modals/LeadModal.vue
+  - components/modals/LeadModalForm.vue
+  - components/blog/BlogArticleContent.vue
+  - components/blog/BlogArticleCTA.vue
+  - server/api/marketing/createCommunityLead.post.js
+  - server/api/lead-source/community.post.js
+  - .wr/9.yaml
+
+ac:
+  - "Banner final del artículo (BlogArticleCTA) abre el modal de comunidad"
+  - "Hasta 2 banners incrustados en el cuerpo del artículo (BlogArticleContent) antes de H2 targets (headings[1] y headings[floor(len*0.62)]; si ≤2 H2 → 1 banner)"
+  - "Modal: Modal (desktop) + BottomSheetModal (mobile), form solo email, copy comunidad"
+  - "Endpoint público createCommunityLead: valida email, upsert leads source=blog:community:<slug>, inserta campaign_leads"
+  - "Campaña Community Warolabs existe en DB (campaign) con profile_id de saifer"
+  - "useLeadModal con isOpen/buttonSource/open/close (useState, igual a front_nuxt)"
+  - "Banners se limpian en onUnmounted (no duplicar en SPA)"
+  - "Endpoint expone leadSource público (lead-source/community) para el front sin tocar el existente"
+
+out_of_scope:
+  - welcome email transaccional
+  - tabla nueva (reutilizar leads + campaign_leads)
+  - CTA global en index del blog
+  - /contacto no se toca
+  - cambios de márgenes del blog (stash wip-margenes-blogger-pre-wr-9) van en PR aparte
+
+hints:
+  entry: "components/blog/BlogArticleContent.vue (inyección banners) + server/api/marketing/createCommunityLead.post.js (endpoint público)"
+  pattern: "components/blog/BlogArticleContent.vue:1 — render actual usa <CommonsMarkdownRenderer :source='content' />; cambiar a v-html directo o ref para inyección post-mount replicando getMidCtaTargets/buildMidCta de front_nuxt/components/blog/BlogArticleContent.vue:30-72"
+  pattern: "composables/useLeadModal.ts — replicar useState de front_nuxt/composables/useLeadModal.ts:1-15"
+  pattern: "utils/blog/communityLeadCta.ts — blogLeadSource(slug) + getBlogLeadCta(slug, placement) con copy comunidad (no comercial)"
+  pattern: "server/api/marketing/createCommunityLead.post.js — público (sin withTenantIsolation), usar withPostgresClient; INSERT leads con ON CONFLICT (tenant_id) WHERE source=self_service... o SELECT+INSERT/UPSERT; INSERT campaign_leads ON CONFLICT DO NOTHING"
+  pattern: "campaña: INSERT INTO campaign (name, slug, status, profile_id) VALUES ('Community Warolabs', 'community-waro', 'active', '7fe92b2c-d99e-4c70-b0cb-74af6326da5a')"
+  tests: "Manual: npm run dev + curl POST al endpoint + verificar en DB. Sin test runner front existente para el scope."
+
+risk:
+  sensitive: false
+  areas: []
+
+skip:
+  audits: []
+
+next:
+  after_pr: "/wr-fast #9 --ship si el usuario confirma push+PR en este chat"

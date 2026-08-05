@@ -1,6 +1,6 @@
 <template>
   <article
-    class="group relative grid overflow-hidden border border-glass-border bg-surface/50 transition-colors duration-300 hover:border-accent lg:grid-cols-[1.1fr_1fr]"
+    class="group relative grid overflow-hidden rounded-2xl border border-glass-border bg-surface transition-colors duration-300 hover:border-accent lg:grid-cols-[1.1fr_1fr]"
   >
     <NuxtLink
       :to="`/blog/${article.slug}`"
@@ -10,7 +10,7 @@
         v-if="article.cover"
         :src="article.cover"
         :alt="article.title"
-        class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        class="absolute inset-0 h-full w-full object-cover"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" aria-hidden="true" />
     </NuxtLink>

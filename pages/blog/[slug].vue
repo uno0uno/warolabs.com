@@ -19,16 +19,17 @@
       <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         <BlogBreadcrumb :current="article.title" class="mb-6" />
         <div class="animate-fade-in" style="animation-delay: 0.5s">
-          <BlogArticleContent :content="article.content" />
+          <BlogArticleContent :content="article.content" :slug="article.slug" />
         </div>
         <div class="animate-fade-in-up" style="animation-delay: 0.7s">
           <BlogAuthorCard :author="author" />
         </div>
         <div class="animate-fade-in-up" style="animation-delay: 0.85s">
-          <BlogArticleCTA />
+          <BlogArticleCTA :slug="article.slug" />
         </div>
       </div>
     </article>
+    <ModalsLeadModal />
   </div>
 </template>
 
