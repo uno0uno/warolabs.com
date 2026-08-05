@@ -1,0 +1,65 @@
+id: 7
+title: Reusar el componente de carga inicial del blog (front_nuxt) en warolabs.com con los colores de la marca
+repo: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+branch: wr-7-blog-loading-warolabs
+stack: nuxt
+
+# Paths in scope (do not touch anything else)
+paths:
+  - components/Commons/CommonsTheLoading.vue
+  # page files already use CommonsTheLoading; verify they still receive a valid label and the markup
+  # supports the new component. No structural changes expected; if a tweak is needed it stays inside
+  # the prop contract.
+  - pages/blog/[slug].vue
+  - pages/blog/index.vue
+
+ac:
+  - The dot-grid (1/0) animated loader from front_nuxt's TheCustomLoader is the
+    visual reference; warolabs re-implements the same idea inside
+    CommonsTheLoading.vue with brand tokens (no crocus/hsl hardcoding).
+  - Phrase text rotates every ~3s among 5-6 short es-CO messages (no setTimeout
+    for the *loading flag*; the phrase rotation can use setInterval since it is
+    decorative, not a fake loading state).
+  - Only `useFetch`/composable pending drives the show/hide (per CLAUDE.md).
+    No artificial delays, no setTimeout-as-loading.
+  - All colors come from tailwind tokens / CSS custom properties already
+    defined in tailwind.config.js and assets/css/components.css.
+  - Existing call sites keep working: `label?` prop preserved, default behavior
+    unchanged for them.
+  - No emoji, no inline SVG as functional icon, no hardcoded hex.
+  - Manual sanity: `http://localhost:3000/blog/cursor-precio-latam` and
+    `/blog` show the new loader; light + dark mode readable.
+
+hints:
+  tests:
+    # No dedicated tests for CommonsTheLoading in the repo. If `npm test` is
+    # green we treat the project as a green baseline. We do NOT add tests
+    # proactively (the skill says: "Put focused tests and manual validation in
+    # acceptance criteria unless the user explicitly asks Codex to own validation
+    # as a separate deliverable").
+    cmd: npm test
+  refs:
+    - https://github.com/uno0uno/warolabs.com/issues/7
+    - assets/css/main.scss (--bg-body, --accent-* etc.)
+    - tailwind.config.js (text-body, accent-lime, font-mono, etc.)
+
+out_of_scope:
+  - Changes to /api/* endpoints.
+  - Design system refactor.
+  - Adding new tests for the loader.
+  - Changes to warocol.com / front_nuxt.
+
+plan:
+  - Rewrite CommonsTheLoading.vue keeping the `label?` prop and adding
+    `showPhrase?` (default true) + internal phrase rotation. Render a 6x3
+    dot-grid of 1/0 with the same two-keyframe flash pattern (one = accent,
+    zero = secondary, dim baseline = text-body/20). Phrase below in
+    `text-secondary` with the fade animation. Container uses `text-body` and
+    `font-mono` tokens. No hardcoded colors.
+  - In `[slug].vue` and `index.vue` the prop usage stays `label="..."`;
+    nothing to change unless the layout wrapper needs a `min-h` so the
+    loader centers in the page (add `min-h-[60vh]` if the existing wrapper
+    collapses — verify, do not assume).
+  - Do not run `nuxt build`. Validate with `npm test` and report real output.
+  - Commit, push, open PR with the GitHub human-summary template.
