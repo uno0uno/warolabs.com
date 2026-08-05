@@ -16,6 +16,7 @@ export interface ArticleAuthor {
   avatar: string | null;
   email?: string;
   userName?: string;
+  description?: string;
 }
 
 export interface ArticleSummary {

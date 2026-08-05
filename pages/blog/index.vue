@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-body">
     <BlogHero />
 
-    <section class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+    <section class="py-12 sm:py-16">
       <CommonsTheLoading v-if="pending && !data" label="Cargando artículos…" />
 
       <div v-else-if="error" class="rounded-lg border border-destructive bg-destructive/5 p-6 text-center text-sm">
@@ -13,15 +13,9 @@
         <p class="text-lg text-text-body">Aún no hay artículos publicados.</p>
       </div>
 
-      <div v-else class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <BlogFeaturedArticleCard
-          v-if="featured"
-          :article="featured"
-          class="animate-fade-in-up sm:col-span-2 lg:col-span-3"
-          style="animation-delay: 0.1s"
-        />
+      <div v-else class="grid grid-cols-1 items-stretch auto-rows-fr gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
         <BlogCard
-          v-for="(article, index) in rest"
+          v-for="(article, index) in articles"
           :key="article.id"
           :article="article"
           class="animate-fade-in-up"
@@ -52,7 +46,7 @@ definePageMeta({
 useHead({
   title: 'Blog de WARO Labs — IA, Automatización y Software a Medida',
   meta: [
-    { name: 'description', content: 'Artículos prácticos sobre IA aplicada, automatización de procesos y desarrollo de software a medida para empresas.' },
+    { name: 'description', content: 'Abrimos nuestro proceso de crear software open-source con IA: guías para empresas, hackers y desarrolladores.' },
   ],
 });
 
@@ -74,8 +68,7 @@ watch([activePillar, page], async () => {
   await refresh();
 });
 
-const featured = computed(() => (data.value?.items?.length ? data.value.items[0] : null));
-const rest = computed(() => (data.value?.items?.slice(1) ?? []));
+const articles = computed(() => (data.value?.items ?? []));
 
 watch(activePillar, (newPillar) => {
   router.replace({ query: { ...route.query, pillar: newPillar ?? undefined, page: undefined } });

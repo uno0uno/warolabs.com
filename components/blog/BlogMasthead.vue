@@ -1,6 +1,6 @@
 <template>
   <div class="border-b border-glass-border bg-surface/40">
-    <div class="mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+    <div class="w-full py-6">
       <h2 class="text-sm font-semibold uppercase tracking-wider text-text-body">
         {{ title }}
       </h2>

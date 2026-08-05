@@ -81,6 +81,7 @@ export default defineEventHandler(async (event) => {
           email: row.author_email,
           avatar: row.author_avatar,
           userName: row.author_user_name,
+          description: row.author_description,
         },
         tenant: {
           name: row.tenant_name,

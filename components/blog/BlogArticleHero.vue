@@ -3,7 +3,7 @@
     <div class="bg-dot-pattern pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
     <div class="bg-mask-radial pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div class="relative z-10 mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8 lg:py-20">
+      <div class="relative z-10 py-12 lg:py-20">
         <div class="grid w-full grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-16">
           <div class="flex flex-col gap-5 lg:col-span-7">
             <div v-if="pillarLabel" class="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent animate-fade-in-up" style="animation-delay: 0.1s">

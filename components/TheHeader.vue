@@ -1,6 +1,6 @@
 <template>
   <header class="h-[60px] sm:h-[72px] py-6 sm:py-12 flex items-center justify-center z-50 glass border-b border-glass-border transition-all duration-300">
-    <div class="w-full max-w-[1000px] flex items-center justify-between">
+    <div class="w-full max-w-full flex items-center justify-between">
       <NuxtLink to="/" class="flex items-center gap-2">
         <img src="https://pub-989cb99e332c4f23a93447c9e3727d1d.r2.dev/logo_warolabs.webp" alt="Waro Labs" class="h-12 sm:h-16 w-auto" />
       </NuxtLink>

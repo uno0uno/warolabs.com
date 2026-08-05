@@ -10,8 +10,8 @@
       <p class="text-xs font-semibold uppercase tracking-wider text-accent">Autor</p>
       <h3 class="text-lg font-bold text-main">{{ author?.name }}</h3>
       <p v-if="author?.userName" class="text-sm text-text-body">@{{ author.userName }}</p>
+      <p v-if="author?.description" class="mt-3 text-sm leading-relaxed text-text-body">{{ author.description }}</p>
     </div>
-    <NuxtLink to="/contacto" class="btn-primary whitespace-nowrap">Contactar</NuxtLink>
   </aside>
 </template>
 

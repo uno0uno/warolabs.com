@@ -110,7 +110,7 @@ async function submit() {
   padding: 0.625rem 1rem;
   font-size: 0.875rem;
   font-weight: 700;
-  color: var(--accent-text);
+  color: #2d2d2e;
   background-color: var(--accent-lime);
   border: none;
   border-radius: 0.5rem;

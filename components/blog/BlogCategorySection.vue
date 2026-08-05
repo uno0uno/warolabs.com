@@ -1,8 +1,8 @@
 <template>
   <section class="border-b border-glass-border bg-body py-12">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="w-full">
       <h2 class="text-2xl font-bold text-main sm:text-3xl">{{ title }}</h2>
-      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-7">
         <NuxtLink
           v-for="cat in categories"
           :key="cat.value"

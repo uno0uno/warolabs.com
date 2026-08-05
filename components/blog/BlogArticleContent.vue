@@ -125,7 +125,7 @@ onUnmounted(() => {
   margin-bottom: 0.5rem;
   border-radius: 999px;
   background-color: var(--accent-lime);
-  color: var(--accent-text);
+  color: #2d2d2e;
   font-size: 0.6875rem;
   font-weight: 700;
   line-height: 1;
@@ -133,28 +133,28 @@ onUnmounted(() => {
   text-transform: uppercase;
 }
 :deep([data-mid-cta-headline]) {
-  margin: 0;
-  color: var(--text-main);
+  margin: 0 !important;
+  color: var(--text-main) !important;
   font-family: 'Asul', Georgia, serif;
   font-size: 1rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.3 !important;
   letter-spacing: -0.005em;
 }
 :deep([data-mid-cta-body]) {
-  margin: 0.25rem 0 0;
-  color: var(--text-secondary);
+  margin: 0.25rem 0 0 !important;
+  color: var(--text-secondary) !important;
   font-size: 0.8125rem;
   font-weight: 500;
-  line-height: 1.45;
+  line-height: 1.45 !important;
 }
 :deep([data-mid-cta-microcopy]) {
-  margin: 0.375rem 0 0;
-  color: var(--text-secondary);
+  margin: 0.375rem 0 0 !important;
+  color: var(--text-secondary) !important;
   opacity: 0.85;
   font-size: 0.75rem;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.5 !important;
 }
 :deep([data-blog-cta-btn]) {
   flex-shrink: 0;
@@ -164,7 +164,7 @@ onUnmounted(() => {
   border: none;
   border-radius: 0.4375rem;
   background-color: var(--accent-lime);
-  color: var(--accent-text);
+  color: #2d2d2e;
   cursor: pointer;
   font-family: inherit;
   font-size: 0.8125rem;
@@ -202,4 +202,27 @@ onUnmounted(() => {
     text-align: center;
   }
 }
+</style>
+
+<style>
+.markdown-body :where(h1, h2, h3, h4) {
+  color: var(--text-main);
+  font-weight: 700;
+  margin-top: 2.5em !important;
+  margin-bottom: 0.85em !important;
+  line-height: 1.25;
+}
+.markdown-body h1 { font-size: 2rem; margin-top: 1.5em !important; }
+.markdown-body h2 { font-size: 1.5rem; }
+.markdown-body h3 { font-size: 1.25rem; }
+.markdown-body p { margin: 2.5em 0 !important; color: var(--text-body); line-height: 1.7 !important; }
+.markdown-body a { color: var(--accent-text); text-decoration: underline; }
+.markdown-body code { font-family: var(--font-mono); background: var(--glass-bg); padding: 0.125rem 0.375rem; border-radius: 0.25rem; }
+.markdown-body pre { background: var(--bg-surface); padding: 1.25rem; border-radius: 0.5rem; overflow-x: auto; margin: 2em 0 !important; }
+.markdown-body pre code { background: transparent; padding: 0; }
+.markdown-body ul, .markdown-body ol { padding-left: 1.5rem; color: var(--text-body); margin: 2em 0 !important; }
+.markdown-body li { margin: 0.6em 0; line-height: 1.7; }
+.markdown-body blockquote { border-left: 3px solid var(--accent-text); padding-left: 1.25rem; color: var(--text-secondary); font-style: italic; margin: 2em 0 !important; }
+.markdown-body table { width: 100%; border-collapse: collapse; margin: 2em 0 !important; }
+.markdown-body th, .markdown-body td { border: 1px solid var(--glass-border); padding: 0.6rem 0.9rem; line-height: 1.6; }
 </style>

@@ -46,6 +46,12 @@
 :root {
   /* === LIGHT THEME (Default) - HIGH CONTRAST === */
 
+  /* Layout container (matches front_nuxt public-page-container) */
+  --layout-public-page-max-width: 87.5rem; /* 1400px */
+  --layout-public-page-padding-x: 0.75rem; /* 12px */
+  --layout-public-page-padding-x-sm: 1rem; /* 16px */
+  --layout-public-page-padding-x-md: 1.5rem; /* 24px */
+
   /* Background */
   --bg-body: #F3F4F6;
   /* Cool gray to avoid harsh white */
@@ -128,6 +134,26 @@ body {
 /* ========================================
    UTILITY CLASSES
    ======================================== */
+
+/* Public page layout container — aligned with header/footer, matches front_nuxt */
+.public-page-container {
+  width: 100%;
+  max-width: var(--layout-public-page-max-width);
+  margin-inline: auto;
+  padding-inline: var(--layout-public-page-padding-x);
+}
+
+@media (min-width: 640px) {
+  .public-page-container {
+    padding-inline: var(--layout-public-page-padding-x-sm);
+  }
+}
+
+@media (min-width: 768px) {
+  .public-page-container {
+    padding-inline: var(--layout-public-page-padding-x-md);
+  }
+}
 
 /* Glass Effect */
 .glass {

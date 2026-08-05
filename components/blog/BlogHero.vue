@@ -1,6 +1,6 @@
 <template>
   <section class="border-b border-glass-border bg-surface/40">
-    <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+    <div class="py-16 lg:py-20 text-center">
       <p
         class="text-xs font-semibold uppercase tracking-[0.2em] text-accent animate-fade-in-up"
         style="animation-delay: 0.1s"
@@ -9,17 +9,17 @@
       </p>
 
       <h1
-        class="mt-4 font-display text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.2] tracking-tight text-main max-w-3xl animate-fade-in-up"
+        class="mt-4 font-display text-2xl sm:text-3xl md:text-4xl lg:text-[44px] font-normal leading-[1.2] tracking-tight text-main whitespace-nowrap animate-fade-in-up"
         style="animation-delay: 0.2s"
       >
-        Conocimiento accionable sobre <span class="text-accent">IA y software a medida</span>
+        Aprende cómo hacemos software <span class="text-accent">con IA</span>
       </h1>
 
       <p
-        class="mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-text-body animate-fade-in-up"
+        class="mt-5 max-w-2xl mx-auto text-base sm:text-lg leading-relaxed text-text-body animate-fade-in-up"
         style="animation-delay: 0.3s"
       >
-        Artículos prácticos para empresas que quieren automatizar procesos, implementar IA y construir software que realmente se ajuste a su operación.
+        Abrimos nuestro proceso de creación open-source: guías para empresas, hackers y desarrolladores.
       </p>
     </div>
   </section>

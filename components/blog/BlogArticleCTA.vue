@@ -62,7 +62,7 @@ aside[data-mid-cta] {
   margin-bottom: 0.5rem;
   border-radius: 999px;
   background-color: var(--accent-lime);
-  color: var(--accent-text);
+  color: #2d2d2e;
   font-size: 0.6875rem;
   font-weight: 700;
   line-height: 1;
@@ -101,7 +101,7 @@ aside[data-mid-cta] {
   border: none;
   border-radius: 0.4375rem;
   background-color: var(--accent-lime);
-  color: var(--accent-text);
+  color: #2d2d2e;
   cursor: pointer;
   font-family: inherit;
   font-size: 0.875rem;

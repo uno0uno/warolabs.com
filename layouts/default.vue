@@ -3,7 +3,7 @@
     <!-- Mask for dot pattern fade -->
     <div class="fixed inset-0 pointer-events-none -z-10 mask-radial transition-all duration-300"></div>
 
-    <div class="flex flex-col w-full min-h-screen px-4 md:px-16 2xl:px-[30rem]">
+    <div class="flex flex-col w-full min-h-screen public-page-container">
       <TheHeader />
 
       <main class="flex-grow flex flex-col items-center">
