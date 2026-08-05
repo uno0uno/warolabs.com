@@ -1,0 +1,43 @@
+issue: 16
+title: "Responsive de /blog y /blog/[slug] en warolabs.com (replicar patrón front_nuxt)"
+repo: warolabs
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-16-blog-responsive
+
+paths:
+  - components/blog/BlogHero.vue
+  - components/blog/BlogArticleHero.vue
+  - pages/blog/index.vue
+  - pages/blog/[slug].vue
+  - components/blog/BlogArticleCTA.vue
+  - components/blog/BlogAuthorCard.vue
+  - .wr/16.yaml
+
+ac:
+  - "BlogHero: h1 sin whitespace-nowrap, responsive text-2xl/3xl/4xl/5xl, contenedor public-page-container con padding-x"
+  - "pages/blog/index.vue: grid envuelto en public-page-container (o padding-x equivalente)"
+  - "pages/blog/[slug].vue: verificar BlogAuthorCard, BlogBreadcrumb, CTAs y banners inline sin overflow en mobile"
+  - "Mobile ≤640px: 1 columna, sin desbordes, CTAs full-width"
+  - "Tablet 640-1024px: 2 columnas"
+  - "Desktop ≥1024px: 3 columnas (actual)"
+
+out_of_scope:
+  - cambiar diseño visual del hero
+  - agregar imagen de fondo
+  - cambiar grid de categorías/pilares
+  - cambiar tipografía/design system
+
+hints:
+  entry: "components/blog/BlogHero.vue (h1 con whitespace-nowrap rompe en mobile)"
+  pattern: "front_nuxt/components/blog/BlogHero.vue (text-6xl lg:text-8xl responsive)"
+  pattern: "assets/css/main.scss .public-page-container (utility ya existente desde stash de márgenes)"
+  tests: "DevTools mobile 375px, tablet 768px, desktop 1280px"
+
+risk:
+  sensitive: false
+  areas: []
+
+skip:
+  audits: []
