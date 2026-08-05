@@ -1,0 +1,40 @@
+# Compact plan for wr-fast #18. Keep <=80 lines.
+issue: 18
+title: "fix(blog): mobile overflow on /blog/[slug] from layout shrink-to-fit"
+repo: warolabs.com
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-18-blog-mobile-overflow
+
+paths:
+  - layouts/default.vue
+  - pages/blog/[slug].vue
+  - components/blog/BlogBreadcrumb.vue
+
+ac:
+  - At 320/390/430px /blog/opencode-vs-cursor has scrollWidth === clientWidth and no clipped article
+  - layouts/default.vue main stretches full width (no items-center shrink-to-fit)
+  - Article page root is w-full; breadcrumb current truncates with min-w-0
+  - Desktop article layout intent unchanged
+
+out_of_scope:
+  - content/ drafts
+  - header redesign
+  - markdown prose restyle beyond overflow containment
+  - nested public-page-container dedupe
+
+hints:
+  entry: "layouts/default.vue main + BlogBreadcrumb current title"
+  pattern: "front_nuxt PublicShell main = flex-1 w-full; no items-center"
+  tests: "playwright overflow measure at 320/390/430 on /blog/opencode-vs-cursor (dev)"
+
+risk:
+  sensitive: false
+  areas: []
+
+skip:
+  audits: []
+
+next:
+  after_pr: "ready-for-review + wr-review"
