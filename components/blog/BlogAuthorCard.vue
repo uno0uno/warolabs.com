@@ -1,5 +1,5 @@
 <template>
-  <aside class="card-base mt-12 flex flex-col gap-4 overflow-hidden rounded-2xl border border-glass-border bg-surface p-6 sm:flex-row sm:items-center">
+  <aside class="card-base mt-12 flex flex-col gap-4 overflow-hidden rounded-2xl border border-glass-border bg-surface/40 p-6 sm:flex-row sm:items-center">
     <img
       v-if="author?.avatar"
       :src="author.avatar"

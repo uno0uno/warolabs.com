@@ -8,6 +8,7 @@ branch: wr-16-blog-responsive
 
 paths:
   - components/blog/BlogHero.vue
+  - components/blog/BlogArticleHero.vue
   - pages/blog/index.vue
   - pages/blog/[slug].vue
   - components/blog/BlogArticleCTA.vue
