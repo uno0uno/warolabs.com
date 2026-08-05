@@ -64,7 +64,7 @@ const {
 const leadModal = useLeadModal()
 
 function onContactClick() {
-  leadModal.open('home:cta')
+  leadModal.open('blog:community:home')
 }
 
 useSeoMeta({

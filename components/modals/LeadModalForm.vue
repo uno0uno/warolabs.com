@@ -39,7 +39,13 @@ const emit = defineEmits<{ (e: 'close'): void }>();
 
 const slug = computed(() => {
   const src = props.buttonSource || '';
-  return src.startsWith('blog:community:') ? src.slice('blog:community:'.length) : '';
+  if (src.startsWith('blog:community:')) {
+    return src.slice('blog:community:'.length);
+  }
+  // Fallback: use the source as-is if it is a safe slug (the server validates
+  // [a-z0-9-]{1,200}); otherwise return 'unknown' so the form does not
+  // silently break for non-blog call-sites (e.g. home CTA).
+  return /^[a-z0-9-]{1,200}$/.test(src) ? src : 'unknown';
 });
 
 const email = ref('');
@@ -48,8 +54,12 @@ const error = ref('');
 
 async function submit() {
   error.value = '';
-  if (!email.value || !slug.value) {
-    error.value = 'Falta el correo o el artículo.';
+  if (!email.value) {
+    error.value = 'Escribe tu correo.';
+    return;
+  }
+  if (!slug.value) {
+    error.value = 'No se pudo identificar el artículo.';
     return;
   }
   state.value = 'loading';
