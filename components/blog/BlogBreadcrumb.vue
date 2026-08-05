@@ -1,16 +1,72 @@
 <template>
-  <nav class="flex items-center gap-1.5 text-sm text-text-body" aria-label="Breadcrumb">
-    <NuxtLink to="/" class="hover:text-accent">Inicio</NuxtLink>
-    <ChevronRightIcon class="h-4 w-4 text-text-body/60" />
-    <NuxtLink to="/blog" class="hover:text-accent">Blog</NuxtLink>
-    <template v-if="current">
-      <ChevronRightIcon class="h-4 w-4 text-text-body/60" />
-      <span class="text-main">{{ current }}</span>
+  <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
+    <template v-for="(item, index) in breadcrumbs" :key="index">
+      <NuxtLink
+        v-if="index === 0"
+        :to="item.path || '/'"
+        class="text-text-body transition-colors hover:text-accent"
+        aria-label="Inicio"
+      >
+        <HomeIcon class="h-4 w-4" />
+      </NuxtLink>
+
+      <template v-else>
+        <ChevronRightIcon class="h-4 w-4 text-text-body/60" />
+
+        <NuxtLink
+          v-if="item.path"
+          :to="item.path"
+          class="capitalize whitespace-nowrap text-text-body transition-colors hover:text-accent"
+        >
+          {{ item.label }}
+        </NuxtLink>
+        <span
+          v-else
+          class="line-clamp-1 whitespace-nowrap font-medium text-main"
+          aria-current="page"
+        >
+          {{ item.label }}
+        </span>
+      </template>
     </template>
   </nav>
 </template>
 
 <script setup lang="ts">
-import { ChevronRightIcon } from '@heroicons/vue/20/solid';
-defineProps<{ current?: string }>();
+import { HomeIcon, ChevronRightIcon } from '@heroicons/vue/20/solid';
+
+interface BreadcrumbItem {
+  label: string;
+  path?: string;
+}
+
+const props = defineProps<{ current?: string }>();
+
+const route = useRoute();
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => {
+  const segments = route.path.split('/').filter(Boolean);
+
+  const items: BreadcrumbItem[] = [{ label: 'Inicio', path: '/' }];
+
+  segments.forEach((segment, index) => {
+    let label = decodeURIComponent(segment).replace(/-/g, ' ');
+
+    if (label.length > 40) {
+      label = label.substring(0, 40).trim() + '...';
+    }
+
+    const path = index < segments.length - 1
+      ? '/' + segments.slice(0, index + 1).join('/')
+      : undefined;
+
+    items.push({ label, path });
+  });
+
+  if (props.current && items.length > 0) {
+    items[items.length - 1] = { label: props.current };
+  }
+
+  return items;
+});
 </script>

@@ -1,6 +1,6 @@
 <template>
-  <article class="prose prose-lg max-w-none text-text-body">
-    <MarkdownRenderer v-if="content" :source="content" />
+  <article class="max-w-none text-text-body">
+    <CommonsMarkdownRenderer v-if="content" :source="content" />
   </article>
 </template>
 
