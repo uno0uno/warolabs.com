@@ -28,7 +28,7 @@
             name: member.name,
             role: member.role,
             bio: member.description,
-            image: member.avatar || '',
+            image: member.avatar,
             social: member.social,
           }"
           class="animate-fade-in-up"
@@ -62,7 +62,7 @@ interface TeamMember {
   id: string
   name: string
   userName: string | null
-  avatar: string | null
+  avatar: string
   role: string
   description: string
   social: {
