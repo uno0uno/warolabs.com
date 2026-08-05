@@ -27,11 +27,11 @@
           {{ pillarLabel }}
         </span>
         <NuxtLink :to="`/blog/${article.slug}`" class="mb-3 block">
-          <h3 class="line-clamp-2 text-lg font-bold leading-snug text-main transition-colors duration-200 group-hover:text-accent">
+          <h3 class="line-clamp-2 text-lg font-bold leading-snug text-main break-words transition-colors duration-200 group-hover:text-accent">
             {{ article.title }}
           </h3>
         </NuxtLink>
-        <p class="line-clamp-2 text-sm leading-relaxed text-text-body">{{ article.description }}</p>
+        <p class="line-clamp-2 text-sm leading-relaxed text-text-body break-words">{{ article.description }}</p>
       </div>
 
       <div class="mt-5 flex items-center justify-between border-t border-glass-border pt-4">

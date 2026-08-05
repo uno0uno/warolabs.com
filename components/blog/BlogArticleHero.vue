@@ -3,14 +3,14 @@
     <div class="bg-dot-pattern pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
     <div class="bg-mask-radial pointer-events-none absolute inset-0" aria-hidden="true" />
 
-      <div class="relative z-10 public-page-container py-12 lg:py-20">
+      <div class="relative z-10 public-page-container py-8 sm:py-12 lg:py-20">
         <div class="grid w-full grid-cols-1 items-start gap-8 lg:grid-cols-12 lg:gap-16">
           <div class="flex flex-col gap-5 lg:col-span-7">
             <div v-if="pillarLabel" class="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-accent animate-fade-in-up" style="animation-delay: 0.1s">
               {{ pillarLabel }}
             </div>
 
-            <h1 class="animate-fade-in-up font-display text-3xl font-normal leading-[1.15] tracking-tight text-main sm:text-4xl lg:text-5xl" style="animation-delay: 0.2s">
+            <h1 class="animate-fade-in-up font-display text-2xl font-normal leading-[1.15] tracking-tight text-main break-words sm:text-3xl md:text-4xl lg:text-5xl" style="animation-delay: 0.2s">
               {{ title }}
             </h1>
 

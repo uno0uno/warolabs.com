@@ -9,7 +9,7 @@
       </p>
 
       <h1
-        class="mt-4 font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-normal leading-[1.15] tracking-tight text-main animate-fade-in-up"
+        class="mt-4 font-display text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-normal leading-[1.15] tracking-tight text-main break-words animate-fade-in-up"
         style="animation-delay: 0.2s"
       >
         Aprende cómo hacemos software <span class="text-accent">con IA</span>

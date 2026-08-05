@@ -1,5 +1,5 @@
 <template>
-  <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm">
+  <nav aria-label="Breadcrumb" class="flex min-w-0 items-center gap-1.5 text-sm">
     <template v-for="(item, index) in breadcrumbs" :key="index">
       <NuxtLink
         v-if="index === 0"
@@ -16,13 +16,13 @@
         <NuxtLink
           v-if="item.path"
           :to="item.path"
-          class="capitalize whitespace-nowrap text-text-body transition-colors hover:text-accent"
+          class="truncate text-text-body transition-colors hover:text-accent"
         >
           {{ item.label }}
         </NuxtLink>
         <span
           v-else
-          class="line-clamp-1 whitespace-nowrap font-medium text-main"
+          class="truncate font-medium text-main"
           aria-current="page"
         >
           {{ item.label }}
