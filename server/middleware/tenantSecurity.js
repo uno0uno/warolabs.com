@@ -13,6 +13,7 @@ const EXEMPT_ENDPOINTS = [
   '/api/auth/session',
   '/api/auth/signout',
   '/api/auth/get-token',  // Token JWT para landing pages
+  '/api/blog',          // Public blog index/article/categories (tenant scope applied inside queries)
   '/api/landings/',       // Landing pages públicas
   '/api/tracking/',       // Email tracking endpoints (pixels, clicks)
   '/api/marketing/createLeadCampain', // Public lead capture

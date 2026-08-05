@@ -97,7 +97,7 @@ export function useBlogIndex(options: UseBlogIndexOptions = {}) {
   const page = computed(() => Math.max(1, Number(unwrap(options.page, 1)) || 1));
   const pageSize = computed(() => Math.min(60, Math.max(1, Number(unwrap(options.pageSize, 12)) || 12)));
 
-  return useFetch<BlogListResponse>('/api/blog/index', {
+  return useFetch<BlogListResponse>('/api/blog', {
     query: { pillar, search, tag, page, pageSize },
     watch: [pillar, search, tag, page, pageSize],
     key: 'blog-index',
