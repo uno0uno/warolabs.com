@@ -126,6 +126,7 @@ export default defineNuxtConfig({
   // Robots.txt mejorado
   robots: {
     credits: false,
+    sitemap: 'https://warolabs.com/sitemap.xml',
     groups: [
       {
         userAgents: ['*'],

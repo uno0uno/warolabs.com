@@ -1,0 +1,36 @@
+issue: 10
+title: "Sitemap XML + robots.txt en warolabs.com (replicar patrón front_nuxt)"
+repo: warolabs
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-10-sitemap-robots-warolabs
+
+paths:
+  - server/routes/sitemap.xml.ts
+  - server/api/sitemap.js
+  - nuxt.config.ts
+  - .wr/10.yaml
+
+ac:
+  - "GET /sitemap.xml responde 200 application/xml con Cache-Control: max-age=3600, s-maxage=3600"
+  - "Lista /  (priority 1.0, daily) y /blog (0.9, daily)"
+  - "Lista cada artículo publicado del tenant como /blog/<slug> con lastmod=updated_at||created_at, weekly, 0.8"
+  - "nuxt.config.ts robots.sitemap = 'https://warolabs.com/sitemap.xml' (mantener groups actuales)"
+  - "Eliminar server/api/sitemap.js (devuelve array, no XML)"
+  - "robots.txt generado por @nuxtjs/robots incluye línea Sitemap: https://warolabs.com/sitemap.xml"
+
+out_of_scope:
+  - ciudades / restaurants (warolabs no los tiene)
+  - IndexNow / pings
+  - meta/SEO on-page
+  - multi-tenant dinámico
+
+hints:
+  entry: "server/routes/sitemap.xml.ts (route, no server/api/)"
+  pattern: "front_nuxt/server/routes/sitemap.xml.ts:1-121"
+  pattern: "WAROLABS_TENANT_ID en server/utils/blog/tenant.ts"
+  pattern: "withPostgresClient en server/utils/basedataSettings/withPostgresClient.js"
+  pattern: "config.public.siteUrl (env NUXT_PUBLIC_SITE_URL, default https://warolabs.com)"
+  query: "SELECT slug, updated_at, created_at FROM public.articles WHERE tenant_id = $1 AND published = true AND is_active = true AND draft = false ORDER BY created_at DESC"
+  tests: "Manual: curl -I localhost:3000/sitemap.xml y curl localhost:3000/sitemap.xml | head -20 + curl localhost:3000/robots.txt"
