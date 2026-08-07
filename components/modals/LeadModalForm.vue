@@ -38,7 +38,7 @@
         Revisa tu correo: te enviamos un mensaje de bienvenida. Sin spam, prometido.
       </p>
     </div>
-    <button type="button" class="community-submit" @click="close">
+    <button type="button" class="community-submit" @click="emit('close')">
       Cerrar
     </button>
   </div>
