@@ -1,5 +1,5 @@
 <template>
-  <form class="flex flex-col gap-4" @submit.prevent="submit">
+  <form v-if="state !== 'success'" class="flex flex-col gap-4" @submit.prevent="submit">
     <p class="text-sm leading-relaxed text-text-body">
       Solo te pido tu correo. Te aviso cuando publique algo nuevo. Gratis, sin spam.
     </p>
@@ -19,18 +19,29 @@
     </div>
 
     <p v-if="error" class="text-xs text-red-500 dark:text-red-400">{{ error }}</p>
-    <p v-if="state === 'success'" class="text-xs text-accent-text">¡Listo! Te escribo pronto.</p>
 
     <button
       type="submit"
-      :disabled="state === 'loading' || state === 'success'"
+      :disabled="state === 'loading'"
       class="community-submit"
     >
       <span v-if="state === 'loading'">Enviando…</span>
-      <span v-else-if="state === 'success'">¡Listo!</span>
       <span v-else>Unirme gratis</span>
     </button>
   </form>
+
+  <div v-else class="flex flex-col items-center gap-4 py-4 text-center">
+    <div class="community-success-icon" aria-hidden="true">✓</div>
+    <div>
+      <p class="text-base font-semibold text-text-main">¡Gracias! Te escribo pronto.</p>
+      <p class="mt-1 text-sm leading-relaxed text-text-body">
+        Revisa tu correo: te enviamos un mensaje de bienvenida. Sin spam, prometido.
+      </p>
+    </div>
+    <button type="button" class="community-submit" @click="close">
+      Cerrar
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -74,7 +85,6 @@ async function submit() {
     });
     if (res?.success) {
       state.value = 'success';
-      setTimeout(() => emit('close'), 1500);
     } else {
       state.value = 'idle';
       error.value = 'No pudimos registrarte. Intenta de nuevo.';
@@ -140,5 +150,17 @@ async function submit() {
 .community-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+.community-success-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d2d2e;
+  background-color: var(--accent-lime);
+  border-radius: 9999px;
 }
 </style>

@@ -1,0 +1,45 @@
+# Compact Codex plan for wr-plan / wr-exec. Keep <=80 lines.
+issue: 20
+title: "Modal de comunidad: mensaje de agradecimiento + email bienvenida (patrón WARO Colombia)"
+repo: warolabs_com
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-20-community-modal-thanks-and-welcome-email
+
+paths:
+  - components/modals/LeadModalForm.vue
+  - server/api/marketing/createCommunityLead.post.js
+
+ac:
+  - LeadModalForm.vue: estado success muestra mensaje destacado de agradecimiento ("¡Gracias! Te escribo pronto con novedades.") en lugar de depender solo del texto del botón
+  - Botón en estado success muestra "Cerrar" y el mensaje de gracias persiste hasta que el usuario cierre el modal
+  - createCommunityLead.post.js: tras insertar el lead (no en reintento), envía email de bienvenida en texto plano fire-and-forget vía sesClient.sendEmail con bodyText
+  - Asunto: "¡Gracias por unirte! — WARO Labs". Cuerpo: saludo, bienvenida, footer contacto WARO Labs, nota "recibiste este correo porque te registraste en warolabs.com"
+  - No enviar email si el lead ya existía (solo en INSERT nuevo)
+  - Fallo de email no rompe el flujo: se loguea y la respuesta sigue success:true
+  - Localmente verificable con email de prueba contra la campaña community
+
+out_of_scope:
+  - Notificación Discord (no existe servicio en warolabs.com)
+  - Sistema de templates DB (se usa texto plano hardcodeado como WARO Colombia)
+  - Cambios visuales al modal fuera del estado success
+  - Otros modales o endpoints de leads
+
+hints:
+  entry: "components/modals/LeadModalForm.vue (template + submit) + server/api/marketing/createCommunityLead.post.js (post-insert)"
+  pattern: "WARO Colombia: app/services/leads_service.py -> _build_confirmation_email (texto plano) + ses_service.send_email(text_body=...) fire-and-forget"
+  tests: "smoke: POST /api/marketing/createCommunityLead con email real; verificar log SES y modal renderice mensaje"
+  env: "usar useRuntimeConfig().emailFrom; si null, fallback 'anderson.arevalo@warolabs.com' (documentar NUXT_PRIVATE_EMAIL_FROM en .env)"
+
+risk:
+  sensitive: false
+  areas:
+    - email/SES: no enviar en duplicados, no romper flujo si falla
+    - existing reintento: lead existente (existing.rows.length > 0) debe NO enviar email
+
+skip:
+  audits: []
+
+next:
+  after_pr: "auto-review via wr-reader; humano confirma merge"

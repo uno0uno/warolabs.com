@@ -1,8 +1,41 @@
 import { withPostgresClient } from '../../utils/basedataSettings/withPostgresClient';
+import { sendEmail } from '../../utils/aws/sesClient';
 import { defineEventHandler, readBody, createError } from 'h3';
 
 const COMMUNITY_CAMPAIGN_ID = '5c96fcd6-1050-47ce-aeb3-5c5bae79d169';
 const COMMUNITY_PROFILE_ID = '7fe92b2c-d99e-4c70-b0cb-74af6326da5a';
+const COMMUNITY_SENDER_FALLBACK = 'anderson.arevalo@warolabs.com';
+
+function buildWelcomeEmail(email) {
+  const { emailFrom } = useRuntimeConfig();
+  return {
+    fromEmailAddress: emailFrom || COMMUNITY_SENDER_FALLBACK,
+    fromName: 'WARO Labs',
+    toEmailAddresses: [email],
+    subject: '¡Gracias por unirte! — WARO Labs',
+    bodyText:
+      'WARO Labs\n\n' +
+      'Hola,\n\n' +
+      '¡Bienvenido a la comunidad! Te escribiremos cuando publiquemos algo nuevo. Sin spam, prometido.\n\n' +
+      'Si tienes alguna pregunta, no dudes en responder a este correo.\n\n' +
+      '¡Hasta pronto!\n' +
+      'El equipo de WARO Labs\n\n' +
+      '----\n' +
+      'Anderson Arévalo\n' +
+      'Fundador WARO Labs\n' +
+      'Bogotá, D.C, Colombia\n' +
+      'Tecnología colombiana para el mundo. warolabs.com\n\n' +
+      `Este correo fue enviado a ${email} porque te registraste en warolabs.com`,
+  };
+}
+
+async function sendWelcomeEmail(email) {
+  try {
+    await sendEmail(buildWelcomeEmail(email));
+  } catch (err) {
+    console.error('[createCommunityLead] Error sending welcome email:', err);
+  }
+}
 
 function isValidEmail(email) {
   return typeof email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -40,7 +73,8 @@ export default defineEventHandler(async (event) => {
     );
 
     let leadId;
-    if (existing.rows.length > 0) {
+    const isNewLead = existing.rows.length === 0;
+    if (!isNewLead) {
       leadId = existing.rows[0].id;
     } else {
       const inserted = await client.query(
@@ -56,6 +90,12 @@ export default defineEventHandler(async (event) => {
       `INSERT INTO campaign_leads (campaign_id, lead_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
       [COMMUNITY_CAMPAIGN_ID, leadId]
     );
+
+    if (isNewLead) {
+      sendWelcomeEmail(email).catch((err) =>
+        console.error('[createCommunityLead] Welcome email task failed:', err)
+      );
+    }
 
     return { success: true, data: { leadId, campaignId: COMMUNITY_CAMPAIGN_ID, source } };
   }, event);
