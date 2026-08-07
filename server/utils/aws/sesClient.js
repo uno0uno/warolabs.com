@@ -61,14 +61,16 @@ export async function sendEmail(params) {
                 Charset: "UTF-8",
                 Data: subject,
             },
-            Body: {
-                Html: {
-                    Charset: "UTF-8",
-                    Data: bodyHtml,
-                },
-            },
+            Body: {},
         },
     };
+
+    if (bodyHtml) {
+        input.Message.Body.Html = {
+            Charset: "UTF-8",
+            Data: bodyHtml,
+        };
+    }
 
     if (bodyText) {
         input.Message.Body.Text = {
