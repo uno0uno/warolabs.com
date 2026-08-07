@@ -1,0 +1,39 @@
+issue: 22
+title: "Email de bienvenida en duplicados: mensaje 'ya estás registrado' con límite de solo primer duplicado (patrón WARO Colombia)"
+repo: warolabs.com
+repo_remote: uno0uno/warolabs.com
+cwd: /Users/saifer/Documents/WEBS/WARO LABS/warolabs.com
+stack: nuxt
+branch: wr-22-community-duplicate-email-first-only
+
+paths:
+  - server/api/marketing/createCommunityLead.post.js
+
+ac:
+  - Lead duplicado recibe email "ya te registraste" fire-and-forget solo si es PRIMER duplicado
+  - Reintentos posteriores del mismo email NO reenvían (límite)
+  - Registrar envío en lead_interactions con interaction_type='duplicate_submit'
+  - Lead nuevo sigue recibiendo email de bienvenida (sin cambios)
+  - Fallo de SES no rompe success:true
+  - Response incluye is_duplicate:true|false en data
+
+out_of_scope:
+  - Notificación Discord
+  - Plantillas email en DB
+  - Rate-limit por IP/token
+  - Modal diferenciado para duplicados
+
+hints:
+  entry: "server/api/marketing/createCommunityLead.post.js (post-handler)"
+  pattern: "buildWelcomeEmail + sendWelcomeEmail fire-and-forget tras isNewLead"
+  tests: "node --check; jest unit; smoke curl 2x con mismo email"
+
+risk:
+  sensitive: false
+  areas: []
+
+skip:
+  audits: []
+
+next:
+  after_pr: "auto-review con wr-reader (Kimi K3)"

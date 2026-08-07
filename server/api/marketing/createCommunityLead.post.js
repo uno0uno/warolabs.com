@@ -29,11 +29,42 @@ function buildWelcomeEmail(email) {
   };
 }
 
+function buildDuplicateEmail(email) {
+  const { emailFrom } = useRuntimeConfig();
+  return {
+    fromEmailAddress: emailFrom || COMMUNITY_SENDER_FALLBACK,
+    fromName: 'WARO Labs',
+    toEmailAddresses: [email],
+    subject: 'Ya tenemos tu solicitud — WARO Labs',
+    bodyText:
+      'WARO Labs\n\n' +
+      'Hola,\n\n' +
+      'Disculpa si enviaste el formulario más de una vez. Ya tenemos tu solicitud registrada y nos pondremos en contacto contigo pronto.\n\n' +
+      'No necesitas hacer nada más, ya estás en nuestra lista.\n\n' +
+      '¡Hasta pronto!\n' +
+      'El equipo de WARO Labs\n\n' +
+      '----\n' +
+      'Anderson Arévalo\n' +
+      'Fundador WARO Labs\n' +
+      'Bogotá, D.C, Colombia\n' +
+      'Tecnología colombiana para el mundo. warolabs.com\n\n' +
+      `Este correo fue enviado a ${email} porque completaste un formulario en warolabs.com`,
+  };
+}
+
 async function sendWelcomeEmail(email) {
   try {
     await sendEmail(buildWelcomeEmail(email));
   } catch (err) {
     console.error('[createCommunityLead] Error sending welcome email:', err);
+  }
+}
+
+async function sendDuplicateEmail(email) {
+  try {
+    await sendEmail(buildDuplicateEmail(email));
+  } catch (err) {
+    console.error('[createCommunityLead] Error sending duplicate email:', err);
   }
 }
 
@@ -95,8 +126,26 @@ export default defineEventHandler(async (event) => {
       sendWelcomeEmail(email).catch((err) =>
         console.error('[createCommunityLead] Welcome email task failed:', err)
       );
+    } else {
+      const priorDuplicate = await client.query(
+        `SELECT 1 FROM lead_interactions WHERE lead_id = $1 AND interaction_type = 'duplicate_submit' LIMIT 1`,
+        [leadId]
+      );
+      if (priorDuplicate.rows.length === 0) {
+        await client.query(
+          `INSERT INTO lead_interactions (lead_id, interaction_type, source, ip_address, user_agent)
+           VALUES ($1, 'duplicate_submit', 'community', $2, $3)`,
+          [leadId, ip, userAgent]
+        );
+        sendDuplicateEmail(email).catch((err) =>
+          console.error('[createCommunityLead] Duplicate email task failed:', err)
+        );
+      }
     }
 
-    return { success: true, data: { leadId, campaignId: COMMUNITY_CAMPAIGN_ID, source } };
+    return {
+      success: true,
+      data: { leadId, campaignId: COMMUNITY_CAMPAIGN_ID, source, is_duplicate: !isNewLead },
+    };
   }, event);
 });
